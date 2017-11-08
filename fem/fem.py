@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
-from sympy import integrate, symbols, diff, Float
+import numpy as np
+
+from sympy import symbols, diff, Float
+
 from point import Point
 from triangle import Triangle
 
 
-M = 3
+M = 2
 A = 0
 B = 0
 C = 1
@@ -44,14 +46,14 @@ def mesh():
 
 
 def boundary_condition_1(vertex):
-    if vertex.y() == 0 or vertex.x() == 0:
+    if vertex.y == 0 or vertex.x == 0:
         return True
     else:
         return False
 
 
 def boundary_condition_2(vertex):
-    if vertex.y() == M or vertex.x() == M:
+    if vertex.y == M or vertex.x == M:
         return True
     else:
         return False
@@ -60,7 +62,7 @@ def boundary_condition_2(vertex):
 def integrate_by_triangle(func, triangle):
     # TODO: incorrect function
     x, y = symbols('x y')
-    s = trianglelement.area()
+    s = trianglelement.area
 
     integral_x = func.coeff(x) * s * Triangle.x(triangle.centroid())
     integral_y = func.coeff(y) * s * Triangle.y(triangle.centroid())
@@ -96,29 +98,29 @@ def main():
 
             for m in range(0, (M + 1) ** 2):
 
-                if element[1].get_number() == l:
-                    if element[1].get_number() == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_i, x) + diff(N_i, y) + diff(N_i, y)) * element.area()
-                    elif element[2].get_number() == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_j, x) + diff(N_i, y) + diff(N_j, y)) * element.area()
-                    elif element[3].get_number() == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_k, x) + diff(N_i, y) + diff(N_k, y)) * element.area()
+                if element[1].number == l:
+                    if element[1].number == m:
+                        K[l][m] += (diff(N_i, x) * diff(N_i, x) + diff(N_i, y) + diff(N_i, y)) * element.area
+                    elif element[2].number == m:
+                        K[l][m] += (diff(N_i, x) * diff(N_j, x) + diff(N_i, y) + diff(N_j, y)) * element.area
+                    elif element[3].number == m:
+                        K[l][m] += (diff(N_i, x) * diff(N_k, x) + diff(N_i, y) + diff(N_k, y)) * element.area
 
-                elif element[2].get_number() == l:
-                    if element[1].get_number() == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_i, x) + diff(N_j, y) + diff(N_i, y)) * element.area()
-                    elif element[2].get_number() == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_j, x) + diff(N_j, y) + diff(N_j, y)) * element.area()
-                    elif element[3].get_number() == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_k, x) + diff(N_j, y) + diff(N_k, y)) * element.area()
+                elif element[2].number == l:
+                    if element[1].number == m:
+                        K[l][m] += (diff(N_j, x) * diff(N_i, x) + diff(N_j, y) + diff(N_i, y)) * element.area
+                    elif element[2].number == m:
+                        K[l][m] += (diff(N_j, x) * diff(N_j, x) + diff(N_j, y) + diff(N_j, y)) * element.area
+                    elif element[3].number == m:
+                        K[l][m] += (diff(N_j, x) * diff(N_k, x) + diff(N_j, y) + diff(N_k, y)) * element.area
 
-                elif element[3].get_number() == l:
-                    if element[1].get_number() == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_i, x) + diff(N_k, y) + diff(N_i, y)) * element.area()
-                    elif element[2].get_number() == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_j, x) + diff(N_k, y) + diff(N_j, y)) * element.area()
-                    elif element[3].get_number() == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_k, x) + diff(N_k, y) + diff(N_k, y)) * element.area()
+                elif element[3].number == l:
+                    if element[1].number == m:
+                        K[l][m] += (diff(N_k, x) * diff(N_i, x) + diff(N_k, y) + diff(N_i, y)) * element.area
+                    elif element[2].number == m:
+                        K[l][m] += (diff(N_k, x) * diff(N_j, x) + diff(N_k, y) + diff(N_j, y)) * element.area
+                    elif element[3].number == m:
+                        K[l][m] += (diff(N_k, x) * diff(N_k, x) + diff(N_k, y) + diff(N_k, y)) * element.area
                 else:
                     K[l][m] += 0
 
@@ -128,15 +130,15 @@ def main():
 
     # TODO
     for element in elements:
-        for vertex in element.vertexes():
+        for vertex in element.vertexes:
             if boundary_condition_1(vertex):
-                K[vertex.get_number()] = np.zeros(shape=((M + 1) ** 2))
-                K[vertex.get_number()][vertex.get_number()] = 1
-                f[vertex.get_number()] = 0
+                K[vertex.number] = np.zeros(shape=((M + 1) ** 2))
+                K[vertex.number][vertex.number] = 1
+                f[vertex.number] = 0
             elif boundary_condition_2(vertex):
-                K[vertex.get_number()] = np.zeros(shape=((M + 1) ** 2))
-                K[vertex.get_number()][vertex.get_number()] = 1
-                f[vertex.get_number()] = 1
+                K[vertex.number] = np.zeros(shape=((M + 1) ** 2))
+                K[vertex.number][vertex.number] = 1
+                f[vertex.number] = 1
 
     solution = np.linalg.solve(K, f)
 

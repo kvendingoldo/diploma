@@ -5,14 +5,13 @@ import numpy as np
 
 
 class Point(object):
+    @property
     def x(self):
         return self.point[0]
 
+    @property
     def y(self):
         return self.point[1]
-
-    def get_number(self):
-        return self.number
 
     def set_x(self, value):
         self.point[0] = value
@@ -31,9 +30,9 @@ class Point(object):
         if s is 0:
             if len(kwargs) > 0:
                 if ("number" in kwargs) or ("coordinates" in kwargs):
-                    number = kwargs.get("number", 0.0)
+                    number = kwargs.get("number", 0)
                     if number is not None:
-                        self.number = float(number)
+                        self.number = int(number)
                     self.point = np.zeros(shape=2)
                     self.point = kwargs.get("coordinates", ())
         elif s is 2:
@@ -49,7 +48,7 @@ class Point(object):
         return '(%g, %g)' % (self.point[0], self.point[1])
 
     def __repr__(self):
-        return 'point(%g, %g)' % (self.point[0], self.point[1])
+        return 'Point(%g, %g)' % (self.point[0], self.point[1])
 
     def __eq__(self, other):
-        return self.point[0] == other.x() and self.point[1] == other.y()
+        return self.point[0] == other.x and self.point[1] == other.y
