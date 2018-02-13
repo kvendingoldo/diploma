@@ -5,19 +5,27 @@ import numpy as np
 
 
 class Point(object):
+    """
+       The class Point represents a 2D point
+       Class attributes:    points
+       Instance attributes: x
+                            y
+                            number
+    """
+
     @property
     def x(self):
-        return self.point[0]
+        return self.points[0]
 
     @property
     def y(self):
-        return self.point[1]
+        return self.points[1]
 
     def set_x(self, value):
-        self.point[0] = value
+        self.points[0] = value
 
     def set_y(self, value):
-        self.point[1] = value
+        self.points[1] = value
 
     def set_number(self, value):
         if value >= 0:
@@ -26,6 +34,7 @@ class Point(object):
             raise ValueError()
 
     def __init__(self, *args, **kwargs):
+        self.points = np.zeros(shape=2)
         s = len(args)
         if s is 0:
             if len(kwargs) > 0:
@@ -33,22 +42,20 @@ class Point(object):
                     number = kwargs.get("number", 0)
                     if number is not None:
                         self.number = int(number)
-                    self.point = np.zeros(shape=2)
-                    self.point = kwargs.get("coordinates", ())
+                    self.points = kwargs.get("coordinates", ())
         elif s is 2:
-            self.point = np.zeros(shape=2)
-            self.point[0] = args[0]
-            self.point[1] = args[1]
-        else:
-            self.point = np.zeros(shape=2)
-            self.point[0] = 0
-            self.point[1] = 0
+            self.points[0] = args[0]
+            self.points[1] = args[1]
+        elif s is 3:
+            self.points[0] = args[0]
+            self.points[1] = args[1]
+            self.number = args[2]
 
     def __str__(self):
-        return '(%g, %g)' % (self.point[0], self.point[1])
+        return '(%g, %g)' % (self.x, self.y)
 
     def __repr__(self):
-        return 'Point(%g, %g)' % (self.point[0], self.point[1])
+        return 'Point(%g, %g)' % (self.x, self.y)
 
     def __eq__(self, other):
-        return self.point[0] == other.x and self.point[1] == other.y
+        return self.x == other.x and self.y == other.y

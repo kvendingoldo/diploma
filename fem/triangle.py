@@ -8,61 +8,64 @@ from point import Point
 
 
 class Triangle(object):
-    def __init__(self, point_1=None, point_2=None, point_3=None):
-        if point_1 is None:
-            point_1 = Point()
-        if point_2 is None:
-            point_2 = Point()
-        if point_3 is None:
-            point_3 = Point()
+    """
+       The class Triangle represents a 2D triangle
+       Class attributes:    points
+       Instance attributes: vertexes
+                            centroid
+                            area
 
+    """
+
+    def __init__(self, point_1=None, point_2=None, point_3=None):
+        self.points = list()
         if isinstance(point_1, Point):
-            self.point_1 = point_1
+            self.points.append(point_1)
         else:
             raise ValueError()
 
         if isinstance(point_2, Point):
-            self.point_2 = point_2
+            self.points.append(point_2)
         else:
             raise ValueError()
 
         if isinstance(point_3, Point):
-            self.point_3 = point_3
+            self.points.append(point_3)
         else:
             raise ValueError()
 
     def __getitem__(self, index):
         if index == 1:
-            return self.point_1
+            return self.points[0]
         elif index == 2:
-            return self.point_2
+            return self.points[1]
         elif index == 3:
-            return self.point_3
+            return self.points[2]
 
     def __setitem__(self, index, value):
         if isinstance(value, Point):
             if index == 1:
-                self.point_1 = value
+                self.points[0] = value
             elif index == 2:
-                self.point_2 = value
+                self.points[1] = value
             elif index == 3:
-                self.point_3 = value
+                self.points[2] = value
         else:
             raise TypeError()
 
     @property
     def vertexes(self):
-        return [self.point_1, self.point_2, self.point_3]
+        return self.points
 
     @staticmethod
     def centroid(triangle):
-        return Point(((triangle[1].x + triangle[2].x + triangle[3].x)/3),
-                     ((triangle[1].y + triangle[2].y + triangle[3].y)/3))
+        return Point(((triangle[1].x + triangle[2].x + triangle[3].x) / 3),
+                     ((triangle[1].y + triangle[2].y + triangle[3].y) / 3))
 
     @property
     def centroid(self):
-        return Point(((self[1].x + self[2].x + self[3].x)/3),
-                     ((self[1].y + self[2].y + self[3].y)/3))
+        return Point(((self[1].x + self[2].x + self[3].x) / 3),
+                     ((self[1].y + self[2].y + self[3].y) / 3))
 
     def get_basic_functions(self):
         A = [[self[1].x, self[1].y, 1],
@@ -86,20 +89,20 @@ class Triangle(object):
         return basic_i, basic_j, basic_k
 
     def __str__(self):
-        return '((%g, %g), (%g, %g), (%g, %g))' % (self.point_1.x, self.point_1.y,
-                                                   self.point_2.x, self.point_2.y,
-                                                   self.point_3.x, self.point_3.y)
+        return '((%g, %g), (%g, %g), (%g, %g))' % (self.points[0].x, self.points[0].y,
+                                                   self.points[1].x, self.points[1].y,
+                                                   self.points[2].x, self.points[2].y)
 
     def __repr__(self):
-        return 'Triangle((%g, %g), (%g, %g), (%g, %g))' % (self.point_1.x, self.point_1.y,
-                                                           self.point_2.x, self.point_2.y,
-                                                           self.point_3.x, self.point_3.y)
+        return 'Triangle((%g, %g), (%g, %g), (%g, %g))' % (self.points[0].x, self.points[0].y,
+                                                           self.points[1].x, self.points[1].y,
+                                                           self.points[2].x, self.points[2].y)
 
     @property
     def area(self):
-        a = np.sqrt((self[2].y - self[3].y)**2 + (self[2].x - self[3].x)**2)
-        b = np.sqrt((self[1].y - self[3].y)**2 + (self[1].x - self[3].x)**2)
-        c = np.sqrt((self[1].y - self[2].y)**2 + (self[1].x - self[2].x)**2)
+        a = np.sqrt((self[2].y - self[3].y) ** 2 + (self[2].x - self[3].x) ** 2)
+        b = np.sqrt((self[1].y - self[3].y) ** 2 + (self[1].x - self[3].x) ** 2)
+        c = np.sqrt((self[1].y - self[2].y) ** 2 + (self[1].x - self[2].x) ** 2)
         p = (a + b + c) / 2.0
         return np.sqrt(p * (p - a) * (p - b) * (p - c))
 

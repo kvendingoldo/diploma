@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
+import matplotlib
+
+matplotlib.use('TkAgg')
+
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
 import numpy as np
@@ -10,10 +14,9 @@ from sympy import symbols, diff, Float
 from point import Point
 from triangle import Triangle
 
-
-M = 2
-A = 0
-B = 0
+M = 3
+A = 1
+B = 1
 C = 1
 
 
@@ -24,9 +27,9 @@ def mesh():
 
     triangulation = tri.Triangulation(x, y)
     triangles = triangulation.triangles
-    #triangles_quantity = triangles.shape[0]
+    # triangles_quantity = triangles.shape[0]
     vertexes = np.vstack((triangulation.x, triangulation.y)).T
-    #triangles_vertexes_quantity = vertexes.shape[0]
+    # triangles_vertexes_quantity = vertexes.shape[0]
 
     matrix_of_triangles = list()
 
@@ -39,8 +42,8 @@ def mesh():
         p3.set_number(triangle[2])
         matrix_of_triangles.append(Triangle(p1, p2, p3))
 
-    #plt.triplot(triangulation)
-    #plt.show()
+    # plt.triplot(triangulation)
+    # plt.show()
 
     return matrix_of_triangles
 
@@ -89,11 +92,11 @@ def main():
         for l in range(0, (M + 1) ** 2):
 
             f[l] = 0
-            #if element[0][0] == l:
+            # if element[0][0] == l:
             #    f[l] = integrate_by_triangle(C * N_i, element)
-            #elif element[1][0] == l:
+            # elif element[1][0] == l:
             #    f[l] = integrate_by_triangle(C * N_j, element)
-            #elif element[2][0] == l:
+            # elif element[2][0] == l:
             #    f[l] = integrate_by_triangle(C * N_k, element)
 
             for m in range(0, (M + 1) ** 2):
@@ -127,7 +130,6 @@ def main():
     print(np.linalg.det(K))
     print(K)
 
-
     # TODO
     for element in elements:
         for vertex in element.vertexes:
@@ -156,8 +158,8 @@ def main():
 
     fig = plt.figure()
     ax = fig.gca()
-    #ax.set_xticks(np.arange(0.1, M, 0.1))
-    #ax.set_yticks(np.arange(0.1, M, 0.1))
+    # ax.set_xticks(np.arange(0.1, M, 0.1))
+    # ax.set_yticks(np.arange(0.1, M, 0.1))
     plt.grid()
 
     # Resample data grid by a factor of 3 using cubic spline interpolation
