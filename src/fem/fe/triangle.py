@@ -4,7 +4,7 @@
 import numpy as np
 from sympy import symbols
 
-from point import Point
+from geometry.point import Point
 
 
 class Triangle(object):
@@ -17,22 +17,21 @@ class Triangle(object):
 
     """
 
-    def __init__(self, point_1=None, point_2=None, point_3=None):
+    def __init__(self, *args, **kwargs):
         self.points = list()
-        if isinstance(point_1, Point):
-            self.points.append(point_1)
-        else:
-            raise ValueError()
+        self.is_boundary = False
 
-        if isinstance(point_2, Point):
-            self.points.append(point_2)
+        s = len(args)
+        if s is 3:
+            for arg in args:
+                if isinstance(arg, Point):
+                    self.points.append(arg)
+                else:
+                    raise ValueError()
         else:
-            raise ValueError()
-
-        if isinstance(point_3, Point):
-            self.points.append(point_3)
-        else:
-            raise ValueError()
+            self.points.append(Point())
+            self.points.append(Point())
+            self.points.append(Point())
 
     def __getitem__(self, index):
         if index == 1:

@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-import matplotlib
-
-matplotlib.use('TkAgg')
-
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
 import numpy as np
 
 from sympy import symbols, diff, Float
 
-from point import Point
-from triangle import Triangle
+from geometry.point import Point
+from fe.triangle import Triangle
+
 
 M = 3
 A = 1
