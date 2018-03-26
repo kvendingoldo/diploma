@@ -53,3 +53,6 @@ def read(file_name):
 
 def json2poly():
     return NotImplementedError()
+
+def polygon2poly():
+    return NotImplementedError()

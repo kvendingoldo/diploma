@@ -6,3 +6,4 @@ shapely
 descartes
 shapely
 triangle
+geopandas

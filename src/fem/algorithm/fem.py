@@ -11,41 +11,9 @@ from geometry.point import Point
 from fe.triangle import Triangle
 
 
-M = 3
-A = 1
-B = 1
-C = 1
-
-
-def mesh():
-    x, y = np.meshgrid(np.arange(M + 1), np.arange(M + 1))
-    x = x.flatten()
-    y = y.flatten()
-
-    triangulation = tri.Triangulation(x, y)
-    triangles = triangulation.triangles
-    # triangles_quantity = triangles.shape[0]
-    vertexes = np.vstack((triangulation.x, triangulation.y)).T
-    # triangles_vertexes_quantity = vertexes.shape[0]
-
-    matrix_of_triangles = list()
-
-    for triangle in triangles:
-        p1 = Point(vertexes[triangle[0]][0], vertexes[triangle[0]][1])
-        p1.set_number(triangle[0])
-        p2 = Point(vertexes[triangle[1]][0], vertexes[triangle[1]][1])
-        p2.set_number(triangle[1])
-        p3 = Point(vertexes[triangle[2]][0], vertexes[triangle[2]][1])
-        p3.set_number(triangle[2])
-        matrix_of_triangles.append(Triangle(p1, p2, p3))
-
-    # plt.triplot(triangulation)
-    # plt.show()
-
-    return matrix_of_triangles
-
 
 def boundary_condition_1(vertex):
+    # TODO: Заменим на первое граничное условие, эта функция пока не актуальна
     if vertex.y == 0 or vertex.x == 0:
         return True
     else:
@@ -53,6 +21,7 @@ def boundary_condition_1(vertex):
 
 
 def boundary_condition_2(vertex):
+    # TODO: Заменим на второе граничное условие, эта функция пока не актуальна
     if vertex.y == M or vertex.x == M:
         return True
     else:
@@ -60,7 +29,7 @@ def boundary_condition_2(vertex):
 
 
 def integrate_by_triangle(func, triangle):
-    # TODO: incorrect function
+    # TODO: нужно ли нам вообще интегрирование по треугольнику?
     x, y = symbols('x y')
     s = trianglelement.area
 
@@ -74,55 +43,30 @@ def integrate_by_triangle(func, triangle):
 
 
 def main():
-    K = np.zeros(shape=((M + 1) ** 2, (M + 1) ** 2))
 
+    # какой размер у матрицы?
+    K = np.zeros(shape=((M + 1) ** 2, (M + 1) ** 2))
     f = np.zeros(shape=((M + 1) ** 2))
 
+    # получим тут сетку
     elements = mesh()
 
     for element in elements:
 
         N_i, N_j, N_k = element.get_basic_functions()
 
-        x, y = symbols('x y')
 
-        for l in range(0, (M + 1) ** 2):
+        # все функции зависят от (x1, x2, t)
 
-            f[l] = 0
-            # if element[0][0] == l:
-            #    f[l] = integrate_by_triangle(C * N_i, element)
-            # elif element[1][0] == l:
-            #    f[l] = integrate_by_triangle(C * N_j, element)
-            # elif element[2][0] == l:
-            #    f[l] = integrate_by_triangle(C * N_k, element)
+        x, y, t = symbols('x y t')
 
-            for m in range(0, (M + 1) ** 2):
+        q_1 = a_11(t) * N_i + a_12(t) * N_j + a_13(t) * N_k
+        q_2 = a_21(t) * N_i + a_22(t) * N_j + a_23(t) * N_k
+        H = a_31(t) * N_i + a_32(t) * N_j + a_33(t) * N_k
 
-                if element[1].number == l:
-                    if element[1].number == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_i, x) + diff(N_i, y) + diff(N_i, y)) * element.area
-                    elif element[2].number == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_j, x) + diff(N_i, y) + diff(N_j, y)) * element.area
-                    elif element[3].number == m:
-                        K[l][m] += (diff(N_i, x) * diff(N_k, x) + diff(N_i, y) + diff(N_k, y)) * element.area
+        nit_state = [1, 1]
 
-                elif element[2].number == l:
-                    if element[1].number == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_i, x) + diff(N_j, y) + diff(N_i, y)) * element.area
-                    elif element[2].number == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_j, x) + diff(N_j, y) + diff(N_j, y)) * element.area
-                    elif element[3].number == m:
-                        K[l][m] += (diff(N_j, x) * diff(N_k, x) + diff(N_j, y) + diff(N_k, y)) * element.area
 
-                elif element[3].number == l:
-                    if element[1].number == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_i, x) + diff(N_k, y) + diff(N_i, y)) * element.area
-                    elif element[2].number == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_j, x) + diff(N_k, y) + diff(N_j, y)) * element.area
-                    elif element[3].number == m:
-                        K[l][m] += (diff(N_k, x) * diff(N_k, x) + diff(N_k, y) + diff(N_k, y)) * element.area
-                else:
-                    K[l][m] += 0
 
     print(np.linalg.det(K))
     print(K)

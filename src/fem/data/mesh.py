@@ -10,7 +10,7 @@ from geometry.point import Point
 from data.poly import read
 
 
-DEFAULT_GRID = "pq20a.01D"
+DEFAULT_GRID = "pqa.001D"
 
 
 class Mesh(object):

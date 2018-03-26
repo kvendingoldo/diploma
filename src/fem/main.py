@@ -5,15 +5,15 @@ from data import mesh as m
 
 
 
-#get_data()
-
-#json2poly()
-
 mesh = m.Mesh()
 
-mesh.generate('/Users/ashraov/projects/study/diploma/resources/tmp.poly')
+mesh.generate('/Users/ashraov/projects/study/diploma/resources/svetloyar.poly')
 
-print(mesh.splitting)
+print(mesh.splitting[0])
+
+
+print(len(mesh.splitting))
+
 
 mesh.show()
 
