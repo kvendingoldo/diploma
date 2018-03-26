@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
-with open('/Users/ashraov/projects/study/doc/resources/baikal.json', 'r', encoding='utf8') as data_file:
+with open('/Users/ashraov/projects/study/diploma/resources/baikal.json', 'r', encoding='utf8') as data_file:
     data = json.load(data_file)
 
 points = data['features'][0]['geometry']['coordinates'][0]
