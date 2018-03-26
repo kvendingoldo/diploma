@@ -5,8 +5,8 @@ from setuptools import setup
 
 setup(name='fem',
       version='0.1',
-      description='FEM diploma project',
-      url='https://github.com/kvendingoldo/diploma',
+      description='FEM doc project',
+      url='https://github.com/kvendingoldo/doc',
       author='Alexander Sharov',
       author_email='kvendingoldo@gmail.com',
       license='MIT',

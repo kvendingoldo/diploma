@@ -7,7 +7,7 @@ from data import mesh as m
 
 mesh = m.Mesh()
 
-mesh.generate('/Users/ashraov/projects/study/diploma/resources/svetloyar.poly')
+mesh.generate('/Users/ashraov/projects/study/doc/resources/svetloyar.poly')
 
 print(mesh.splitting[0])
 
