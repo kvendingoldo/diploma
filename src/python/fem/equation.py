@@ -17,15 +17,15 @@ rho, rho_a, gamma, theta = symbols('rho rho_a gamma theta')
 f, W, g, c, Pa, h = symbols('f W g c Pa h')
 
 # misc
-e = Symbol("e")
+k = Symbol("k")
 M = Symbol("M")
 
 # функции
 #H, q1, q2 = symbols('H q1 q2')
 
-q1 = Sum(a_k(t) * N_k(x1, x2), (e, 1, M))
-q2 = Sum(a_mk(t) * N_k(x1, x2), (e, 1, M))
-H = Sum(a_2mk(t) * N_k(x1, x2), (e, 1, M))
+q1 = Sum(a_k(t) * N_k(x1, x2), (k, 1, M))
+q2 = Sum(a_mk(t) * N_k(x1, x2), (k, 1, M))
+H = Sum(a_2mk(t) * N_k(x1, x2), (k, 1, M))
 
 # уравнения
 eq1 = Derivative(q1, x1) + Derivative(q2, x2) + Derivative(rho * H, t)
