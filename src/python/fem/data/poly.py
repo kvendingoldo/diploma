@@ -4,7 +4,24 @@
 from numpy import array
 
 
-def read(file_name):
+def read_pts(file_name):
+    file = open(file_name, 'r')
+
+    lines = file.readlines()
+    file.close()
+    lines = [x.strip('\n').split() for x in lines]
+
+    vertices = list()
+    N_vertices, dimension, _, _ = [int(x) for x in lines[0]]
+    for k in range(N_vertices):
+        label, x, y = [items for items in lines[k+1]]
+        vertices.append([float(x), float(y)])
+    output = array(vertices)
+
+    return output
+
+
+def read_tri(file_name):
     """
     Simple poly-file reader, that creates a python dictionary
     with information about vertices, edges and holes.
@@ -23,13 +40,13 @@ def read(file_name):
     lines = [x.strip('\n').split() for x in lines]
 
     # Store vertices
-    vertices= []
+    vertices = list()
     N_vertices, dimension, attr, bdry_markers = [int(x) for x in lines[0]]
     # We assume attr = bdrt_markers = 0
     for k in range(N_vertices):
         label, x, y = [items for items in lines[k+1]]
         vertices.append([float(x), float(y)])
-    output['vertices']=array(vertices)
+    output['vertices'] = array(vertices)
 
     # Store segments
     segments = []

@@ -5,9 +5,11 @@ import matplotlib.pyplot as plt
 
 from triangle import triangulate, plot as tplot
 
+from numpy import array
 from fe.triangle import Triangle
 from geometry.point import Point
-from data.poly import read
+from data.poly import read_tri, read_pts
+from data.plot import plot as dplot
 
 
 DEFAULT_GRID = "pqas.001D"
@@ -22,15 +24,16 @@ class Mesh(object):
                             splitting
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, file):
+        self.raw_file = file
         self.raw_splitting = None
         self.splitting = list()
 
-    def generate_raw(self, poly_file, step=DEFAULT_GRID):
-        self.raw_splitting = triangulate(read(poly_file), step)
+    def generate_raw(self, step=DEFAULT_GRID):
+        self.raw_splitting = triangulate(read_tri(self.raw_file), step)
 
-    def generate(self, poly_file, step=DEFAULT_GRID):
-        self.generate_raw(poly_file, step)
+    def generate(self, step=DEFAULT_GRID):
+        self.generate_raw(step)
 
         for triangle in self.raw_splitting['triangles']:
             tri = Triangle(*[Point(p[0], p[1]) for p in [self.raw_splitting['vertices'][v] for v in triangle]])
@@ -42,3 +45,10 @@ class Mesh(object):
         ax = plt.subplot(111, aspect='equal')
         tplot.plot(ax, **self.raw_splitting)
         plt.show()
+
+    def draw_contour(self):
+        plt.figure(figsize=(8, 8))
+        ax = plt.subplot(111, aspect='equal')
+        dplot(ax, **self.raw_splitting)
+        plt.show()
+
