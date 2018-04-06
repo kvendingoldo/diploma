@@ -2,8 +2,6 @@
 out/
 target/
 tmp/
-__pycache__
-
 
 ### Extensions
 *.ids
@@ -18,7 +16,11 @@ __pycache__
 .idea
 .DS_Store
 *-overriding.properties
+
+# Python
 *.pyc
+*.ipynb_checkpoints*
+__pycache__
 
 
 ### Files
