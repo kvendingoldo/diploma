@@ -13,26 +13,24 @@ tmp/
 *.pem
 *.p12
 *.iml
+
+### JetBrains
 .idea
 .DS_Store
-*-overriding.properties
 
-# Python
+### Python
 *.pyc
 *.ipynb_checkpoints*
 __pycache__
 
-
 ### Files
 cookies.*
-
 
 # Temp
 *tmp*
 
-
 # Tex
-.texpadtmp
-.pdf
-titul.*
-task.*
+*.texpadtmp
+*.pdf
+*titul.*
+*task.*

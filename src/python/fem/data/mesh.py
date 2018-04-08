@@ -5,14 +5,12 @@ import matplotlib.pyplot as plt
 
 from triangle import triangulate, plot as tplot
 
-from numpy import array
 from fe.triangle import Triangle
 from geometry.point import Point
 from data.poly import read_tri, read_pts
 from data.plot import plot as dplot
 
-
-DEFAULT_GRID = "pqas.001D"
+DEFAULT_GRID = 'pqas.001D'
 
 
 class Mesh(object):
@@ -60,4 +58,3 @@ class Mesh(object):
         ax = plt.subplot(111, aspect='equal')
         dplot(ax, **self.raw_splitting)
         plt.show()
-

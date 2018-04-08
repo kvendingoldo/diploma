@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='fem',
-      version='0.1',
+      version='0.8',
       description='FEM diploma project',
       url='https://github.com/kvendingoldo/diploma',
       author='Alexander Sharov',

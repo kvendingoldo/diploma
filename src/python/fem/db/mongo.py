@@ -15,7 +15,6 @@ def connect(url='mongodb://localhost:27017/', db_name='results_of_experiments', 
 
 
 def write(images, solution_vector, mesh_type, mesh_step, time, quantity_of_fe, filename, collection=None):
-
     bimages = list()
     for image in images:
         bimages.append(Binary(serialize(image)))
@@ -40,6 +39,3 @@ def write(images, solution_vector, mesh_type, mesh_step, time, quantity_of_fe, f
 
 def read(date, collection=None):
     return collection.find_one({"date": date})
-
-
-

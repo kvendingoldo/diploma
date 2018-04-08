@@ -11,3 +11,4 @@ jupyter
 ipython
 pickle
 bson
+pillow
