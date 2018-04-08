@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# @Author: Alexander Sharov
+
 import json
 from numpy import pi, linspace, sin, cos
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# @Author: Alexander Sharov
 # This is modification of plot module from triangle package
 
 def plot(ax, **kw):
