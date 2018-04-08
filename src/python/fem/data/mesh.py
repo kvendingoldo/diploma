@@ -36,7 +36,12 @@ class Mesh(object):
         self.generate_raw(step)
 
         for triangle in self.raw_splitting['triangles']:
-            tri = Triangle(*[Point(p[0], p[1]) for p in [self.raw_splitting['vertices'][v] for v in triangle]])
+            points = list()
+            for v in triangle:
+                point = Point(*self.raw_splitting['vertices'][v])
+                point.number = v
+                points.append(point)
+            tri = Triangle(*points)
             tri.is_boundary = (sum([self.raw_splitting['vertex_markers'][v][0] for v in triangle]) >= 1)
             self.splitting.append(tri)
 
@@ -45,6 +50,10 @@ class Mesh(object):
         ax = plt.subplot(111, aspect='equal')
         tplot.plot(ax, **self.raw_splitting)
         plt.show()
+
+    @property
+    def quantity(self):
+        return len(self.splitting)
 
     def draw_contour(self):
         plt.figure(figsize=(8, 8))

@@ -21,20 +21,25 @@ class Point(object):
     def y(self):
         return self.points[1]
 
+    @property
+    def number(self):
+        return self.__number
+
+    @number.setter
+    def number(self, value):
+        if value >= 0:
+            self.__number = value
+        else:
+            raise ValueError()
+
     def set_x(self, value):
         self.points[0] = value
 
     def set_y(self, value):
         self.points[1] = value
 
-    def set_number(self, value):
-        if value >= 0:
-            self.number = value
-        else:
-            raise ValueError()
-
     def __init__(self, *args, **kwargs):
-        self.points = np.zeros(shape=2)
+        self.points = list()
         s = len(args)
         if s is 0:
             if len(kwargs) > 0:
@@ -44,11 +49,11 @@ class Point(object):
                         self.number = int(number)
                     self.points = kwargs.get("coordinates", ())
         elif s is 2:
-            self.points[0] = args[0]
-            self.points[1] = args[1]
+            self.points.append(args[0])
+            self.points.append(args[1])
         elif s is 3:
-            self.points[0] = args[0]
-            self.points[1] = args[1]
+            self.points.append(args[0])
+            self.points.append(args[1])
             self.number = args[2]
 
     def __str__(self):

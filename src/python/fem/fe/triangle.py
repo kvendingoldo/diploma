@@ -71,19 +71,19 @@ class Triangle(object):
              [self[2].x, self[2].y, 1],
              [self[3].x, self[3].y, 1]]
 
-        x, y = symbols('x y')
+        x1, x2 = symbols('x1 x2')
 
         f = [1, 0, 0]
         solution = np.linalg.solve(A, f)
-        basic_i = solution[0] * x + solution[1] * y + solution[2]
+        basic_i = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         f = [0, 1, 0]
         solution = np.linalg.solve(A, f)
-        basic_j = solution[0] * x + solution[1] * y + solution[2]
+        basic_j = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         f = [0, 0, 1]
         solution = np.linalg.solve(A, f)
-        basic_k = solution[0] * x + solution[1] * y + solution[2]
+        basic_k = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         return basic_i, basic_j, basic_k
 
