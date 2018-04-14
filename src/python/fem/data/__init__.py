@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-__all__ = ['generator', 'mesh', 'plot', 'poly']
+__all__ = ['mesh', 'plot', 'poly']

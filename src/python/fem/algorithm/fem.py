@@ -44,8 +44,9 @@ def solve(mesh):
     M = mesh.quantity
 
     def system(vars, time):
+        print('time=%s' % time)
         elements = mesh.splitting
-        #vars = ones(3 * M, int)
+        # vars = ones(3 * M, int)
 
         sys = np.zeros(shape=(3 * M))
 
@@ -58,15 +59,15 @@ def solve(mesh):
                 N_k = choise(element, k)
                 for l in range(0, M):
                     W_l = choise(element, l)
-                    #print(W_l)
+                    # print(W_l)
                     weight_functions += W_l
 
                     F_eq1 += \
                         - element.integrate(W_l * diff(N_k, x1)) * vars[k] \
                         - element.integrate(W_l * diff(N_k, x2)) * vars[M + k]
                     F_eq2 += \
-                        - element.integrate(P_a * W_l * diff(N_k, x1)) * vars[2 * M + k]
-                    #+ element.integrate(-W ** 2 * gamma ** 2 * rho_a * W_l)
+                        - element.integrate(P_a * W_l * diff(N_k, x1)) * vars[2 * M + k] \
+                        + element.integrate(-W ** 2 * gamma ** 2 * rho_a * W_l + 0 * N_k)
 
                     F_eq3 += \
                         -element.integrate(P_a * W_l * diff(N_k, x2)) * vars[k]
@@ -76,23 +77,31 @@ def solve(mesh):
                 coeff_of_drvt_eq3 = element.integrate(weight_functions * N_k)
 
                 if coeff_of_drvt_eq2 != 0:
-                    print(F_eq2)
+                    #print(F_eq2)
                     sys[k] += F_eq2 / coeff_of_drvt_eq2
-                        #[x / coeff_of_drvt_eq2 for x in F_eq2]
+                    # [x / coeff_of_drvt_eq2 for x in F_eq2]
 
                 if coeff_of_drvt_eq3 != 0:
                     sys[M + k] += F_eq3 / coeff_of_drvt_eq3
-                        #[x / coeff_of_drvt_eq3 for x in F_eq3]
+                    # [x / coeff_of_drvt_eq3 for x in F_eq3]
 
                 if coeff_of_drvt_eq1 != 0:
                     sys[2 * M + k] += F_eq1 / coeff_of_drvt_eq1
-                        #[x / coeff_of_drvt_eq1 for x in F_eq1]
+                    # [x / coeff_of_drvt_eq1 for x in F_eq1]
 
-        print(sys)
+        # print('sys=%s' % sys)
         return sys
 
-    t = np.linspace(0, 10, 70)
-    y0 = np.zeros(shape=(3 * M))
-    a1, a2, a3, a4, a5, a6 = odeint(system, y0, t, args=(), full_output=False).T
+    t = np.linspace(0, 2, 20)
+    y0 = np.array([0, 0, 0, 0, 0, 0])
+    sol = odeint(system, y0, t)
+    y1 = sol[:, 0]  # вектор значений решения
+    y2 = sol[:, 1]  # вектор значений производной
+    #print(y1)
 
-    print(a1, a2, a3, a4, a5, a6 )
+    # print(a1, a2, a3, a4, a5, a6)
+
+    plt.figure(figsize=(6, 4), dpi=300)
+    plt.plot(t, y1)
+    plt.show()
+    # t, y, y[:, 0], y[:, 1]

@@ -39,7 +39,7 @@ def read_tri(file_name):
     file.close()
     lines = [x.strip('\n').split() for x in lines]
 
-    # Store vertices
+    # store vertices
     vertices = list()
     N_vertices, dimension, attr, bdry_markers = [int(x) for x in lines[0]]
     # We assume attr = bdrt_markers = 0
@@ -48,7 +48,7 @@ def read_tri(file_name):
         vertices.append([float(x), float(y)])
     output['vertices'] = array(vertices)
 
-    # Store segments
+    # store segments
     segments = []
     N_segments, bdry_markers = [int(x) for x in lines[N_vertices + 1]]
     for k in range(N_segments):

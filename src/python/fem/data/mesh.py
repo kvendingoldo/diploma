@@ -15,11 +15,7 @@ DEFAULT_GRID = 'pqas.001D'
 
 class Mesh(object):
     """
-       The class Mesh represents a 2D mesh
-       Class attributes:    raw_splitting
-                            splitting
-       Instance attributes: raw_splitting
-                            splitting
+    The class Mesh represents a 2D mesh
     """
 
     def __init__(self, file):

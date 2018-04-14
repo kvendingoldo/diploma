@@ -10,12 +10,7 @@ from geometry.point import Point
 
 class Triangle(object):
     """
-       The class Triangle represents a 2D triangle
-       Class attributes:    points
-       Instance attributes: vertexes
-                            centroid
-                            area
-
+    The class Triangle represents a 2D triangle
     """
 
     def __init__(self, *args, **kwargs):
@@ -134,9 +129,12 @@ class Triangle(object):
         # (x_1, x_2) is analogue of (x,y)
         x_1 = (1 - u) * x1 + u * ((1 - v) * x2 + v * x3)
         x_2 = (1 - u) * y1 + u * ((1 - v) * y2 + v * y3)
-        print('func=%s' % str(func))
-        func = func.subs({symbols('x_1'): x_1,
-                          symbols('x_2'): x_2})
+
+        #print('func=%s' % str(func))
+
+        if func != 0:
+            func = func.subs({symbols('x_1'): x_1,
+                              symbols('x_2'): x_2})
 
         func *= d_j(x_1, x_2)
         return sp_integrate(func, (v, 0, 1), (u, 0, 1)).doit()

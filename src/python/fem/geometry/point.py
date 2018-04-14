@@ -4,11 +4,7 @@
 
 class Point(object):
     """
-       The class Point represents a 2D point
-       Class attributes:    points
-       Instance attributes: x
-                            y
-                            number
+    The class Point represents a 2D point
     """
 
     @property
