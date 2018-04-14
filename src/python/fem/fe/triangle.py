@@ -72,7 +72,7 @@ class Triangle(object):
              [self[2].x, self[2].y, 1],
              [self[3].x, self[3].y, 1]]
 
-        x1, x2 = symbols('x1 x2')
+        x1, x2 = symbols('x_1 x_2')
 
         f = [1, 0, 0]
         solution = np.linalg.solve(A, f)
@@ -114,6 +114,7 @@ class Triangle(object):
 
     def integrate(self, func):
         def d_j(x1, x2):
+            """Jacobian scaling factor"""
             u, v = symbols('u v')
 
             det_j = \
@@ -133,8 +134,9 @@ class Triangle(object):
         # (x_1, x_2) is analogue of (x,y)
         x_1 = (1 - u) * x1 + u * ((1 - v) * x2 + v * x3)
         x_2 = (1 - u) * y1 + u * ((1 - v) * y2 + v * y3)
+        print('func=%s' % str(func))
         func = func.subs({symbols('x_1'): x_1,
-                                  symbols('x_2'): x_2})
+                          symbols('x_2'): x_2})
 
         func *= d_j(x_1, x_2)
         return sp_integrate(func, (v, 0, 1), (u, 0, 1)).doit()
