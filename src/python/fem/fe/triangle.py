@@ -2,7 +2,8 @@
 # @Author: Alexander Sharov
 
 import numpy as np
-from sympy import symbols
+from sympy import symbols, diff, integrate as sp_integrate
+from sympy.parsing.sympy_parser import parse_expr
 
 from geometry.point import Point
 
@@ -110,3 +111,30 @@ class Triangle(object):
         return Triangle((np.random.uniform(0, 1000), np.random.uniform(0, 1000)),
                         (np.random.uniform(0, 1000), np.random.uniform(0, 1000)),
                         (np.random.uniform(0, 1000), np.random.uniform(0, 1000)))
+
+    def integrate(self, func):
+        def d_j(x1, x2):
+            u, v = symbols('u v')
+
+            det_j = \
+                + diff(x1, u) * diff(x2, v) \
+                - diff(x1, v) * diff(x2, u)
+
+            abs_det_j = parse_expr(str(det_j).replace('-', '+'), evaluate=False)
+
+            return abs_det_j
+
+        x1, y1 = self[1].x, self[1].y
+        x2, y2 = self[2].x, self[2].y
+        x3, y3 = self[3].x, self[3].y
+
+        u, v = symbols('u v')
+
+        # (x_1, x_2) is analogue of (x,y)
+        x_1 = (1 - u) * x1 + u * ((1 - v) * x2 + v * x3)
+        x_2 = (1 - u) * y1 + u * ((1 - v) * y2 + v * y3)
+        func = func.subs({symbols('x_1'): x_1,
+                                  symbols('x_2'): x_2})
+
+        func *= d_j(x_1, x_2)
+        return sp_integrate(func, (v, 0, 1), (u, 0, 1)).doit()

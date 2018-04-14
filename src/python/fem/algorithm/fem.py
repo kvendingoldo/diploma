@@ -9,6 +9,11 @@ from sympy import *
 from geometry.point import Point
 from fe.triangle import Triangle
 
+# constants
+rho = 1
+x1, x2 = symbols('x1 x2')
+
+
 
 def integrate_by_triangle(func, triangle):
     x, y = symbols('x y')
@@ -23,35 +28,54 @@ def integrate_by_triangle(func, triangle):
     return Float(integral_s + integral_x + integral_y)
 
 
-def calc(mesh):
+def choise(element, number):
+    N_i, N_j, N_k = element.get_basic_functions()
+    if element[1].number == number:
+        return N_i
+    elif element[2].number == number:
+        return N_j
+    elif element[3].number == number:
+        return N_k
+    else:
+        return 0
 
-    x1, x2, t = var('x1 x2 t', real=True)
-    rho, rho_a, gamma, theta = symbols('rho rho_a gamma theta')
-    f, W, g, c, Pa, h = symbols('f W g c Pa h')
-    H, q1, q2 = symbols('H q1 q2')
-    a_1, a_2 = symbols('a_1, a_2')
 
-    eq1 = Derivative(q1, x1) + Derivative(q2, x2) + Derivative(rho * H, t)
-    #eq2 = Derivative(q1, t) - (gamma**2 * rho_a * W**2 * cos(theta)) - Pa * Derivative(H, x1) - (rho * g * H) * Derivative(h, x1)
-    #eq3 = Derivative(q2, t) - (gamma**2 * rho_a * W**2 * sin(theta)) - Pa * Derivative(H, x2) - (rho * g * H) * Derivative(h, x2)
-
+def system(vars, time, mesh):
     elements = mesh.splitting
     M = mesh.quantity
-    K = np.zeros(shape=((3 * M), (3 * M)))
-    f = np.zeros(shape=((3 * M)))
 
-    sum = 0
+    sys = list()
+
 
     for element in elements:
+        #N_i, N_j, N_k = element.get_basic_functions()
+        for k in range(0, ((3 * M)-1)):
+            coeff_of_derivative = 0
+            B = 0
+            if k < M:
+                pass
+                # eq2
+            elif k >= M and  k < 2 * M:
+                pass
+                # eq3
+            else:
+                # eq1
+                for l in range(0, ((3 * M)-1)):
+                    W_l = choise(element, l+1)
+                    N_k = choise(element, k+1)
+                    coeff_of_derivative += W_l
+                    #B += -(integrate_by_triangle(W_l * diff(N_k, x1)) * vars[k-1] +
+                    #     integrate_by_triangle(W_l * diff(N_k, x2)) * vars[M+k-1])
+                print(coeff_of_derivative)
+                print()
+                #coef = integrate_by_triangle(rho * coef * N_k, element)
+                #sys_k
+                #sys += B / coef
+    return sys
 
-        N_i, N_j, N_k = element.get_basic_functions()
 
-        print(N_i)
-        print(N_j)
-        print(N_k)
 
-        #x, y, t = symbols('x y t')
-        #q_1 = a_11(t) * N_i + a_12(t) * N_j + a_13(t) * N_k
-        #q_2 = a_21(t) * N_i + a_22(t) * N_j + a_23(t) * N_k
-        #H = a_31(t) * N_i + a_32(t) * N_j + a_33(t) * N_k
+
+
+
 
