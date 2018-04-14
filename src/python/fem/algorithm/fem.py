@@ -12,11 +12,12 @@ from geometry.point import Point
 from fe.triangle import Triangle
 
 # constants
-rho = 1
-P_a = 1
+rho = 1000
+P_a = 10 ** 5
 W = 1
-gamma = 1
-rho_a = 1
+gamma = 0.002
+g = 9.832
+rho_a = 1.2754
 x1, x2 = symbols('x_1 x_2')
 
 
@@ -64,10 +65,13 @@ def solve(mesh):
 
                     F_eq1 += \
                         - element.integrate(W_l * diff(N_k, x1)) * vars[k] \
-                        - element.integrate(W_l * diff(N_k, x2)) * vars[M + k]
+                        - element.integrate(W_l * diff(N_k, x2)) * vars[M + k] \
+                        + element.integrate(diff(g * rho / 2 * N_k, x2) * W_l * N_k) * vars[2 * M + k] ** 2
+
                     F_eq2 += \
                         - element.integrate(P_a * W_l * diff(N_k, x1)) * vars[2 * M + k] \
-                        + element.integrate(-W ** 2 * gamma ** 2 * rho_a * W_l + 0 * N_k)
+                        + element.integrate(-W ** 2 * gamma ** 2 * rho_a * W_l) \
+                        + element.integrate(diff(g * rho / 2 * N_k, x1) * W_l * N_k) * vars[2 * M + k] ** 2
 
                     F_eq3 += \
                         -element.integrate(P_a * W_l * diff(N_k, x2)) * vars[k]
@@ -77,7 +81,7 @@ def solve(mesh):
                 coeff_of_drvt_eq3 = element.integrate(weight_functions * N_k)
 
                 if coeff_of_drvt_eq2 != 0:
-                    #print(F_eq2)
+                    # print(F_eq2)
                     sys[k] += F_eq2 / coeff_of_drvt_eq2
                     # [x / coeff_of_drvt_eq2 for x in F_eq2]
 
@@ -92,16 +96,13 @@ def solve(mesh):
         # print('sys=%s' % sys)
         return sys
 
-    t = np.linspace(0, 2, 20)
+    t = np.linspace(0, 0.01, 2)
     y0 = np.array([0, 0, 0, 0, 0, 0])
     sol = odeint(system, y0, t)
     y1 = sol[:, 0]  # вектор значений решения
     y2 = sol[:, 1]  # вектор значений производной
-    #print(y1)
-
-    # print(a1, a2, a3, a4, a5, a6)
+    # print(y1)
 
     plt.figure(figsize=(6, 4), dpi=300)
     plt.plot(t, y1)
     plt.show()
-    # t, y, y[:, 0], y[:, 1]
