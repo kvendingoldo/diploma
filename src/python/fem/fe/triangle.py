@@ -107,7 +107,7 @@ class Triangle(object):
                         (np.random.uniform(0, 1000), np.random.uniform(0, 1000)),
                         (np.random.uniform(0, 1000), np.random.uniform(0, 1000)))
 
-    def integrate(self, func):
+    def integrate_by_jac(self, func):
         def d_j(x1, x2):
             """Jacobian scaling factor"""
             u, v = symbols('u v')
@@ -130,7 +130,7 @@ class Triangle(object):
         x_1 = (1 - u) * x1 + u * ((1 - v) * x2 + v * x3)
         x_2 = (1 - u) * y1 + u * ((1 - v) * y2 + v * y3)
 
-        #print('func=%s' % str(func))
+        # print('func=%s' % str(func))
 
         if func != 0:
             func = func.subs({symbols('x_1'): x_1,
@@ -138,3 +138,20 @@ class Triangle(object):
 
         func *= d_j(x_1, x_2)
         return sp_integrate(func, (v, 0, 1), (u, 0, 1)).doit()
+
+    def integrate(self, func):
+        """barycentric coordinates"""
+        x1, y1 = self[1].x, self[1].y
+        x2, y2 = self[2].x, self[2].y
+        x3, y3 = self[3].x, self[3].y
+
+        λ1, λ2 = symbols('\lambda_1 \lambda_2')
+
+        x_1 = λ1 * x1 + λ2 * x2 + (1 - λ1 - λ2) * x3
+        x_2 = λ1 * y1 + λ2 * y2 + (1 - λ1 - λ2) * y3
+
+        if func != 0:
+            func = func.subs({symbols('x_1'): x_1,
+                              symbols('x_2'): x_2})
+
+        return 2 * self.area * sp_integrate(func, (λ1, 0, 1 - λ2), (λ2, 0, 1)).doit()

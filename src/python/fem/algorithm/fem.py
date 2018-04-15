@@ -104,5 +104,5 @@ def solve(mesh):
     # print(y1)
 
     plt.figure(figsize=(6, 4), dpi=300)
-    plt.plot(t, y1)
+    plt.plot(y1, t)
     plt.show()
