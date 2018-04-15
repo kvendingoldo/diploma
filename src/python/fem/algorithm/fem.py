@@ -79,12 +79,24 @@ def solve(mesh):
     y0 = np.array([0, 0, 0, 0, 0, 0])
     sol = odeint(system, y0, t)
 
-    y1 = sol[:, 0]  # вектор значений решения
-    y2 = sol[:, 1]  # вектор значений производной
+    y1 = sol[:, 0]
+    y2 = sol[:, 1]
 
+    print(sol)
     print(y1)
+    #print(y1)
+    #print(y2)
     print(t)
 
-    plt.figure(figsize=(6, 4), dpi=300)
-    plt.plot(t, y1)
+    plt.figure(figsize=(10, 10), dpi=1000)
+    plt.xlabel('t')
+    plt.ylabel('value')
+
+    plt.plot(t, sol[:, 0], label='a_1')
+    plt.plot(t, sol[:, 1], label='a_2')
+    plt.plot(t, sol[:, 2], label='a_3')
+    plt.plot(t, sol[:, 3], label='a_4')
+    plt.plot(t, sol[:, 4], label='a_5')
+    plt.plot(t, sol[:, 5], label='a_6')
+
     plt.show()

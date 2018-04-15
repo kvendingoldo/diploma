@@ -8,7 +8,7 @@ from triangle import triangulate, plot as tplot
 from fe.triangle import Triangle
 from geometry.point import Point
 from data.poly import read_tri, read_pts
-from data.plot import plot as dplot
+from data.plot.poly_contour import plot as dplot
 
 DEFAULT_GRID = 'pqas.001D'
 
