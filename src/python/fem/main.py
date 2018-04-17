@@ -4,7 +4,7 @@
 from data import mesh as m
 from algorithm import fem
 
-mesh = m.Mesh('/Users/ashraov/projects/study/diploma/resources/poly/pond_without_islands.poly.poly')
+mesh = m.Mesh('/Users/ashraov/projects/study/diploma/resources/poly/pond_without_islands.poly')
 mesh.generate()
 # print(mesh.splitting)
 #mesh.show()
