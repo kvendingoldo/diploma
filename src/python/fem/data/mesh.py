@@ -22,6 +22,7 @@ class Mesh(object):
         self.raw_file = file
         self.raw_splitting = None
         self.splitting = list()
+        self.contour = list()
 
     def generate_raw(self, step=DEFAULT_GRID):
         self.raw_splitting = triangulate(read_tri(self.raw_file), step)
@@ -38,6 +39,11 @@ class Mesh(object):
             tri = Triangle(*points)
             tri.is_boundary = (sum([self.raw_splitting['vertex_markers'][v][0] for v in triangle]) >= 1)
             self.splitting.append(tri)
+
+    def generate_contour(self):
+        for vertex, vertex_matrix in zip(self.raw_splitting['vertices'], self.raw_splitting['vertex_markers']):
+            if vertex_matrix == 1:
+                self.contour.append(vertex)
 
     def show(self):
         plt.figure(figsize=(8, 8))

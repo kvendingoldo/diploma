@@ -6,7 +6,7 @@ import numpy as np
 from sympy import *
 from sympy import sqrt
 
-from scipy.integrate import odeint
+from scipy.integrate import odeint, solve_ivp
 
 from geometry.point import Point
 from fe.triangle import Triangle
@@ -30,7 +30,7 @@ gc2 = 0.002
 # коэффициент трения Шэззи [м^{1/2} * c^{-1}]
 C = 40
 
-H0=0.1
+H0 = 0.1
 
 
 def solve(time, mesh):
@@ -38,7 +38,22 @@ def solve(time, mesh):
     elements = mesh.splitting
     x1, x2 = symbols('x_1 x_2')
 
-    def system(variables, time):
+    def check_boundary(element, number):
+        if element[1].number == number:
+            x, y = element[1].x, element[1].y
+        elif element[2].number == number:
+            x, y = element[2].x, element[2].y
+        elif element[3].number == number:
+            x, y = element[3].x, element[3].y
+        else:
+            return False
+
+        for point in mesh.contour:
+            if (np.abs(point[0] - x) < 1e-4) and (np.abs(point[1] - y) < 1e-4):
+                return True
+        return False
+
+    def system(time, variables):
         print('time=%s' % time)
         sysfun = np.zeros(shape=(3 * M))
 
@@ -63,7 +78,7 @@ def solve(time, mesh):
 
                     f_eq2 += \
                         + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
-                        + element.integrate(P_a * W_l * diff(variables[2 * M + k] * N_k, x2)) \
+                        + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
                         + element.integrate(sqrt(2)/2 * W ** 2 * gamma * rho_a * W_l) \
                         - element.integrate((gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
@@ -76,23 +91,30 @@ def solve(time, mesh):
                 coefficient_of_d_eq3 = element.integrate(rho * weight_functions * N_k)
 
                 if coefficient_of_d_eq1 != 0:
-                    #print(coefficient_of_d_eq1)
-                    sysfun[k] += (f_eq1 / coefficient_of_d_eq1)
+                    if check_boundary(element, k):
+                        sysfun[k] += 0
+                    else:
+                        sysfun[k] += (f_eq1 / coefficient_of_d_eq1)
 
                 if coefficient_of_d_eq2 != 0:
-                    #print(coefficient_of_d_eq2)
-                    sysfun[M + k] += (f_eq2 / coefficient_of_d_eq2)
+                    if check_boundary(element, k):
+                        sysfun[k] += 0
+                    else:
+                        sysfun[M + k] += (f_eq2 / coefficient_of_d_eq2)
 
                 if coefficient_of_d_eq3 != 0:
-                    #print(coefficient_of_d_eq3)
-                    sysfun[2 * M + k] += (f_eq3 / coefficient_of_d_eq3)
+                    if check_boundary(element, k):
+                        sysfun[k] += 0
+                    else:
+                        sysfun[2 * M + k] += (f_eq3 / coefficient_of_d_eq3)
 
         # print('sysfun=%s\n' % sysfun)
-
         return sysfun
 
     y0 = np.zeros(3 * M)
-    sol = odeint(system, y0, time)
+    sol = solve_ivp(system, time, y0, method='RK23', rtol=1e-3, atol=1e-3)
+    #sol = odeint(system, y0, time, rtol=1e-3, atol=1e-3)
+
 
     q1_list = list()
     q2_list = list()
@@ -105,9 +127,9 @@ def solve(time, mesh):
             H = 0
             for k in range(0, M):
                 N_k = element.get_basic_function_by_number(k)
-                q1 += N_k * sol[ind][k]
-                q2 += N_k * sol[ind][M + k]
-                H += N_k * sol[ind][2 * M + k]
+                q1 += N_k * sol.y[ind][k]
+                q2 += N_k * sol.y[ind][M + k]
+                H += N_k * sol.y[ind][2 * M + k]
 
             q1_list.append(q1)
             q2_list.append(q2)

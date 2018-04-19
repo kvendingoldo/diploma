@@ -12,3 +12,4 @@ ipython
 pickle
 bson
 pillow
+gmpy
