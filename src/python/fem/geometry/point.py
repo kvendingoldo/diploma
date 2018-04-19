@@ -9,11 +9,11 @@ class Point(object):
 
     @property
     def x(self):
-        return self.points[0]
+        return float(self.points[0])
 
     @property
     def y(self):
-        return self.points[1]
+        return float(self.points[1])
 
     @property
     def number(self):
@@ -27,10 +27,10 @@ class Point(object):
             raise ValueError()
 
     def set_x(self, value):
-        self.points[0] = value
+        self.points[0] = float(value)
 
     def set_y(self, value):
-        self.points[1] = value
+        self.points[1] = float(value)
 
     def __init__(self, *args, **kwargs):
         self.points = list()
@@ -43,11 +43,11 @@ class Point(object):
                         self.number = int(number)
                     self.points = kwargs.get("coordinates", ())
         elif s is 2:
-            self.points.append(args[0])
-            self.points.append(args[1])
+            self.points.append(float(args[0]))
+            self.points.append(float(args[1]))
         elif s is 3:
-            self.points.append(args[0])
-            self.points.append(args[1])
+            self.points.append(float(args[0]))
+            self.points.append(float(args[1]))
             self.number = args[2]
 
     def __str__(self):

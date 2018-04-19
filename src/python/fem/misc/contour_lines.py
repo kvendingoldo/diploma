@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
+import gc
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+
 
 from sympy import Symbol, lambdify
 
@@ -61,4 +63,10 @@ def draw_2d(func, filename='contour_lines.png'):
 
     plt.title('contour lines')
     plt.savefig(filename)
+
+    fig.clf()
+    plt.close()
+
+    del a, b
+    gc.collect()
 
