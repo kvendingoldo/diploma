@@ -10,7 +10,7 @@ from sympy.plotting import plot3d
 
 from data import mesh as m
 from algorithm import fem
-from misc import contour_lines as cl
+from data.plot import contour_lines as cl
 
 # This option needs for escaping 'RuntimeWarning: More than 20 figures have been opened'
 plt.rcParams.update({'figure.max_open_warning': 0})

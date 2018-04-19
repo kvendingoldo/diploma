@@ -93,19 +93,19 @@ def solve(time, mesh):
 
                 if coefficient_of_d_eq1 != 0:
                     if check_boundary(element, k):
-                        sysfun[k] += 0
+                        sysfun[k] = 0
                     else:
                         sysfun[k] += (f_eq1 / coefficient_of_d_eq1)
 
                 if coefficient_of_d_eq2 != 0:
                     if check_boundary(element, k):
-                        sysfun[M + k] += 0
+                        sysfun[M + k] = 0
                     else:
                         sysfun[M + k] += (f_eq2 / coefficient_of_d_eq2)
 
                 if coefficient_of_d_eq3 != 0:
                     if check_boundary(element, k):
-                        sysfun[2 * M + k] += 0
+                        sysfun[2 * M + k] = 0
                     else:
                         sysfun[2 * M + k] += (f_eq3 / coefficient_of_d_eq3)
 
