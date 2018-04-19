@@ -9,7 +9,5 @@ triangle
 geopandas
 jupyter
 ipython
-pickle
 bson
 pillow
-gmpy

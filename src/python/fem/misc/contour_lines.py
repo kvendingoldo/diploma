@@ -8,7 +8,7 @@ import matplotlib as mpl
 from sympy import Symbol, lambdify
 
 
-def draw_3d(func):
+def draw_3d(func, filename='contour_lines.png'):
     x_lim = (-100, 100)
     y_lim = (-100, 100)
     z_lim = (-100, 100)
@@ -35,18 +35,18 @@ def draw_3d(func):
     ax.set_zlim(z_lim[0], z_lim[1])
 
     plt.title('contour lines')
-    plt.show()
+    plt.savefig(filename)
 
 
-def draw_2d(func):
-    x_lim = (-100, 100)
-    y_lim = (-100, 100)
+def draw_2d(func, filename='contour_lines.png'):
+    x_lim = (-5, 5)
+    y_lim = (-5, 5)
 
     a = np.linspace(x_lim[0], x_lim[1], 1000)
     b = np.linspace(y_lim[0], y_lim[1], 1000)
     x, y = np.meshgrid(a, b)
 
-    func = lambdify((Symbol('x_1'), Symbol('x_1')), func, 'numpy')
+    func = lambdify((Symbol('x_1'), Symbol('x_2')), func, 'numpy')
 
     fig = plt.figure()
     CS = plt.contour(x, y, func(x, y))
@@ -60,5 +60,5 @@ def draw_2d(func):
     ax.set_ylim(y_lim[0], y_lim[1])
 
     plt.title('contour lines')
-    plt.show()
+    plt.savefig(filename)
 
