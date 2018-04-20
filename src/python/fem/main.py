@@ -16,8 +16,8 @@ from data.plot import contour_lines as cl
 plt.rcParams.update({'figure.max_open_warning': 0})
 
 def main():
-    mesh = m.Mesh('/opt/diploma/resources/poly/pond_without_islands_4e.poly')
-    #mesh = m.Mesh('/Users/ashraov/projects/study/diploma/resources/poly/pond_without_islands_4e.poly')
+    #mesh = m.Mesh('/opt/diploma/resources/poly/pond_without_islands_4e.poly')
+    mesh = m.Mesh('/Users/ashraov/projects/study/diploma/resources/poly/pond_without_islands_4e.poly')
     #mesh = m.Mesh('/opt/diploma/resources/poly/lake_svetloyar.poly')
     mesh.generate()
     mesh.generate_contour()
@@ -33,9 +33,21 @@ def main():
     q1, q2, H = fem.solve(time, mesh)
 
     print(time)
-    print(q1)
-    print(q2)
-    print(H)
+
+
+
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
+
+    v = np.array(q1[5][0])
+    print(v)
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot(v[:,0],v[:,1],v[:,2])
+    plt.show()
+
+    #print(q2)
+    #print(H)
 
     images_path = '/data/'
         #'/Users/ashraov/data/'
