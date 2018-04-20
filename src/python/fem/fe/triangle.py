@@ -65,6 +65,13 @@ class Triangle(object):
         return Point(((self[1].x + self[2].x + self[3].x) / 3),
                      ((self[1].y + self[2].y + self[3].y) / 3))
 
+    def contain(self, point):
+        return ((self[1].x == point.x and self[1].y == point.y) or (self[2].x == point.x and self[2].y == point.y) or (self[3].x == point.x and self[3].y == point.y))
+
+    @property
+    def vertices_number(self):
+        return self[1].number, self[2].number, self[3].number
+
     def get_basic_functions(self):
         A = [[self[1].x, self[1].y, 1],
              [self[2].x, self[2].y, 1],

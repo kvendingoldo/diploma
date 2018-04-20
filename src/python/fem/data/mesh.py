@@ -55,6 +55,10 @@ class Mesh(object):
     def quantity(self):
         return len(self.splitting)
 
+    @property
+    def points(self):
+        return self.raw_splitting['vertices']
+
     def draw_contour(self):
         plt.figure(figsize=(8, 8))
         ax = plt.subplot(111, aspect='equal')

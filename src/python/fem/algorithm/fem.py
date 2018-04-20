@@ -52,7 +52,7 @@ def solve(time, mesh):
         # print('x = %f, y = %f' % (x, y))
 
         for point in mesh.contour:
-            if (np.abs(float(point[0] - x)) < 1e-4) and (np.abs(float(point[1] - y)) < 1e-4):
+            if (np.abs(float(point[0] - x)) < 1e-6) and (np.abs(float(point[1] - y)) < 1e-6):
                 return True
         return False
 
@@ -72,15 +72,15 @@ def solve(time, mesh):
                     weight_functions += W_l
 
                     f_eq1 += \
-                        + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
+                        + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
                         + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x1)) \
-                        + element.integrate(sqrt(2)/2 * W ** 2 * gamma * rho_a * W_l) \
+                        + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
                         - element.integrate((gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
                     f_eq2 += \
                         + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
                         + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
-                        + element.integrate(sqrt(2)/2 * W ** 2 * gamma * rho_a * W_l) \
+                        + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
                         - element.integrate((gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
                     f_eq3 += \
@@ -113,29 +113,50 @@ def solve(time, mesh):
         return sysfun
 
     y0 = np.zeros(3 * M)
-    sol = solve_ivp(system, time, y0, method='RK23', rtol=1e-3, atol=1e-3)
+    solution = solve_ivp(system, time, y0, method='RK23', rtol=1e-3, atol=1e-3)
 
-    print(sol)
+    a = solution.y
 
-    q1_list = list()
-    q2_list = list()
-    H_list = list()
+    print(solution)
 
-    ind_range = len(sol.y[0])
+    q1_data = list()
+    q2_data = list()
+    H_data = list()
 
-    for element in elements:
-        for ind in range(0, ind_range):
+    for time in solution.t:
+        q1_plt = list()
+        q2_plt = list()
+        H_plt = list()
+
+        for point in mesh.points:
+            x, y = point[0], point[1]
             q1 = 0
             q2 = 0
             H = 0
-            for k in range(0, M):
-                N_k = element.get_basic_function_by_number(k)
-                q1 += N_k * sol.y[k][ind]
-                q2 += N_k * sol.y[M + k][ind]
-                H += N_k * sol.y[2 * M + k][ind]
 
-            q1_list.append(q1)
-            q2_list.append(q2)
-            H_list.append(H)
+            for element in elements:
+                if element.contain(Point(x, y)):
+                    i, j, k = element.vertices_number
 
-    return q1_list, q2_list, H_list
+                    sub = {
+                        symbols('x_1'): x,
+                        symbols('x_2'): y
+                    }
+
+                    N_i = (element.get_basic_function_by_number(i)).subs(sub)
+                    N_j = (element.get_basic_function_by_number(j)).subs(sub)
+                    N_k = (element.get_basic_function_by_number(k)).subs(sub)
+
+                    q1 += a[i][time] * N_i + a[j][time] * N_j + a[k][time] * N_k
+                    q2 += a[i + M][time] * N_i + a[j + M][time] * N_j + a[k + M][time] * N_k
+                    H += a[i + 2 * M][time] * N_i + a[j + 2 * M][time] * N_j + a[k + 2 * M][time] * N_k
+
+            q1_plt.append([x, y, q1])
+            q2_plt.append([x, y, q2])
+            H_plt.append([x, y, H])
+
+        q1_data.append([q1_plt, time])
+        q2_data.append([q2_plt, time])
+        H_data.append([H_plt, time])
+
+    return q1_data, q2_data, H_data
