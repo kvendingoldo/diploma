@@ -121,6 +121,9 @@ def solve(time, mesh):
     q2_data = list()
     H_data = list()
 
+    ψ1_data = list()
+    ψ2_data = list()
+
     times = solution.t
 
     for ind in range(0, len(times)):
@@ -129,9 +132,9 @@ def solve(time, mesh):
         H_plt = list()
 
         # q1 = dψ/dx2
-        ψ1_list = list()
+        ψ1_plt = list()
         # q2 = - dψ/dx1
-        ψ2_list = list()
+        ψ2_plt = list()
 
         for point in mesh.points:
             x, y = point[0], point[1]
@@ -163,13 +166,15 @@ def solve(time, mesh):
             q2_plt.append([x, y, q2])
             H_plt.append([x, y, H])
 
-            ψ1_list.append([integrate(q1, x2).])
-            ψ2_list([])
-
+            ψ1_plt.append([x, y, integrate(q1, x2).subs(Symbol('x_2'), y)])
+            ψ2_plt.append([x, y, -integrate(q1, x1).subs(Symbol('x_1'), x)])
 
 
         q1_data.append(np.array(q1_plt))
         q2_data.append(np.array(q2_plt))
         H_data.append(np.array(H_plt))
 
-    return q1_data, q2_data, H_data, a, times
+        ψ1_data.append(np.array(ψ1_plt))
+        ψ2_data.append(np.array(ψ2_plt))
+
+    return q1_data, q2_data, H_data, ψ1_data, ψ2_data, a, times

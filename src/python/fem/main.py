@@ -25,7 +25,7 @@ def main():
     # mesh.draw_contour()
 
     time = np.linspace(3, 4, 2)
-    q1, q2, H, raw_solution, times = fem.solve(time, mesh)
+    q1, q2, H, ψ1, ψ2, raw_solution, times = fem.solve(time, mesh)
 
     text.write(DATA_DIR, 'solution.txt', raw_solution)
     text.write(DATA_DIR, 'times.txt', times)
