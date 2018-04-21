@@ -4,10 +4,9 @@ scipy
 matplotlib
 shapely
 descartes
-shapely
 triangle
-geopandas
 jupyter
 ipython
 bson
 pillow
+imageio

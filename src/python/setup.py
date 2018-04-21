@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(name='fem',
       version='1.0',
-      description='FEM diploma project',
+      description='Finite elements method diploma project',
       url='https://github.com/kvendingoldo/diploma',
       author='Alexander Sharov',
       author_email='kvendingoldo@gmail.com',
