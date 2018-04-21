@@ -69,7 +69,6 @@ def draw_3d_surf(path, title, functions, times):
 
     for func, time in zip(functions, times):
         fig = plt.figure()
-        #ax = fig.add_subplot(111, projection='3d')
         ax = Axes3D(fig)
         ax.set_xlabel('X')
         ax.set_ylabel('Y')

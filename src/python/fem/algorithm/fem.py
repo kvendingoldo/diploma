@@ -128,11 +128,19 @@ def solve(time, mesh):
         q2_plt = list()
         H_plt = list()
 
+        # q1 = dψ/dx2
+        ψ1_list = list()
+        # q2 = - dψ/dx1
+        ψ2_list = list()
+
         for point in mesh.points:
             x, y = point[0], point[1]
             q1 = 0
             q2 = 0
             H = 0
+
+            ψ1 = 0
+            ψ2 = 0
 
             for element in elements:
                 if element.contain(Point(x, y)):
@@ -155,8 +163,13 @@ def solve(time, mesh):
             q2_plt.append([x, y, q2])
             H_plt.append([x, y, H])
 
+            ψ1_list.append([integrate(q1, x2).])
+            ψ2_list([])
+
+
+
         q1_data.append(np.array(q1_plt))
         q2_data.append(np.array(q2_plt))
         H_data.append(np.array(H_plt))
 
-    return q1_data, q2_data, H_data, times
+    return q1_data, q2_data, H_data, a, times
