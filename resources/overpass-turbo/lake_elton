@@ -1,0 +1,9 @@
+[out:json][timeout:25];
+(
+  node["name"="Эльтон"]({{bbox}});
+  way["name"="Эльтон"]({{bbox}});
+  relation["name"="Эльтон"]({{bbox}});
+);
+out body;
+>;
+out skel qt;

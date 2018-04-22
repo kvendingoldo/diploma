@@ -12,25 +12,26 @@ from data.save import np_array
 from data.plot import contour_lines as cs
 
 
-#DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+#DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
-#RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
-RESOURCES_DIR = '/opt/diploma/resources'
+RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
+#RESOURCES_DIR = '/opt/diploma/resources'
 
 
 def main():
-    mesh = m.Mesh(RESOURCES_DIR + '/poly/pond_without_islands_4e.poly')
+    mesh = m.Mesh(RESOURCES_DIR + '/poly/lake_elton.poly')
     mesh.generate()
     mesh.generate_contour()
 
     #mesh.show()
     #mesh.draw_contour()
 
+
     # interval of integration (t0, tf)
-    t_span = [0, 2]
+    t_span = [1.9, 2]
     # times at which to store the computed solution, must be sorted and lie within t_span
-    t_eval = [0, 1, 2]
+    t_eval = [1.91, 1.99]
 
     q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(t_span, t_eval, mesh)
 

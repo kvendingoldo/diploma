@@ -1,0 +1,9 @@
+[out:json][timeout:25];
+(
+  node["code"="A23A001"]({{bbox}});
+  way["code"="A23A001"]({{bbox}});
+  relation["code"="A23A001"]({{bbox}});
+);
+out body;
+>;
+out skel qt;
