@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-import numpy as np
 import datetime
 
 from data import mesh as m
@@ -26,7 +25,6 @@ def main():
 
     #mesh.show()
     #mesh.draw_contour()
-
 
     # interval of integration (t0, tf)
     t_span = [1.9, 2]

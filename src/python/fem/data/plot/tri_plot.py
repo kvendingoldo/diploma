@@ -13,7 +13,6 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from utils import find
 
-
 # This option needs for escaping 'RuntimeWarning: More than 20 figures have been opened'
 plt.rcParams.update({'figure.max_open_warning': 0})
 

@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-__all__ = ['algorithm', 'data', 'db', 'fe', 'geometry', 'misc', 'utils']
+__all__ = ['algorithm', 'data', 'db', 'fe', 'geometry', 'utils']
