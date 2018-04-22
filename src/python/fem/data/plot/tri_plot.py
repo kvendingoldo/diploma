@@ -9,27 +9,19 @@ import scipy.interpolate as interp
 import io
 
 from PIL import Image
-
-# do not delete it
 from mpl_toolkits.mplot3d import Axes3D
+
+from utils import find
+
 
 # This option needs for escaping 'RuntimeWarning: More than 20 figures have been opened'
 plt.rcParams.update({'figure.max_open_warning': 0})
 
 
-def find_zmax(functions):
-    z_max = 0
-    for func in functions:
-        z = np.max(func[:, 2])
-        if z > z_max:
-            z_max = z
-    return float(z_max)
-
-
-def draw_3d_scatt(path, title, functions, times):
+def draw_3d_frame(path, title, functions, times):
     os.makedirs(path + '/' + title, exist_ok=True)
 
-    z_max = find_zmax(functions)
+    z_max = find.z_max(functions)
 
     for func, time in zip(functions, times):
         date = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
@@ -62,10 +54,10 @@ def draw_3d_scatt(path, title, functions, times):
         buf.close()
 
 
-def draw_3d_surf(path, title, functions, times):
+def draw_3d_surf(path, title, functions, times, view='surface'):
     os.makedirs(path + '/' + title, exist_ok=True)
 
-    z_max = find_zmax(functions)
+    z_max = find.z_max(functions)
 
     for func, time in zip(functions, times):
         fig = plt.figure()
@@ -89,9 +81,12 @@ def draw_3d_surf(path, title, functions, times):
         # Explanation: TODO
         plotz[plotz < 0.] = 0
 
-        ax.plot_surface(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')  # or 'hot'
+        if view == 'surface':
+            ax.plot_surface(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')
+        elif view == 'wireframe':
+            ax.plot_wireframe(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')
 
-        plt.title('график функции %s' % title + '\n' + 'time = %s' % time)
+        plt.title('график функции $%s$' % title + '\n' + 'time = %s' % time)
 
         buf = io.BytesIO()
 

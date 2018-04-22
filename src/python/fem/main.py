@@ -2,18 +2,18 @@
 # @Author: Alexander Sharov
 
 import numpy as np
+import datetime
 
 from data import mesh as m
 from algorithm import fem
 from data.plot import tri_plot
 from utils import gif
 from data.save import text
+from data.plot import contour_lines as cs
 
-import profile
 
-
-#DATA_DIR = '/Users/ashraov/data'
-DATA_DIR = '/data'
+#DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
 #RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
 RESOURCES_DIR = '/opt/diploma/resources'
@@ -27,29 +27,45 @@ def main():
     #mesh.show()
     #mesh.draw_contour()
 
-    time = np.linspace(3, 4, 2)
+    time = np.linspace(3.7, 3.9, 3)
+
     q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(time, mesh)
 
     text.write(DATA_DIR, 'solution.txt', raw_solution)
     text.write(DATA_DIR, 'times.txt', times)
 
-    tri_plot.draw_3d_surf(DATA_DIR + '/surf', 'q1', q1, times)
-    gif.create(DATA_DIR + '/surf/q1')
-    tri_plot.draw_3d_scatt(DATA_DIR + '/scatt', 'q1', q1, times)
-    gif.create(DATA_DIR + '/scatt/q1')
+    surf_dir = '%s/surf' % DATA_DIR
+    frame_dir = '%s/frame' % DATA_DIR
 
-    tri_plot.draw_3d_surf(DATA_DIR + '/surf', 'q2', q2, times)
-    gif.create(DATA_DIR + '/surf/q2')
-    tri_plot.draw_3d_scatt(DATA_DIR + '/scatt', 'q2', q2, times)
-    gif.create(DATA_DIR + '/scatt/q1')
+    # surface q1
+    tri_plot.draw_3d_surf(surf_dir, 'q_1', q1, times)
+    gif.create('%s/q_1' % surf_dir)
+    # frame q1
+    tri_plot.draw_3d_frame(frame_dir, 'q_1', q1, times)
+    gif.create('%s/q_1' % frame_dir)
 
-    tri_plot.draw_3d_surf(DATA_DIR + '/surf', 'H', H, times)
-    gif.create(DATA_DIR + '/surf/H')
-    tri_plot.draw_3d_scatt(DATA_DIR + '/scatt', 'H', H, times)
-    gif.create(DATA_DIR + '/scatt/H')
+    # surface q2
+    tri_plot.draw_3d_surf(surf_dir, 'q_2', q2, times)
+    gif.create('%s/q_2' % surf_dir)
+    # frame q2
+    tri_plot.draw_3d_frame(frame_dir, 'q_2', q2, times)
+    gif.create('%s/q_2' % frame_dir)
+
+    # surface H
+    tri_plot.draw_3d_surf(surf_dir, 'H', H, times)
+    gif.create('%s/H' % surf_dir)
+    # frame H
+    tri_plot.draw_3d_frame(frame_dir, 'H', H, times)
+    gif.create('%s/H' % frame_dir)
+
+    # wave function psi1
+    cs.draw_psi_2d(DATA_DIR, 'psi_1', psi1, times)
+    gif.create('%s/psi_1' % DATA_DIR)
+
+    # wave function psi2
+    cs.draw_psi_2d(DATA_DIR, 'psi_2', psi2, times)
+    gif.create('%s/psi_2' % DATA_DIR)
 
 
 if __name__ == "__main__":
-    # TODO: delete profiler and import
-    profile.run('main()')
-    #main()
+    main()

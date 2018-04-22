@@ -1,77 +1,53 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-import gc
+import os
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
+import io
+import datetime
 
-from sympy import Symbol, lambdify
-
-
-def draw_3d(func, filename='contour_lines.png'):
-    x_lim = (-100, 100)
-    y_lim = (-100, 100)
-    z_lim = (-100, 100)
-
-    a = np.linspace(x_lim[0], x_lim[1], 1000)
-    b = np.linspace(y_lim[0], y_lim[1], 1000)
-    x, y = np.meshgrid(a, b)
-
-    func = lambdify((Symbol('x_1'), Symbol('x_1')), func, 'numpy')
-
-    fig = plt.figure()
-
-    ax = fig.gca(projection='3d')
-    ax.plot_surface(x, y, func(x, y), rstride=8, cstride=8, alpha=0.3)
-    cset = ax.contour(x, y, func(x, y), zdir='z', offset=-100, cmap=mpl.winter)
-    cset = ax.contour(x, y, func(x, y), zdir='x', offset=-40, cmap=mpl.winter)
-    cset = ax.contour(x, y, func(x, y), zdir='y', offset=40, cmap=mpl.winter)
-
-    ax.set_xlabel('X')
-    ax.set_xlim(x_lim[0], x_lim[1])
-    ax.set_ylabel('Y')
-    ax.set_ylim(y_lim[0], y_lim[1])
-    ax.set_zlabel('Z')
-    ax.set_zlim(z_lim[0], z_lim[1])
-
-    plt.title('contour lines')
-    plt.savefig(filename)
-
-    fig.clf()
-    plt.close()
-
-    del a, b
-    gc.collect()
+from PIL import Image
+from scipy.interpolate import griddata
+from utils import find
 
 
-def draw_2d(func, filename='contour_lines.png'):
-    x_lim = (-5, 5)
-    y_lim = (-5, 5)
+def draw_psi_2d(path, title, functions, times):
+    os.makedirs(path + '/' + title, exist_ok=True)
 
-    a = np.linspace(x_lim[0], x_lim[1], 1000)
-    b = np.linspace(y_lim[0], y_lim[1], 1000)
-    x, y = np.meshgrid(a, b)
+    x_max = find.x_max(functions)
+    y_max = find.y_max(functions)
 
-    func = lambdify((Symbol('x_1'), Symbol('x_2')), func, 'numpy')
+    for func, time in zip(functions, times):
+        fig = plt.figure()
 
-    fig = plt.figure()
-    CS = plt.contour(x, y, func(x, y))
-    plt.clabel(CS, fontsize='small', inline=10)
-    plt.grid()
+        x = func[:, 0]
+        y = func[:, 1]
+        z = func[:, 2]
 
-    ax = fig.gca()
-    ax.set_xlabel('X')
-    ax.set_xlim(x_lim[0], x_lim[1])
-    ax.set_ylabel('Y')
-    ax.set_ylim(y_lim[0], y_lim[1])
+        xi = np.linspace(0., x_max, 10)
+        yi = np.linspace(0., y_max, 10)
 
-    plt.title('contour lines')
-    plt.savefig(filename)
+        X, Y = np.meshgrid(xi, yi)
+        Z = griddata((x, y), z, (X, Y), method='cubic')
 
-    fig.clf()
-    plt.close()
+        CS = plt.contour(X, Y, Z, colors='black')
 
-    del a, b
-    gc.collect()
+        plt.clabel(CS, fontsize='small', inline=10)
+        plt.imshow(Z, extent=[0., x_max, 0, y_max],
+                   origin='lower', cmap='coolwarm',
+                   interpolation='gaussian', alpha=0.5)
 
+        plt.colorbar()
+        plt.grid()
+        plt.title('график функции $\%s$' % title + '\n' + 'time = %s' % time)
+
+        buf = io.BytesIO()
+
+        plt.savefig(buf, format='png')
+        plt.close()
+
+        buf.seek(0)
+        im = Image.open(buf)
+        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
+        buf.close()
