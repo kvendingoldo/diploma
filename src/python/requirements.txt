@@ -1,4 +1,4 @@
-simplejson
+json
 numpy
 sympy
 scipy
