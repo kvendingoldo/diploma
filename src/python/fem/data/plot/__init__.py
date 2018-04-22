@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
-__all__ = ['poly_contour', 'contour_lines']
+__all__ = ['poly_contour', 'contour_lines', 'tri_plot']

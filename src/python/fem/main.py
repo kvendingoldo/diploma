@@ -8,7 +8,7 @@ from data import mesh as m
 from algorithm import fem
 from data.plot import tri_plot
 from utils import gif
-from data.save import text
+from data.save import np_array
 from data.plot import contour_lines as cs
 
 
@@ -27,12 +27,15 @@ def main():
     #mesh.show()
     #mesh.draw_contour()
 
-    time = np.linspace(3.7, 3.9, 3)
+    # interval of integration (t0, tf)
+    t_span = [0, 2]
+    # times at which to store the computed solution, must be sorted and lie within t_span
+    t_eval = [0, 1, 2]
 
-    q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(time, mesh)
+    q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(t_span, t_eval, mesh)
 
-    text.write(DATA_DIR, 'solution.txt', raw_solution)
-    text.write(DATA_DIR, 'times.txt', times)
+    np_array.write(DATA_DIR, 'solution.txt', raw_solution)
+    np_array.write(DATA_DIR, 'times.txt', times)
 
     surf_dir = '%s/surf' % DATA_DIR
     frame_dir = '%s/frame' % DATA_DIR

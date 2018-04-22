@@ -6,10 +6,9 @@ from numpy import array, abs, zeros
 from scipy.integrate import solve_ivp
 
 from geometry.point import Point
-from fe.triangle import Triangle
 
 # CONSTANTS
-###########################
+###############################################
 # плотность воды [кг / м^3]
 rho = 1000
 # плотность воздуха [кг / м^3]
@@ -28,10 +27,10 @@ gc2 = 0.002
 C = 40
 # начальное возвышение
 H0 = 0.01
-###########################
+###############################################
 
 
-def solve(time, mesh):
+def solve(t_span, t_eval, mesh):
     M = mesh.quantity
     print('Number of elements = %d' % M)
     elements = mesh.splitting
@@ -46,8 +45,6 @@ def solve(time, mesh):
             x, y = element[3].x, element[3].y
         else:
             return False
-
-        # print('x = %f, y = %f' % (x, y))
 
         for point in mesh.contour:
             if (abs(float(point[0] - x)) < 1e-6) and (abs(float(point[1] - y)) < 1e-6):
@@ -111,7 +108,7 @@ def solve(time, mesh):
         return sysfun
 
     y0 = zeros(3 * M)
-    solution = solve_ivp(system, time, y0, method='RK45', rtol=1e-3, atol=1e-3)
+    solution = solve_ivp(system, t_span, y0, method='RK45', t_eval=t_eval, rtol=1e-3, atol=1e-3)
 
     a = solution.y
     times = solution.t
@@ -138,9 +135,6 @@ def solve(time, mesh):
             q1 = 0
             q2 = 0
             H = 0
-
-            psi1 = 0
-            psi2 = 0
 
             for element in elements:
                 if element.contain(Point(x, y)):
