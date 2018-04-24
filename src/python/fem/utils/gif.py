@@ -10,7 +10,7 @@ def build_file(directory, file_list, duration):
     images = list()
     for filename in file_list:
         images.append(imageio.imread(filename))
-    output_file = directory + '/%s.gif' % datetime.datetime.now().strftime('%Y-%M-%d-%H-%M-%S')
+    output_file = directory + '/image.gif'
     imageio.mimsave(output_file, images, duration=duration)
 
 

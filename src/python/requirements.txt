@@ -1,3 +1,4 @@
+pymongo
 numpy
 sympy
 scipy

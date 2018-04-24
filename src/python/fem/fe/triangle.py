@@ -16,7 +16,6 @@ class Triangle(object):
 
     def __init__(self, *args, **kwargs):
         self.points = list()
-        self.is_boundary = False
 
         s = len(args)
         if s is 3:
