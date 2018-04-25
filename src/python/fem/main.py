@@ -11,11 +11,11 @@ from data.save import np_array
 from data.plot import contour_lines as cs
 from db import mongo
 
-DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-# DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+# DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
-RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
-# RESOURCES_DIR = '/opt/diploma/resources'
+# RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
+RESOURCES_DIR = '/opt/diploma/resources'
 
 SURF_DIR = '%s/surf' % DATA_DIR
 FRAME_DIR = '%s/frame' % DATA_DIR
@@ -32,9 +32,7 @@ def main():
     mesh.generate_contour()
 
     mesh.show()
-    print(mesh.raw_splitting)
     mesh.draw_contour()
-    return
 
     # interval of integration (t0, tf)
     t_span = [1.9, 2]
@@ -74,9 +72,6 @@ def main():
     # wave function psi2
     cs.draw_psi_2d(WAVE_DIR, 'psi_2', psi2, times)
     gif.create('%s/psi_2' % WAVE_DIR)
-
-    # mongo
-    # mongo.write(DATA_DIR, MESH_TYPE, 0, mesh.quantity, MESH_FILENAME)
 
 
 if __name__ == "__main__":
