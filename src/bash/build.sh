@@ -1,5 +1,6 @@
 #!/bin/bash
 
-docker rmi -f kvendingoldo/diploma:fem
-docker rm -f kvendingoldo-diploma
-docker build -t kvendingoldo/diploma:fem .
+IMAGE_TAG="${1}"
+
+docker rmi -f kvendingoldo/diploma:${IMAGE_TAG}
+docker build -t kvendingoldo/diploma:${IMAGE_TAG} .
