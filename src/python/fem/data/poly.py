@@ -11,7 +11,7 @@ def read_pts(file_name):
     file.close()
     lines = [x.strip('\n').split() for x in lines]
 
-    vertices = list()
+    vertices = []
     N_vertices, dimension, _, _ = [int(x) for x in lines[0]]
     for k in range(N_vertices):
         label, x, y = [items for items in lines[k + 1]]
@@ -40,7 +40,7 @@ def read_tri(file_name):
     lines = [x.strip('\n').split() for x in lines]
 
     # store vertices
-    vertices = list()
+    vertices = []
     N_vertices, dimension, attr, bdry_markers = [int(x) for x in lines[0]]
     # We assume attr = bdrt_markers = 0
     for k in range(N_vertices):

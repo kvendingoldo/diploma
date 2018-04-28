@@ -21,8 +21,8 @@ class Mesh(object):
     def __init__(self, file):
         self.raw_file = file
         self.raw_splitting = None
-        self.splitting = list()
-        self.contour = list()
+        self.splitting = []
+        self.contour = []
 
     def generate_raw(self, step=DEFAULT_GRID):
         self.raw_splitting = triangulate(read_tri(self.raw_file), step)
@@ -31,7 +31,7 @@ class Mesh(object):
         self.generate_raw(step)
 
         for triangle in self.raw_splitting['triangles']:
-            points = list()
+            points = []
             for v in triangle:
                 point = Point(*self.raw_splitting['vertices'][v])
                 point.number = v

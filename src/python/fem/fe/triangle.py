@@ -15,7 +15,7 @@ class Triangle(object):
     """
 
     def __init__(self, *args, **kwargs):
-        self.points = list()
+        self.points = []
 
         s = len(args)
         if s is 3:
@@ -158,6 +158,7 @@ class Triangle(object):
 
     def integrate(self, func):
         """barycentric coordinates"""
+
         x1, y1 = self[1].x, self[1].y
         x2, y2 = self[2].x, self[2].y
         x3, y3 = self[3].x, self[3].y

@@ -33,7 +33,7 @@ class Point(object):
         self.points[1] = float(value)
 
     def __init__(self, *args, **kwargs):
-        self.points = list()
+        self.points = []
         s = len(args)
         if s is 0:
             if len(kwargs) > 0:

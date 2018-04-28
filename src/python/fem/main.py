@@ -4,7 +4,7 @@
 import datetime
 
 from data import mesh as m
-from algorithm import fem
+from algorithm import fem_old as fem
 from data.plot import tri_plot
 from utils import gif
 from data.save import np_array
@@ -35,9 +35,9 @@ def main():
     #mesh.draw_contour()
 
     # interval of integration (t0, tf)
-    t_span = (1.9, 2)
+    t_span = (1.90, 1.92)
     # times at which to store the computed solution, must be sorted and lie within t_span
-    t_eval = [1.9, 1.95, 2]
+    t_eval = [1.91]
 
     q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(t_span, t_eval, mesh)
 

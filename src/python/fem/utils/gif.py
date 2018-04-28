@@ -2,12 +2,11 @@
 # @Author: Alexander Sharov
 
 import glob
-import datetime
 import imageio
 
 
 def build_file(directory, file_list, duration):
-    images = list()
+    images = []
     for filename in file_list:
         images.append(imageio.imread(filename))
     output_file = directory + '/image.gif'
