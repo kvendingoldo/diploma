@@ -4,6 +4,10 @@
 from sympy import *
 from numpy import array, abs, zeros
 from scipy.integrate import solve_ivp
+from time import sleep
+
+import threading
+
 
 from geometry.point import Point
 
@@ -51,64 +55,72 @@ def solve(t_span, t_eval, mesh):
                 return True
         return False
 
+    def solve_element(sysfun, element, variables, calculated):
+        f_eq1 = 0
+        f_eq2 = 0
+        f_eq3 = 0
+        for k in range(0, M):
+            N_k = element.get_basic_function_by_number(k)
+            weight_functions = 0
+            for l in range(0, M):
+                W_l = element.get_basic_function_by_number(l)
+                weight_functions += W_l
+
+                f_eq1 += \
+                    + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
+                    + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x1)) \
+                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
+                    - element.integrate((gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+
+                f_eq2 += \
+                    + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
+                    + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
+                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
+                    - element.integrate((gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+
+                f_eq3 += \
+                    - element.integrate(W_l * diff(N_k, x1)) * variables[k] \
+                    - element.integrate(W_l * diff(N_k, x2)) * variables[M + k]
+
+            coefficient_of_d_eq1 = element.integrate(weight_functions * N_k)
+            coefficient_of_d_eq2 = element.integrate(weight_functions * N_k)
+            coefficient_of_d_eq3 = element.integrate(rho * weight_functions * N_k)
+
+            if coefficient_of_d_eq1 != 0:
+                if check_boundary(element, k):
+                    sysfun[k] = 0
+                else:
+                    sysfun[k] = (f_eq1 / coefficient_of_d_eq1)
+
+            if coefficient_of_d_eq2 != 0:
+                if check_boundary(element, k):
+                    sysfun[M + k] = 0
+                else:
+                    sysfun[M + k] = (f_eq2 / coefficient_of_d_eq2)
+
+            if coefficient_of_d_eq3 != 0:
+                if check_boundary(element, k):
+                    sysfun[2 * M + k] = 0
+                else:
+                    sysfun[2 * M + k] = (f_eq3 / coefficient_of_d_eq3)
+        calculated[element] = True
+
     def system(time, variables):
         print('time=%s' % time)
         sysfun = zeros(shape=(3 * M))
+        calculated = { element: False for element in elements }
 
         for element in elements:
-            f_eq1 = 0
-            f_eq2 = 0
-            f_eq3 = 0
-            for k in range(0, M):
-                N_k = element.get_basic_function_by_number(k)
-                weight_functions = 0
-                for l in range(0, M):
-                    W_l = element.get_basic_function_by_number(l)
-                    weight_functions += W_l
+            threading.Thread(target=solve_element, args=(sysfun, element, variables, calculated)).start()
 
-                    f_eq1 += \
-                        + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
-                        + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x1)) \
-                        + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
-                        - element.integrate((gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
-
-                    f_eq2 += \
-                        + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
-                        + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
-                        + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
-                        - element.integrate((gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
-
-                    f_eq3 += \
-                        - element.integrate(W_l * diff(N_k, x1)) * variables[k] \
-                        - element.integrate(W_l * diff(N_k, x2)) * variables[M + k]
-
-                coefficient_of_d_eq1 = element.integrate(weight_functions * N_k)
-                coefficient_of_d_eq2 = element.integrate(weight_functions * N_k)
-                coefficient_of_d_eq3 = element.integrate(rho * weight_functions * N_k)
-
-                if coefficient_of_d_eq1 != 0:
-                    if check_boundary(element, k):
-                        sysfun[k] = 0
-                    else:
-                        sysfun[k] = (f_eq1 / coefficient_of_d_eq1)
-
-                if coefficient_of_d_eq2 != 0:
-                    if check_boundary(element, k):
-                        sysfun[M + k] = 0
-                    else:
-                        sysfun[M + k] = (f_eq2 / coefficient_of_d_eq2)
-
-                if coefficient_of_d_eq3 != 0:
-                    if check_boundary(element, k):
-                        sysfun[2 * M + k] = 0
-                    else:
-                        sysfun[2 * M + k] = (f_eq3 / coefficient_of_d_eq3)
+        while not all(calculated.values()):
+            sleep(1)
 
         print('sysfun=%s\n' % sysfun)
         return sysfun
 
     y0 = zeros(3 * M)
-    solution = solve_ivp(system, t_span, y0, method='RK45', t_eval=t_eval, rtol=1e-3, atol=1e-3)
+    solution = solve_ivp(system, t_span=t_span, y0=y0, method='RK45', t_eval=t_eval, rtol=1e-3, atol=1e-3)
 
     a = solution.y
     times = solution.t
@@ -131,18 +143,18 @@ def solve(t_span, t_eval, mesh):
         psi2_plt = list()
 
         for point in mesh.points:
-            x, y = point[0], point[1]
+            x1, x2 = point[0], point[1]
             q1 = 0
             q2 = 0
             H = 0
 
             for element in elements:
-                if element.contain(Point(x, y)):
+                if element.contain(Point(x1, x2)):
                     i, j, k = element.vertices_number
 
                     sub = {
-                        symbols('x_1'): x,
-                        symbols('x_2'): y
+                        symbols('x_1'): x1,
+                        symbols('x_2'): x2
                     }
 
                     N_i = (element.get_basic_function_by_number(i)).subs(sub)
@@ -153,12 +165,12 @@ def solve(t_span, t_eval, mesh):
                     q2 += a[i + M][ind] * N_i + a[j + M][ind] * N_j + a[k + M][ind] * N_k
                     H += a[i + 2 * M][ind] * N_i + a[j + 2 * M][ind] * N_j + a[k + 2 * M][ind] * N_k
 
-            q1_plt.append([x, y, q1])
-            q2_plt.append([x, y, q2])
-            H_plt.append([x, y, H])
+            q1_plt.append([x1, x2, q1])
+            q2_plt.append([x1, x2, q2])
+            H_plt.append([x1, x2, H])
 
-            psi1_plt.append([x, y, integrate(q1, x2).subs(Symbol('x_2'), y)])
-            psi2_plt.append([x, y, -integrate(q1, x1).subs(Symbol('x_1'), x)])
+            psi1_plt.append([x1, x2, integrate(q1, x2).subs(Symbol('x_2'), x2)])
+            psi2_plt.append([x1, x2, -integrate(q1, x1).subs(Symbol('x_1'), x1)])
 
         q1_data.append(array(q1_plt))
         q2_data.append(array(q2_plt))
