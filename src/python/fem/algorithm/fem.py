@@ -6,7 +6,8 @@ from numpy import array, abs, zeros
 from scipy.integrate import solve_ivp
 from time import sleep
 
-import threading
+#import threading
+from multiprocessing import Process
 
 
 from geometry.point import Point
@@ -111,7 +112,7 @@ def solve(t_span, t_eval, mesh):
         calculated = { element: False for element in elements }
 
         for element in elements:
-            threading.Thread(target=solve_element, args=(sysfun, element, variables, calculated)).start()
+            Process(target=solve_element, args=(sysfun, element, variables, calculated)).start()
 
         while not all(calculated.values()):
             sleep(1)
