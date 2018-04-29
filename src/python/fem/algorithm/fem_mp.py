@@ -7,6 +7,9 @@ from scipy.integrate import solve_ivp
 from time import sleep
 from multiprocessing import Process, Manager
 
+import threading
+
+
 from geometry.point import Point
 
 # CONSTANTS
@@ -55,7 +58,7 @@ def solve(t_span, t_eval, mesh):
                 return True
         return False
 
-    def solve_element(sysfun, element, variables, calculated):
+    def solve_element(sysfun, element, variables):
         print('I am alive')
 
         f_eq1 = 0
@@ -119,22 +122,24 @@ def solve(t_span, t_eval, mesh):
                     sysfun[2 * M + k] = float((f_eq3.doit() / coefficient_of_d_eq3))
 
         print('I am dead')
-        calculated.value += 1
+
 
     def system(time, variables):
         print('time=%s' % time)
 
-        calculated = Manager().Value('i', 0)
+        tasks = []
 
         for element in elements:
-            p = Process(target=solve_element, args=(sysfun, element, variables, calculated))
-            p.start()
+            #thread = threading.Thread(target=solve_element, args=(sysfun, element, variables))
+            process = Process(target=solve_element, args=(sysfun, element, variables))
+            tasks.append(process)
 
-        while calculated.value != len(elements):
-            # not all(calculated.values()):
-            # print(calculated.value)
-            sleep(1)
-        calculated.value = 0
+        for task in tasks:
+            task.start()
+
+        # Wait for all to complete
+        for task in tasks:
+            task.join()
 
         print('sysfun=%s\n' % sysfun)
 

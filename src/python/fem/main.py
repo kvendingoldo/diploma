@@ -10,11 +10,11 @@ from utils import gif
 from data.save import np_array
 from data.plot import contour_lines as cs
 
-#DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+#DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
-#RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
-RESOURCES_DIR = '/opt/diploma/resources'
+RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
+#RESOURCES_DIR = '/opt/diploma/resources'
 
 SURF_DIR = '%s/surf' % DATA_DIR
 FRAME_DIR = '%s/frame' % DATA_DIR
