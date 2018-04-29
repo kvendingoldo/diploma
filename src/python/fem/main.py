@@ -23,7 +23,8 @@ WAVE_DIR = '%s/wave' % DATA_DIR
 JSON_DIR = '%s/json' % DATA_DIR
 
 # NOTE: Good mesh is pqas.001D
-MESH_TYPE = 'pq10IaDX'
+# pq10IaDX
+MESH_TYPE = 'pqIaDX'
 MESH_FILENAME = 'pond_with_islands.poly'
 
 

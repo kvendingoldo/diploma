@@ -38,6 +38,7 @@ class Solver(object):
         self.contour = mesh.contour
         self.t_span = t_span
         self.t_eval = t_eval
+        self.sys_fun = Manager().list([0] * (3 * self.M))
 
     def on_boundary(self, element, number):
         if element[1].number == number:
@@ -54,7 +55,7 @@ class Solver(object):
                 return True
         return False
 
-    def calculate_element(self, sys_fun, element, variables):
+    def calculate_element(self, element, variables):
         print('I am alive')
 
         x1, x2 = symbols('x_1 x_2')
@@ -64,7 +65,7 @@ class Solver(object):
         for k in range(0, self.M):
             n_k = element.get_basic_function_by_number(k)
             weight_functions = 0
-            print('I am still alive. [element=%s, k=%d]' % (str(element), k))
+            #print('I am still alive. [element=%s, k=%d]' % (str(element), k))
             for l in range(0, self.M):
                 w_l = element.get_basic_function_by_number(l)
                 weight_functions += w_l
@@ -99,33 +100,32 @@ class Solver(object):
 
             if coefficient_of_d_eq1 != 0:
                 if self.on_boundary(element, k):
-                    sys_fun[k] = 0
+                    self.sys_fun[k] = 0
                 else:
-                    sys_fun[k] = float((f_eq1.doit() / coefficient_of_d_eq1))
+                    self.sys_fun[k] = Float((f_eq1.evalf() / coefficient_of_d_eq1))
 
             if coefficient_of_d_eq2 != 0:
                 if self.on_boundary(element, k):
-                    sys_fun[self.M + k] = 0
+                    self.sys_fun[self.M + k] = 0
                 else:
-                    sys_fun[self.M + k] = float((f_eq2.doit() / coefficient_of_d_eq2))
+                    self.sys_fun[self.M + k] = Float((f_eq2.evalf() / coefficient_of_d_eq2))
 
             if coefficient_of_d_eq3 != 0:
                 if self.on_boundary(element, k):
-                    sys_fun[2 * self.M + k] = 0
+                    self.sys_fun[2 * self.M + k] = 0
                 else:
-                    sys_fun[2 * self.M + k] = float((f_eq3.doit() / coefficient_of_d_eq3))
+                    self.sys_fun[2 * self.M + k] = Float((f_eq3.evalf() / coefficient_of_d_eq3))
 
         print('I am dead')
 
     def system(self, time, variables):
         print('time = %s' % time)
 
-        sys_fun = Manager().list([0] * (3 * self.M))
         tasks = []
 
         for element in self.elements:
             # thread = Thread(target=solve_element, args=(sys_fun, element, variables))
-            process = Process(target=self.calculate_element, args=(sys_fun, element, variables))
+            process = Process(target=self.calculate_element, args=(element, variables))
             tasks.append(process)
 
         for task in tasks:
@@ -134,9 +134,9 @@ class Solver(object):
         for task in tasks:
             task.join()
 
-        print('system of functions = %s\n' % sys_fun)
+        print('system of functions = %s\n' % self.sys_fun)
 
-        return sys_fun
+        return self.sys_fun
 
     def solve(self):
         # TODO: create time decorator for this function
