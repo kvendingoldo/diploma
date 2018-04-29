@@ -2,15 +2,11 @@
 # @Author: Alexander Sharov
 
 from sympy import *
-from numpy import array, abs
+from numpy import abs
 from scipy.integrate import solve_ivp
-from time import sleep
 from multiprocessing import Process, Manager
 
-import threading
-
-
-from geometry.point import Point
+# from threading import Thread
 
 # CONSTANTS
 ###############################################
@@ -32,18 +28,18 @@ gc2 = 0.002
 C = 40
 # начальное возвышение
 H0 = 0.01
-###############################################
 
 
-def solve(t_span, t_eval, mesh):
-    M = mesh.quantity
-    sysfun = Manager().list([0] * (3 * M))
-    print('Number of elements = %d' % M)
-    elements = mesh.splitting
+class Solver(object):
+    def __init__(self, mesh, t_span, t_eval):
+        self.mesh = mesh
+        self.M = mesh.quantity
+        self.elements = mesh.splitting
+        self.contour = mesh.contour
+        self.t_span = t_span
+        self.t_eval = t_eval
 
-    x1, x2 = symbols('x_1 x_2')
-
-    def check_boundary(element, number):
+    def on_boundary(self, element, number):
         if element[1].number == number:
             x, y = element[1].x, element[1].y
         elif element[2].number == number:
@@ -53,159 +49,108 @@ def solve(t_span, t_eval, mesh):
         else:
             return False
 
-        for point in mesh.contour:
+        for point in self.contour:
             if (abs(float(point[0] - x)) < 1e-6) and (abs(float(point[1] - y)) < 1e-6):
                 return True
         return False
 
-    def solve_element(sysfun, element, variables):
+    def calculate_element(self, sys_fun, element, variables):
         print('I am alive')
 
+        x1, x2 = symbols('x_1 x_2')
         f_eq1 = 0
         f_eq2 = 0
         f_eq3 = 0
-        for k in range(0, M):
-            N_k = element.get_basic_function_by_number(k)
+        for k in range(0, self.M):
+            n_k = element.get_basic_function_by_number(k)
             weight_functions = 0
-            for l in range(0, M):
-                W_l = element.get_basic_function_by_number(l)
-                weight_functions += W_l
-
-
-                print('I am still alive. eq1')
+            print('I am still alive. [element=%s, k=%d]' % (str(element), k))
+            for l in range(0, self.M):
+                w_l = element.get_basic_function_by_number(l)
+                weight_functions += w_l
                 f_eq1 += \
-                    + element.integrate(W_l * diff(
-                        -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
-                        variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
-                    + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x1)) \
-                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
+                    + element.integrate(w_l * diff(
+                        -P_a * H0 - P_a * variables[2 * self.M + k] * n_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                        variables[2 * self.M + k] * n_k - g * rho / 2 * variables[2 * self.M + k] ** 2 * n_k ** 2, x1)) \
+                    + element.integrate(P_a * w_l * diff(H0 + variables[2 * self.M + k] * n_k, x1)) \
+                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * w_l) \
                     - element.integrate(
-                        (gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
-                            variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+                        (gc2 * w_l * variables[k] / (rho * H0 ** 2) * variables[2 * self.M + k] ** 2 * n_k) * sqrt(
+                            variables[k] ** 2 * n_k ** 2 + variables[self.M + k] ** 2 * n_k ** 2))
 
-                print('I am still alive. eq2')
                 f_eq2 += \
-                    + element.integrate(W_l * diff(
-                        -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
-                        variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
-                    + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
-                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
+                    + element.integrate(w_l * diff(
+                        -P_a * H0 - P_a * variables[2 * self.M + k] * n_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                        variables[2 * self.M + k] * n_k - g * rho / 2 * variables[2 * self.M + k] ** 2 * n_k ** 2, x2)) \
+                    + element.integrate(P_a * w_l * diff(H0 + variables[2 * self.M + k] * n_k, x2)) \
+                    + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * w_l) \
                     - element.integrate(
-                        (gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
-                            variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+                        (gc2 * w_l * variables[self.M + k] / (rho * H0 ** 2) * variables[
+                            2 * self.M + k] ** 2 * n_k) * sqrt(
+                            variables[k] ** 2 * n_k ** 2 + variables[self.M + k] ** 2 * n_k ** 2))
 
-                print('I am still alive. eq3')
                 f_eq3 += \
-                    - element.integrate(W_l * diff(N_k, x1)) * variables[k] \
-                    - element.integrate(W_l * diff(N_k, x2)) * variables[M + k]
+                    - element.integrate(w_l * diff(n_k, x1)) * variables[k] \
+                    - element.integrate(w_l * diff(n_k, x2)) * variables[self.M + k]
 
-            coefficient_of_d_eq1 = element.integrate(weight_functions * N_k)
-            coefficient_of_d_eq2 = element.integrate(weight_functions * N_k)
-            coefficient_of_d_eq3 = element.integrate(rho * weight_functions * N_k)
+            coefficient_of_d_eq1 = element.integrate(weight_functions * n_k)
+            coefficient_of_d_eq2 = element.integrate(weight_functions * n_k)
+            coefficient_of_d_eq3 = element.integrate(rho * weight_functions * n_k)
 
             if coefficient_of_d_eq1 != 0:
-                if check_boundary(element, k):
-                    sysfun[k] = 0
+                if self.on_boundary(element, k):
+                    sys_fun[k] = 0
                 else:
-                    sysfun[k] = float((f_eq1.doit() / coefficient_of_d_eq1))
+                    sys_fun[k] = float((f_eq1.doit() / coefficient_of_d_eq1))
 
             if coefficient_of_d_eq2 != 0:
-                if check_boundary(element, k):
-                    sysfun[M + k] = 0
+                if self.on_boundary(element, k):
+                    sys_fun[self.M + k] = 0
                 else:
-                    sysfun[M + k] = float((f_eq2.doit() / coefficient_of_d_eq2))
+                    sys_fun[self.M + k] = float((f_eq2.doit() / coefficient_of_d_eq2))
 
             if coefficient_of_d_eq3 != 0:
-                if check_boundary(element, k):
-                    sysfun[2 * M + k] = 0
+                if self.on_boundary(element, k):
+                    sys_fun[2 * self.M + k] = 0
                 else:
-                    sysfun[2 * M + k] = float((f_eq3.doit() / coefficient_of_d_eq3))
+                    sys_fun[2 * self.M + k] = float((f_eq3.doit() / coefficient_of_d_eq3))
 
         print('I am dead')
 
+    def system(self, time, variables):
+        print('time = %s' % time)
 
-    def system(time, variables):
-        print('time=%s' % time)
-
+        sys_fun = Manager().list([0] * (3 * self.M))
         tasks = []
 
-        for element in elements:
-            #thread = threading.Thread(target=solve_element, args=(sysfun, element, variables))
-            process = Process(target=solve_element, args=(sysfun, element, variables))
+        for element in self.elements:
+            # thread = Thread(target=solve_element, args=(sys_fun, element, variables))
+            process = Process(target=self.calculate_element, args=(sys_fun, element, variables))
             tasks.append(process)
 
         for task in tasks:
             task.start()
 
-        # Wait for all to complete
         for task in tasks:
             task.join()
 
-        print('sysfun=%s\n' % sysfun)
+        print('system of functions = %s\n' % sys_fun)
 
-        return sysfun
+        return sys_fun
 
+    def solve(self):
+        # TODO: create time decorator for this function
+        print('Number of elements = %d' % self.M)
+        y0 = [0] * (3 * self.M)
+        solution = solve_ivp(self.system,
+                             y0=y0,
+                             t_span=self.t_span,
+                             t_eval=self.t_eval,
+                             method='RK45',
+                             rtol=1e-3,
+                             atol=1e-3)
 
-    y0 = [0] * (3 * M)
-    solution = solve_ivp(system, t_span=t_span, y0=y0, method='RK45', t_eval=t_eval, rtol=1e-3, atol=1e-3)
+        print(solution.y)
+        print(solution.t)
 
-    a = solution.y
-    times = solution.t
-    print(a)
-    print(times)
-
-    q1_data = []
-    q2_data = []
-    H_data = []
-
-    psi1_data = []
-    psi2_data = []
-
-    for ind in range(0, len(times)):
-        q1_plt = []
-        q2_plt = []
-        H_plt = []
-
-        # q1 = dψ/dx2
-        psi1_plt = []
-        # q2 = - dψ/dx1
-        psi2_plt = []
-
-        for point in mesh.points:
-            x1, x2 = point[0], point[1]
-            q1 = 0
-            q2 = 0
-            H = 0
-
-            for element in elements:
-                if element.contain(Point(x1, x2)):
-                    i, j, k = element.vertices_number
-
-                    sub = {
-                        symbols('x_1'): x1,
-                        symbols('x_2'): x2
-                    }
-
-                    N_i = (element.get_basic_function_by_number(i)).subs(sub)
-                    N_j = (element.get_basic_function_by_number(j)).subs(sub)
-                    N_k = (element.get_basic_function_by_number(k)).subs(sub)
-
-                    q1 += a[i][ind] * N_i + a[j][ind] * N_j + a[k][ind] * N_k
-                    q2 += a[i + M][ind] * N_i + a[j + M][ind] * N_j + a[k + M][ind] * N_k
-                    H += a[i + 2 * M][ind] * N_i + a[j + 2 * M][ind] * N_j + a[k + 2 * M][ind] * N_k
-
-            q1_plt.append([x1, x2, q1])
-            q2_plt.append([x1, x2, q2])
-            H_plt.append([x1, x2, H])
-
-            psi1_plt.append([x1, x2, integrate(q1, x2).subs(Symbol('x_2'), x2)])
-            psi2_plt.append([x1, x2, -integrate(q1, x1).subs(Symbol('x_1'), x1)])
-
-        q1_data.append(array(q1_plt))
-        q2_data.append(array(q2_plt))
-        H_data.append(array(H_plt))
-
-        psi1_data.append(array(psi1_plt))
-        psi2_data.append(array(psi2_plt))
-
-    return q1_data, q2_data, H_data, psi1_data, psi2_data, a, times
+        return solution.y, solution.t

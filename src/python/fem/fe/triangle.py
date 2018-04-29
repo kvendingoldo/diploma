@@ -14,7 +14,7 @@ class Triangle(object):
     The class Triangle represents a 2D triangle
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args):
         self.points = []
 
         s = len(args)
@@ -64,29 +64,30 @@ class Triangle(object):
                      ((self[1].y + self[2].y + self[3].y) / 3))
 
     def contain(self, point):
-        return ((self[1].x == point.x and self[1].y == point.y) or (self[2].x == point.x and self[2].y == point.y) or (self[3].x == point.x and self[3].y == point.y))
+        return ((self[1].x == point.x and self[1].y == point.y) or (self[2].x == point.x and self[2].y == point.y) or (
+                self[3].x == point.x and self[3].y == point.y))
 
     @property
     def vertices_number(self):
         return self[1].number, self[2].number, self[3].number
 
     def get_basic_functions(self):
-        A = [[self[1].x, self[1].y, 1],
-             [self[2].x, self[2].y, 1],
-             [self[3].x, self[3].y, 1]]
+        system = [[self[1].x, self[1].y, 1],
+                  [self[2].x, self[2].y, 1],
+                  [self[3].x, self[3].y, 1]]
 
         x1, x2 = symbols('x_1 x_2')
 
         f = [1, 0, 0]
-        solution = np.linalg.solve(A, f)
+        solution = np.linalg.solve(system, f)
         basic_i = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         f = [0, 1, 0]
-        solution = np.linalg.solve(A, f)
+        solution = np.linalg.solve(system, f)
         basic_j = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         f = [0, 0, 1]
-        solution = np.linalg.solve(A, f)
+        solution = np.linalg.solve(system, f)
         basic_k = solution[0] * x1 + solution[1] * x2 + solution[2]
 
         return basic_i, basic_j, basic_k
@@ -111,7 +112,6 @@ class Triangle(object):
                                                            self.points[1].x, self.points[1].y,
                                                            self.points[2].x, self.points[2].y)
 
-    @property
     def area(self):
         a = np.sqrt((self[2].y - self[3].y) ** 2 + (self[2].x - self[3].x) ** 2)
         b = np.sqrt((self[1].y - self[3].y) ** 2 + (self[1].x - self[3].x) ** 2)
@@ -171,4 +171,4 @@ class Triangle(object):
             func = func.subs({symbols('x_1'): x_1,
                               symbols('x_2'): x_2})
 
-        return 2 * self.area * sp_integrate(func, (λ1, 0, 1 - λ2), (λ2, 0, 1)).doit()
+        return 2 * self.area() * sp_integrate(func, (λ1, 0, 1 - λ2), (λ2, 0, 1)).doit()
