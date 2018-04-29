@@ -58,8 +58,8 @@ def get_functions(mesh, solution, times):
             q2_at_time.append([x1, x2, q2])
             H_at_time.append([x1, x2, H])
 
-            psi1_at_time.append([x1, x2, integrate(q1, x2).subs(Symbol('x_2'), x2)])
-            psi2_at_time.append([x1, x2, -integrate(q1, x1).subs(Symbol('x_1'), x1)])
+            psi1_at_time.append([x1, x2, integrate(q1, Symbol('x_2')).subs(Symbol('x_2'), x2)])
+            psi2_at_time.append([x1, x2, -integrate(q1, Symbol('x_1')).subs(Symbol('x_1'), x1)])
 
         q1_data.append(array(q1_at_time))
         q2_data.append(array(q2_at_time))

@@ -5,18 +5,17 @@ import datetime
 
 from data import mesh as m
 from algorithm import fem_mp as fem
-from algorithm import functions_builder
+from algorithm.functions_builder import get_functions
 from data.plot import tri_plot
 from utils import gif
 from data.save import np_array
 from data.plot import contour_lines as cs
 
+#DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
-DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-#DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-
-RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
-#RESOURCES_DIR = '/opt/diploma/resources'
+#RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
+RESOURCES_DIR = '/opt/diploma/resources'
 
 SURF_DIR = '%s/surf' % DATA_DIR
 FRAME_DIR = '%s/frame' % DATA_DIR
@@ -25,7 +24,7 @@ JSON_DIR = '%s/json' % DATA_DIR
 
 # NOTE: Good mesh is pqas.001D
 MESH_TYPE = 'pq10IaDX'
-MESH_FILENAME = 'pond_without_islands_4e.poly'
+MESH_FILENAME = 'pond_with_islands.poly'
 
 
 def main():
@@ -43,10 +42,10 @@ def main():
 
     solution, times = fem.Solver(mesh, t_span, t_eval).solve()
 
-    q1, q2, H, psi1, psi2 = functions_builder(mesh, solution, times)
-
     np_array.write(JSON_DIR, 'solution.json', solution)
     np_array.write(JSON_DIR, 'times.json', times)
+
+    q1, q2, H, psi1, psi2 = get_functions(mesh, solution, times)
 
     # surface q1
     tri_plot.draw_3d_surf(SURF_DIR, 'q_1', q1, times)

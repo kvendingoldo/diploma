@@ -75,7 +75,7 @@ def draw_3d_surf(path, title, functions, times, view='surface'):
 
         plotx, ploty, = np.meshgrid(np.linspace(np.min(X), np.max(X), 10), \
                                     np.linspace(np.min(Y), np.max(Y), 10))
-        plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='linear')
+        plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
         # Explanation: TODO
         plotz[plotz < 0.] = 0
