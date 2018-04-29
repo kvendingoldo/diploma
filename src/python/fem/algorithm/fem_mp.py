@@ -65,7 +65,7 @@ class Solver(object):
         for k in range(0, self.M):
             n_k = element.get_basic_function_by_number(k)
             weight_functions = 0
-            #print('I am still alive. [element=%s, k=%d]' % (str(element), k))
+            print('I am still alive. [element=%s, k=%d]' % (str(element), k))
             for l in range(0, self.M):
                 w_l = element.get_basic_function_by_number(l)
                 weight_functions += w_l

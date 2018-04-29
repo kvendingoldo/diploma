@@ -1,14 +1,16 @@
 #!/bin/bash
 
 CONTAINER_NAME='kvendingoldo-diploma-fem'
-IMAGE_NAME='kvendingoldo/diploma:fem'
+
+IMAGE_TAG='fem'
+IMAGE_NAME='kvendingoldo/diploma'
 
 function parse_args() {
   local OPTIND
   while getopts 'I:C:' opt; do
     case "${opt}" in
       I)
-        IMAGE_NAME="${OPTARG}"
+        IMAGE_TAG="${OPTARG}"
         ;;
       C)
         CONTAINER_NAME="${OPTARG}"
@@ -32,7 +34,7 @@ function main() {
   	--log-driver json-file \
   	--name=${CONTAINER_NAME} \
   	-v /home/asharov/data:/data \
-  	${IMAGE_NAME} \
+  	${IMAGE_NAME}:${IMAGE_TAG} \
   	python3 -u main.py
 
   echo "[INFO] End time: $(date +%F-%H%M)"

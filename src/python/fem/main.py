@@ -22,10 +22,11 @@ FRAME_DIR = '%s/frame' % DATA_DIR
 WAVE_DIR = '%s/wave' % DATA_DIR
 JSON_DIR = '%s/json' % DATA_DIR
 
-# NOTE: Good mesh is pqas.001D
-# pq10IaDX
-MESH_TYPE = 'pqIaDX'
-MESH_FILENAME = 'pond_with_islands.poly'
+# NOTE:
+# Good mesh: pqIaD
+# Worse mesh: pq10IaDX
+MESH_TYPE = 'pqIaD'
+MESH_FILENAME = 'lake_elton.poly'
 
 
 def main():
