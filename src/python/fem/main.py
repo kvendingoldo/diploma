@@ -4,12 +4,11 @@
 import datetime
 
 from data import mesh as m
-from algorithm import fem_old as fem
+from algorithm import fem_mp as fem
 from data.plot import tri_plot
 from utils import gif
 from data.save import np_array
 from data.plot import contour_lines as cs
-from db import mongo
 
 #DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
@@ -22,8 +21,9 @@ FRAME_DIR = '%s/frame' % DATA_DIR
 WAVE_DIR = '%s/wave' % DATA_DIR
 JSON_DIR = '%s/json' % DATA_DIR
 
-MESH_TYPE = 'pqas.001D'
-MESH_FILENAME = 'pond_without_islands_4e.poly'
+# pqas.001D
+MESH_TYPE = 'pq10IaDX'
+MESH_FILENAME = 'lake_elton.poly'
 
 
 def main():
@@ -35,9 +35,9 @@ def main():
     #mesh.draw_contour()
 
     # interval of integration (t0, tf)
-    t_span = (1.90, 1.92)
+    t_span = (1.90, 1.91)
     # times at which to store the computed solution, must be sorted and lie within t_span
-    t_eval = [1.91]
+    t_eval = [1.905]
 
     q1, q2, H, psi1, psi2, raw_solution, times = fem.solve(t_span, t_eval, mesh)
 

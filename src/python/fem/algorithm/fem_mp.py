@@ -2,13 +2,10 @@
 # @Author: Alexander Sharov
 
 from sympy import *
-from numpy import array, abs, zeros
+from numpy import array, abs
 from scipy.integrate import solve_ivp
 from time import sleep
-
-#import threading
 from multiprocessing import Process, Manager
-
 
 from geometry.point import Point
 
@@ -38,8 +35,6 @@ H0 = 0.01
 def solve(t_span, t_eval, mesh):
     M = mesh.quantity
     sysfun = Manager().list([0] * (3 * M))
-    #sysfun = Array(zeros(shape=(3 * M)))
-
     print('Number of elements = %d' % M)
     elements = mesh.splitting
 
@@ -61,7 +56,7 @@ def solve(t_span, t_eval, mesh):
         return False
 
     def solve_element(sysfun, element, variables, calculated):
-        #print('I am alive')
+        print('I am alive')
 
         f_eq1 = 0
         f_eq2 = 0
@@ -74,16 +69,24 @@ def solve(t_span, t_eval, mesh):
                 weight_functions += W_l
 
                 f_eq1 += \
-                    + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
+                    + element.integrate(W_l * diff(
+                        -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                        variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x1)) \
                     + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x1)) \
                     + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
-                    - element.integrate((gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+                    - element.integrate(
+                        (gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
+                            variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
                 f_eq2 += \
-                    + element.integrate(W_l * diff(-P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 * variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
+                    + element.integrate(W_l * diff(
+                        -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                        variables[2 * M + k] * N_k - g * rho / 2 * variables[2 * M + k] ** 2 * N_k ** 2, x2)) \
                     + element.integrate(P_a * W_l * diff(H0 + variables[2 * M + k] * N_k, x2)) \
                     + element.integrate(sqrt(2) / 2 * W ** 2 * gamma * rho_a * W_l) \
-                    - element.integrate((gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
+                    - element.integrate(
+                        (gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
+                            variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
                 f_eq3 += \
                     - element.integrate(W_l * diff(N_k, x1)) * variables[k] \
@@ -110,15 +113,13 @@ def solve(t_span, t_eval, mesh):
                     sysfun[2 * M + k] = 0
                 else:
                     sysfun[2 * M + k] = float((f_eq3.doit() / coefficient_of_d_eq3))
-        #calculated[element] = True
 
-        #print('I am dead')
+        print('I am dead')
         calculated.value += 1
 
     def system(time, variables):
         print('time=%s' % time)
 
-        print(sysfun)
         calculated = Manager().Value('i', 0)
 
         for element in elements:
@@ -126,8 +127,8 @@ def solve(t_span, t_eval, mesh):
             p.start()
 
         while calculated.value != len(elements):
-            #not all(calculated.values()):
-            #print(calculated.value)
+            # not all(calculated.values()):
+            # print(calculated.value)
             sleep(1)
         calculated.value = 0
 
@@ -135,7 +136,8 @@ def solve(t_span, t_eval, mesh):
 
         return sysfun
 
-    y0 = zeros(3 * M)
+
+    y0 = [0] * (3 * M)
     solution = solve_ivp(system, t_span=t_span, y0=y0, method='RK45', t_eval=t_eval, rtol=1e-3, atol=1e-3)
 
     a = solution.y
