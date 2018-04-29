@@ -68,6 +68,8 @@ def solve(t_span, t_eval, mesh):
                 W_l = element.get_basic_function_by_number(l)
                 weight_functions += W_l
 
+
+                print('I am still alive. eq1')
                 f_eq1 += \
                     + element.integrate(W_l * diff(
                         -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
@@ -78,6 +80,7 @@ def solve(t_span, t_eval, mesh):
                         (gc2 * W_l * variables[k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
                             variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
+                print('I am still alive. eq2')
                 f_eq2 += \
                     + element.integrate(W_l * diff(
                         -P_a * H0 - P_a * variables[2 * M + k] * N_k - ((g * rho / 2) * H0 ** 2) - g * rho * H0 *
@@ -88,6 +91,7 @@ def solve(t_span, t_eval, mesh):
                         (gc2 * W_l * variables[M + k] / (rho * H0 ** 2) * variables[2 * M + k] ** 2 * N_k) * sqrt(
                             variables[k] ** 2 * N_k ** 2 + variables[M + k] ** 2 * N_k ** 2))
 
+                print('I am still alive. eq3')
                 f_eq3 += \
                     - element.integrate(W_l * diff(N_k, x1)) * variables[k] \
                     - element.integrate(W_l * diff(N_k, x2)) * variables[M + k]
@@ -142,6 +146,8 @@ def solve(t_span, t_eval, mesh):
 
     a = solution.y
     times = solution.t
+    print(a)
+    print(times)
 
     q1_data = []
     q2_data = []

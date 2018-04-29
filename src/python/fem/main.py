@@ -23,7 +23,7 @@ JSON_DIR = '%s/json' % DATA_DIR
 
 # pqas.001D
 MESH_TYPE = 'pq10IaDX'
-MESH_FILENAME = 'lake_elton.poly'
+MESH_FILENAME = 'pond_without_islands_4e.poly'
 
 
 def main():
@@ -76,3 +76,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#mlib.to_pickable(self._mpf_),)

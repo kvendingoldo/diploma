@@ -27,10 +27,10 @@ class Point(object):
             raise ValueError()
 
     def set_x(self, value):
-        self.points[0] = float(value)
+        self.points[0] = value
 
     def set_y(self, value):
-        self.points[1] = float(value)
+        self.points[1] = value
 
     def __init__(self, *args, **kwargs):
         self.points = []

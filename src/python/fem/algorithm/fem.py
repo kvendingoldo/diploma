@@ -9,8 +9,7 @@ import os
 import threading
 from multiprocessing import Process, Pool
 from multiprocessing.pool import ThreadPool
-
-
+from fe.triangle import Triangle
 from geometry.point import Point
 
 # CONSTANTS
@@ -142,12 +141,22 @@ def solve(t_span, t_eval, mesh):
             #    pool.apply_async(element_solver.solve_element, args=(element,))
 
         #pool = ThreadPool(processes=4)
-        pool = Pool(processes=4)
+        pool = Pool(processes=4, maxtasksperchild=2)
         #[pool.apply(element_solver.solve_element, args=(element,)) for element in elements]
-        pool.map(element_solver.solve_element, elements)
+
+        #from functools import partial
+        #func = partial(element_solver.solve_element)
+
+        pool.apply(element_solver.solve_element, elements)
+        pool.close()
+        pool.join()
         #pool.close()
         #pool.join()
 
+        #import pickle
+        #print(pickle.dumps(element_solver.solve_element))
+        #print(elements)
+        #return
 
 
 

@@ -8,7 +8,13 @@ def fun(t, N1):
     return -100 * N1 + input
 
 
-N0 = 0
+#N0 = 0
 
-sol = solve_ivp(fun=fun, t_span=[1.2, 1.25], t_eval=[1.23], y0=[N0], rtol=1e-2, atol=1e-2)
+#sol = solve_ivp(fun=fun, t_span=[1.2, 1.25], t_eval=[1.23], y0=[N0], rtol=1e-2, atol=1e-2)
 #, t_eval=[1, 1.1, 1.2]
+
+
+mlib.to_pickable()
+
+
+1.000000_mpf_

@@ -59,7 +59,6 @@ class Triangle(object):
         return Point(((triangle[1].x + triangle[2].x + triangle[3].x) / 3),
                      ((triangle[1].y + triangle[2].y + triangle[3].y) / 3))
 
-    @property
     def centroid(self):
         return Point(((self[1].x + self[2].x + self[3].x) / 3),
                      ((self[1].y + self[2].y + self[3].y) / 3))
