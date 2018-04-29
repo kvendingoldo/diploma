@@ -28,7 +28,7 @@ function main() {
   echo "[INFO] Start time: $(date +%F-%H%M)"
   docker rm -f ${CONTAINER_NAME}
   docker run -d \
-  	--cpus=2.000 \
+  	--cpus=6.000 \
   	--log-driver json-file \
   	--name=${CONTAINER_NAME} \
   	-v /home/asharov/data:/data \
