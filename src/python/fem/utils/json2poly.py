@@ -30,4 +30,5 @@ def json2poly(file):
     print('0')
 
 
+# TODO: delete it
 json2poly('/Users/ashraov/projects/study/diploma/resources/json/lake_elton_new.json')

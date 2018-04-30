@@ -1,0 +1,35 @@
+{
+    "date": <date>,
+    "images": {
+        "frame": {
+            "fluid_flow": {
+                "1": frame_q1_id,
+                "2": frame_q2_id
+            },
+            "surface_elevation": frame_H_id
+        },
+        "surface": {
+            "fluid_flow": {
+                "1": surf_q1_id,
+                "2": surf_q2_id
+            },
+            "surface_elevation": surf_H_id
+        },
+        "stream_function": {
+            "1": wave_psi1_id,
+            "2": wave_psi2_id
+        }
+    },
+    "solution": {
+        "matrix": <matrix_data>,
+        "times": <times_data>
+    },
+    "meta": {
+        "mesh": {
+            "type": mesh_type,
+            "name": mesh_name
+        },
+        "execution_time": <time>,
+        "quantity_of_basis_functions": <quantity_of_fe)>
+    }
+}

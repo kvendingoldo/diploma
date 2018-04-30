@@ -25,7 +25,7 @@ JSON_DIR = '%s/json' % DATA_DIR
 # NOTE:
 # Good mesh: pqIaD
 # Worse mesh: pq10IaDX
-MESH_TYPE = 'pq5IaD'
+MESH_TYPE = 'pqIaD'
 MESH_FILENAME = 'lake_elton_tmp.poly'
 
 
