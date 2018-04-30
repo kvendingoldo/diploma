@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONTAINER_NAME='kvendingoldo-diploma-fem'
+CONTAINER_NAME='kvendingoldo-diploma'
+CONTAINER_POSTFIX='fem'
 
 IMAGE_TAG='fem'
 IMAGE_NAME='kvendingoldo/diploma'
@@ -13,7 +14,7 @@ function parse_args() {
         IMAGE_TAG="${OPTARG}"
         ;;
       C)
-        CONTAINER_NAME="${OPTARG}"
+        CONTAINER_POSTFIX="${OPTARG}"
         ;;
       \?)
         echo "[ERROR]: Invalid option: -${opt}"
@@ -32,9 +33,9 @@ function main() {
   docker run -d \
   	--cpus=6.000 \
   	--log-driver json-file \
-  	--name=${CONTAINER_NAME} \
+  	--name="${CONTAINER_NAME}-${CONTAINER_POSTFIX}" \
   	-v /home/asharov/data:/data \
-  	${IMAGE_NAME}:${IMAGE_TAG} \
+  	"${IMAGE_NAME}:${IMAGE_TAG}" \
   	python3 -u main.py
 
   echo "[INFO] End time: $(date +%F-%H%M)"

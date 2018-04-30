@@ -28,3 +28,6 @@ def json2poly(file):
     print('1')
     print('1 0 0')
     print('0')
+
+
+json2poly('/Users/ashraov/projects/study/diploma/resources/json/lake_elton_new.json')

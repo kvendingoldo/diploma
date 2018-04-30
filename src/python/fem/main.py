@@ -11,11 +11,11 @@ from utils import gif
 from data.save import np_array
 from data.plot import contour_lines as cs
 
-#DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
-DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+#DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
-#RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
-RESOURCES_DIR = '/opt/diploma/resources'
+RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
+#RESOURCES_DIR = '/opt/diploma/resources'
 
 SURF_DIR = '%s/surf' % DATA_DIR
 FRAME_DIR = '%s/frame' % DATA_DIR
@@ -25,8 +25,8 @@ JSON_DIR = '%s/json' % DATA_DIR
 # NOTE:
 # Good mesh: pqIaD
 # Worse mesh: pq10IaDX
-MESH_TYPE = 'pqIaD'
-MESH_FILENAME = 'lake_elton.poly'
+MESH_TYPE = 'pq5IaD'
+MESH_FILENAME = 'lake_elton_tmp.poly'
 
 
 def main():
@@ -34,8 +34,11 @@ def main():
     mesh.generate(MESH_TYPE)
     mesh.generate_contour()
 
-    #mesh.show()
+    mesh.show()
+    print(mesh.quantity)
     #mesh.draw_contour()
+    return
+
 
     # interval of integration (t0, tf)
     t_span = [1.90, 1.91]
