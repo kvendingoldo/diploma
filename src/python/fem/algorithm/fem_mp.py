@@ -31,7 +31,7 @@ H0 = 0.01
 
 
 class Solver(object):
-    def __init__(self, mesh, t_span, t_eval):
+    def __init__(self, max_tasks, mesh, t_span, t_eval):
         self.mesh = mesh
         self.M = mesh.quantity
         self.elements = mesh.splitting
@@ -39,6 +39,7 @@ class Solver(object):
         self.t_span = t_span
         self.t_eval = t_eval
         self.sys_fun = Manager().list([0] * (3 * self.M))
+        self.max_tasks = max_tasks
 
     def on_boundary(self, element, number):
         if element[1].number == number:
@@ -121,18 +122,31 @@ class Solver(object):
     def system(self, time, variables):
         print('time = %s' % time)
 
-        tasks = []
+        elements_copy = self.elements.copy()
 
-        for element in self.elements:
-            # thread = Thread(target=solve_element, args=(sys_fun, element, variables))
-            process = Process(target=self.calculate_element, args=(element, variables))
-            tasks.append(process)
+        if self.max_tasks > 0:
+            while len(elements_copy) > 0:
+                tasks = []
+                cur_len = len(elements_copy)
 
-        for task in tasks:
-            task.start()
+                for ind in range(0, self.max_tasks):
+                    if ind < cur_len:
+                        # thread = Thread(target=self.calculate_element, args=(elements_copy[ind], variables))
+                        process = Process(target=self.calculate_element, args=(elements_copy[ind], variables))
+                    else:
+                        continue
+                    tasks.append(process)
 
-        for task in tasks:
-            task.join()
+                for task in tasks:
+                    task.start()
+
+                for task in tasks:
+                    task.join()
+
+                if self.max_tasks < cur_len:
+                    elements_copy = elements_copy[self.max_tasks:]
+                else:
+                    break
 
         print('system of functions = %s\n' % self.sys_fun)
 

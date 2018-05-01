@@ -26,7 +26,8 @@ JSON_DIR = '%s/json' % DATA_DIR
 # Good mesh: pqIaD
 # Worse mesh: pq10IaDX
 MESH_TYPE = 'pqIaD'
-MESH_FILENAME = 'lake_elton_tmp.poly'
+MESH_FILENAME = 'pond_without_islands_4e.poly'
+MAX_PROCESSES = 256
 
 
 def main():
@@ -34,18 +35,16 @@ def main():
     mesh.generate(MESH_TYPE)
     mesh.generate_contour()
 
-    mesh.show()
-    print(mesh.quantity)
+    #mesh.show()
+    #print(mesh.quantity)
     #mesh.draw_contour()
-    return
-
 
     # interval of integration (t0, tf)
     t_span = [1.90, 1.91]
     # times at which to store the computed solution, must be sorted and lie within t_span
     t_eval = [1.902, 1.905, 1.908]
 
-    solution, times = fem.Solver(mesh, t_span, t_eval).solve()
+    solution, times = fem.Solver(MAX_PROCESSES, mesh, t_span, t_eval).solve()
 
     np_array.write(JSON_DIR, 'solution.json', solution)
     np_array.write(JSON_DIR, 'times.json', times)
