@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
+import time
+
 from sympy import *
 from numpy import abs
 from scipy.integrate import solve_ivp
@@ -153,7 +155,7 @@ class Solver(object):
         return self.sys_fun
 
     def solve(self):
-        # TODO: create time decorator for this function
+        start_time = time.process_time()
         print('Number of elements = %d' % self.M)
         y0 = [0] * (3 * self.M)
         solution = solve_ivp(self.system,
@@ -164,7 +166,10 @@ class Solver(object):
                              rtol=1e-3,
                              atol=1e-3)
 
+        # it needs only for debug
         print(solution.y)
         print(solution.t)
 
-        return solution.y, solution.t
+        execution_time = time.process_time() - start_time
+
+        return solution.y, solution.t, execution_time
