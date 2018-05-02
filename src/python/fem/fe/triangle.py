@@ -126,6 +126,7 @@ class Triangle(object):
                         (np.random.uniform(0, 1000), np.random.uniform(0, 1000)))
 
     def integrate_by_jac(self, func):
+        """Deprecated method for integrate over triangle"""
         def d_j(x1, x2):
             """Jacobian scaling factor"""
             u, v = symbols('u v')
@@ -156,7 +157,7 @@ class Triangle(object):
         return sp_integrate(func, (v, 0, 1), (u, 0, 1)).doit()
 
     def integrate(self, func):
-        """barycentric coordinates"""
+        """integrate over triangle through barycentric coordinates"""
 
         x1, y1 = self[1].x, self[1].y
         x2, y2 = self[2].x, self[2].y

@@ -155,7 +155,7 @@ class Solver(object):
         return self.sys_fun
 
     def solve(self):
-        start_time = time.process_time()
+        start_time = time.time()
         print('Number of elements = %d' % self.M)
         y0 = [0] * (3 * self.M)
         solution = solve_ivp(self.system,
@@ -170,6 +170,6 @@ class Solver(object):
         print(solution.y)
         print(solution.t)
 
-        execution_time = time.process_time() - start_time
+        execution_time = (time.time() - start_time) / 60
 
         return solution.y, solution.t, execution_time

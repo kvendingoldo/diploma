@@ -15,8 +15,8 @@ from utils import find
 def draw_psi_2d(path, title, functions, times):
     os.makedirs(path + '/' + title, exist_ok=True)
 
-    x_max = find.x_max(functions)
-    y_max = find.y_max(functions)
+    x_max = find.maximum(functions, 'x')
+    y_max = find.maximum(functions, 'y')
 
     for func, time in zip(functions, times):
         fig = plt.figure()

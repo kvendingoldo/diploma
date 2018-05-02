@@ -45,7 +45,7 @@ def main():
     t_eval = [1.902, 1.905, 1.908]
 
     solution, times, execution_time = fem.Solver(MAX_PROCESSES, mesh, t_span, t_eval).solve()
-    print('fem works for %s' % str(execution_time))
+    print('fem algorithm worked for %s minutes' % str(execution_time))
 
     np_array.write(JSON_DIR, 'solution.json', solution)
     np_array.write(JSON_DIR, 'times.json', times)

@@ -20,7 +20,7 @@ plt.rcParams.update({'figure.max_open_warning': 0})
 def draw_3d_frame(path, title, functions, times):
     os.makedirs(path + '/' + title, exist_ok=True)
 
-    z_max = find.z_max(functions)
+    z_max = find.maximum(functions, 'z')
 
     for func, time in zip(functions, times):
         date = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
@@ -56,7 +56,7 @@ def draw_3d_frame(path, title, functions, times):
 def draw_3d_surf(path, title, functions, times, view='surface'):
     os.makedirs(path + '/' + title, exist_ok=True)
 
-    z_max = find.z_max(functions)
+    z_max = find.maximum(functions, 'z')
 
     for func, time in zip(functions, times):
         fig = plt.figure()

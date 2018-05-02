@@ -52,7 +52,8 @@ def get_functions(mesh, solution, times):
 
                     q1 += solution[i][ind] * n_i + solution[j][ind] * n_j + solution[k][ind] * n_k
                     q2 += solution[i + M][ind] * n_i + solution[j + M][ind] * n_j + solution[k + M][ind] * n_k
-                    H += solution[i + 2 * M][ind] * n_i + solution[j + 2 * M][ind] * n_j + solution[k + 2 * M][ind] * n_k
+                    H += solution[i + 2 * M][ind] * n_i + solution[j + 2 * M][ind] * n_j + solution[k + 2 * M][
+                        ind] * n_k
 
             q1_at_time.append([x1, x2, q1])
             q2_at_time.append([x1, x2, q2])
@@ -68,4 +69,4 @@ def get_functions(mesh, solution, times):
         psi1_data.append(array(psi1_at_time))
         psi2_data.append(array(psi2_at_time))
 
-        return q1_data, q2_data, H_data, psi1_data, psi2_data
+    return q1_data, q2_data, H_data, psi1_data, psi2_data
