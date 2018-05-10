@@ -78,7 +78,7 @@ def draw_3d_surf(path, title, functions, times, view='surface'):
         plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
         # Explanation: TODO
-        plotz[plotz < 0.] = 0
+        plotz[plotz < 0] = 0
 
         if view == 'surface':
             ax.plot_surface(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')
