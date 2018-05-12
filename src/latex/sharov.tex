@@ -1037,35 +1037,105 @@ TODO: код будет добавлен в самом конце, после т
  
 \chapter{Выкладки для МКЭ}
 
-Запишем уравнение неразрывности:
+ Для более краткой записи выкладок не будем записывать зависимость весовых функций от $(x_1, x_2)$, а переменных $a_k, a_{m+k}, a_{2m+k}$ от времени $t$.
+
+\section{Уравнение неразрывности}
+
+Запишем исходный вид уравнения:
+
 \begin{eqnarray}
-\frac{d}{d x_{1}} q_{1} + \frac{d}{d x_{2}} q_{2} + \frac{\partial}{\partial t}\left(H \rho\right) = 0
+\dfrac{d}{d x_{1}} q_{1} + \dfrac{d}{d x_{2}} q_{2} + \dfrac{\partial}{\partial t}\left(H \rho\right) = 0
 \end{eqnarray}
 
 
 Подставим в него разложения $q_1$, $q_2$, $H$:
 
 \begin{multline*}
-\frac{\partial}{\partial t}\bigg(\rho \bigg(\operatorname{H_{0}}{ (x_{1},x_{2}  )}+ \sum_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2},k  )} \operatorname{a_{2m+k}}{ (t  )}\bigg)\bigg) + \\\frac{\partial}{\partial x_{1}} \sum_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2},k  )} \operatorname{a_{k}}{ (t  )} + \frac{\partial}{\partial x_{2}} \sum_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2},k  )} \operatorname{a_{m+k}}{ (t  )} = 0
+\dfrac{\partial}{\partial t}\bigg(\rho \bigg(\operatorname{H_{0}}+ \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)\bigg)+\dfrac{\partial}{\partial x_{1}} \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}} + \dfrac{\partial}{\partial x_{2}} \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}=0
 \end{multline*}
 
 Умножим уравнение на $\sum\limits_{l=1}^{M} W_l$, где $W_l$ - весовая функция, и проинтегрируем по треугольнику $\Delta$:
 
 \begin{multline*}
-\sum_{l=1}^{M} \int\limits_{\Delta} \bigg(\rho \sum_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2}  )} \frac{d}{d t} \operatorname{a_{2m+k}}{ (t  )} + \sum_{k=1}^{M} \operatorname{a_{k}}{ (t  )} \frac{\partial}{\partial x_{1}} \operatorname{N_{k}}{ (x_{1},x_{2}  )} + \\ \sum_{k=1}^{M} \operatorname{a_{m+k}}{ (t  )} \frac{\partial}{\partial x_{2}} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\bigg) \operatorname{W_{l}}{ (x_{1},x_{2}  )}\, \bigg)d\Delta=0
+\sum_{l=1}^{M} \int\limits_{\Delta} \bigg(\rho \sum_{k=1}^{M} \operatorname{N_{k}} \dfrac{d}{d t} \operatorname{a_{2m+k}} + \sum_{k=1}^{M} \operatorname{a_{k}} \dfrac{\partial}{\partial x_{1}} \operatorname{N_{k}} + \sum_{k=1}^{M} \operatorname{a_{m+k}} \dfrac{\partial}{\partial x_{2}} \operatorname{N_{k}}\bigg) \operatorname{W_{l}}\, \bigg)d\Delta=0
 \end{multline*}
 
 Упростим выражение:
 
 \begin{multline*}
-\sum_{l=1}^{M} \int\limits_{\Delta} \rho \operatorname{W_{l}}{ (x_{1},x_{2}  )} \frac{d}{d t} \operatorname{a_{2m+k}}{ (t  )} \sum_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta = \\ \bigg [ - \sum_{l=1}^{M} \bigg(\int\limits_{\Delta} \operatorname{W_{l}}{ (x_{1},x_{2}  )} \operatorname{a_{k}}{ (t  )} \sum_{k=1}^{M} \frac{\partial}{\partial x_{1}} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta + \\ \int\limits_{\Delta} \operatorname{W_{l}}{ (x_{1},x_{2}  )} \operatorname{a_{m+k}}{ (t  )} \sum_{k=1}^{M} \frac{\partial}{\partial x_{2}} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta\bigg)\bigg ]
+\sum_{l=1}^{M} \int\limits_{\Delta} \rho \operatorname{W_{l}} \dfrac{d\operatorname{a_{2m+k}}}{d t} \sum_{k=1}^{M} \operatorname{N_{k}}\, d\Delta = \\ \bigg ( - \sum_{l=1}^{M} \bigg(\int\limits_{\Delta} \operatorname{W_{l}} \operatorname{a_{k}} \sum_{k=1}^{M} \dfrac{\partial}{\partial x_{1}} \operatorname{N_{k}}\, d\Delta + \int\limits_{\Delta} \operatorname{W_{l}} \operatorname{a_{m+k}} \sum_{k=1}^{M} \dfrac{\partial}{\partial x_{2}} \operatorname{N_{k}}\, d\Delta\bigg)\bigg )
 \end{multline*}
 
-Разрешим его относительно $\frac{d}{dt}a_{2m+k}(t)$:
+Разрешим его относительно $\dfrac{da_{2m+k}}{dt}$:
+
 \begin{multline*}
-\frac{d}{d t} \operatorname{a_{2m+k}}{ (t  )}= \frac{1}{\sum\limits_{l=1}^{M} \int\limits_{\Delta} \rho \operatorname{W_{l}}{ (x_{1},x_{2}  )}  \sum\limits_{k=1}^{M} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta} \cdot \\ \bigg [ - \sum_{l=1}^{M} \bigg(\int\limits_{\Delta} \operatorname{W_{l}}{ (x_{1},x_{2}  )} \operatorname{a_{k}}{ (t  )} \sum\limits_{k=1}^{M} \frac{\partial}{\partial x_{1}} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta + \\ \int\limits_{\Delta} \operatorname{W_{l}}{ (x_{1},x_{2}  )} \operatorname{a_{m+k}}{ (t  )} \sum_{k=1}^{M} \frac{\partial}{\partial x_{2}} \operatorname{N_{k}}{ (x_{1},x_{2}  )}\, d\Delta\bigg)\bigg ]
+\dfrac{da_{2m+k}}{dt}= \dfrac{1}{\sum\limits_{l=1}^{M} \int\limits_{\Delta} \rho \operatorname{W_{l}}  \sum\limits_{k=1}^{M} \operatorname{N_{k}}\, d\Delta} \cdot \\ \bigg ( - \sum_{l=1}^{M} \bigg(\int\limits_{\Delta} \operatorname{W_{l}} \operatorname{a_{k}} \sum\limits_{k=1}^{M} \dfrac{\partial}{\partial x_{1}} \operatorname{N_{k}}\, d\Delta + \int\limits_{\Delta} \operatorname{W_{l}} \operatorname{a_{m+k}} \sum_{k=1}^{M} \dfrac{\partial}{\partial x_{2}} \operatorname{N_{k}}\, d\Delta\bigg)\bigg )
 \end{multline*}
 
-TODO: тут будут добавлены расчеты для eq1, eq2
+
+\section{Уравнение TODO1}
+
+Запишем исходный вид уравнения:
+
+\begin{multline*}
+- Pa \dfrac{d}{d x_{1}} H - W^{2} \gamma^{2} \rho_{a} + \dfrac{d}{d t} q_{1} - \dfrac{\partial}{\partial x_{1}}\bigg(- \dfrac{g \rho}{2} H^{2} - H Pa\bigg) + \dfrac{g q_{1} \sqrt{q_{1}^{2} + q_{2}^{2}}}{H^{2} c^{2} \rho}=0
+\end{multline*}
+
+Подставим в него разложения $q_1$, $q_2$, $H$:
+
+\begin{multline*}
+- Pa \dfrac{\partial}{\partial x_{1}} \bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) - W^{2} \gamma^{2} \rho_{a} - \dfrac{\partial}{\partial x_{1}}\bigg(- Pa \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) -\\- \dfrac{g \rho}{2} \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}\bigg) + \dfrac{\partial}{\partial t} \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}} +\\+ \dfrac{g \bigg(\sqrt{\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}}\bigg)^{2} + \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}\bigg)^{2}}\bigg)}{c^{2} \rho \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}} \cdot \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}} = 0
+\end{multline*}
+
+Умножим уравнение на $\sum\limits_{l=1}^{M} W_l$, где $W_l$ - весовая функция, и проинтегрируем по треугольнику $\Delta$:
+
+\begin{multline*}
+\sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \dfrac{\partial}{\partial x_{1}}\bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) - W^{2} \gamma^{2} \rho_{a} -\\- \dfrac{\partial}{\partial x_{1}}\bigg(- Pa \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) - \dfrac{g \rho}{2} \bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}\bigg) + \dfrac{\partial}{\partial t} \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}} +\\+ \dfrac{g \bigg(\sqrt{\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}}\bigg)^{2} + \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}\bigg)^{2}}\bigg)}{c^{2} \rho \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}} \cdot \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}}\bigg) \operatorname{W_{l}}\, d\Delta = 0
+\end{multline*}
+
+Упростим выражение:
+
+\begin{multline*}
+\sum_{l=1}^{M} \int\limits_{\Delta} \operatorname{W_{l}} \dfrac{\partial}{\partial t}\bigg(\operatorname{a_{k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\, d\Delta +\\+ \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- \operatorname{W_{l}} \dfrac{\partial}{\partial x_{1}}\bigg(- Pa \operatorname{H_{0}} - Pa \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{H_{0}}^{2} - g \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} -\\- \dfrac{g \rho}{2} \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}\bigg)\bigg)\, d\Delta +\\+ \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \operatorname{W_{l}} \dfrac{\partial}{\partial x_{1}}\bigg(\operatorname{H_{0}} + \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\bigg)\, d\Delta + \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- W^{2} \gamma^{2} \rho_{a} \operatorname{W_{l}}\bigg)\, d\Delta +\\+ \sum_{l=1}^{M} \int\limits_{\Delta} \dfrac{g \bigg(\sqrt{\operatorname{a_{k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2} + \operatorname{a_{m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\bigg)}{c^{2} \rho \operatorname{H_{0}}^{2} + 2 c^{2} \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} + c^{2} \rho \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\, d\Delta \cdot \\ \cdot \operatorname{W_{l}} \operatorname{a_{k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}=0
+\end{multline*}
+
+Разрешим его относительно $\dfrac{da_{k}}{dt}$:
+
+\begin{multline*}
+\dfrac{da_{k}}{dt}=\dfrac{1}{\sum\limits_{l=1}^{M} \int\limits_{\Delta} \operatorname{W_{l}} \dfrac{\partial}{\partial t}\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)\, d\Delta}\cdot \\ \cdot \bigg(- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- \operatorname{W_{l}} \dfrac{\partial}{\partial x_{1}}\bigg(- Pa \operatorname{H_{0}} - Pa \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{H_{0}}^{2} -\\- g \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{a_{2m+k}}^{2} \bigg(\sum_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}\bigg)\bigg)\, d\Delta -\\- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \operatorname{W_{l}} \dfrac{\partial}{\partial x_{1}}\bigg(\operatorname{H_{0}} + \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\bigg)\, d\Delta - \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- W^{2} \gamma^{2} \rho_{a} \operatorname{W_{l}}\bigg)\, d\Delta  -\\- \sum_{l=1}^{M} \int\limits_{\Delta} \dfrac{g \bigg(\sqrt{\operatorname{a_{k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2} + \operatorname{a_{m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\bigg) \operatorname{W_{l}} \operatorname{a_{k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}}{c^{2} \rho \operatorname{H_{0}}^{2} + 2 c^{2} \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} + c^{2} \rho \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\, d\Delta\bigg)
+\end{multline*}
+
+\section{Уравнение TODO1}
+
+Запишем исходный вид уравнения:
+
+\begin{multline*}
+- Pa \dfrac{d}{d x_{2}} H + \dfrac{d}{d t} q_{2} - \dfrac{\partial}{\partial x_{2}}\left(- \dfrac{g \rho}{2} H^{2} - H Pa\right) + \dfrac{g q_{2} \sqrt{q_{1}^{2} + q_{2}^{2}}}{H^{2} c^{2} \rho} = 0
+\end{multline*}
+
+
+Подставим в него разложения $q_1$, $q_2$, $H$:
+
+\begin{multline*}
+- Pa \dfrac{\partial}{\partial x_{2}}\bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)  - \dfrac{\partial}{\partial x_{2}}\bigg(- Pa \bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) -\\- \dfrac{g \rho}{2} \bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}\bigg) + \dfrac{\partial}{\partial t} \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}} +\\+ \dfrac{g \bigg(\sqrt{\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}}\bigg)^{2} + \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}\bigg)^{2}}\bigg) \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}}{c^{2} \rho \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}} = 0
+\end{multline*}
+
+Умножим уравнение на $\sum\limits_{l=1}^{M} W_l$, где $W_l$ - весовая функция, и проинтегрируем по треугольнику $\Delta$:
+
+\begin{multline*}
+\sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \dfrac{\partial}{\partial x_{2}}\bigg(\operatorname{H_{0}} + \sum_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) -\\- \dfrac{\partial}{\partial x_{2}}\bigg(- Pa \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg) - \dfrac{g \rho}{2} \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}\bigg) + \dfrac{\partial}{\partial t} \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}} +\\+ \dfrac{g \bigg(\sqrt{\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{k}}\bigg)^{2} + \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}\bigg)^{2}}\bigg) \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{m+k}}}{c^{2} \rho \bigg(\operatorname{H_{0}} + \sum\limits_{k=1}^{M} \operatorname{N_{k}} \operatorname{a_{2m+k}}\bigg)^{2}}\bigg) \operatorname{W_{l}}\, d\Delta = 0
+\end{multline*}
+
+Упростим выражение:
+
+\begin{multline*}
+ \sum_{l=1}^{M} \int\limits_{\Delta} \operatorname{W_{l}} \dfrac{\partial}{\partial t}\bigg(\operatorname{a_{m+k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\, d\Delta +\\+ \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(- Pa \operatorname{H_{0}} - Pa \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{H_{0}}^{2} - g \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} -\\- \dfrac{g \rho}{2} \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}\bigg)\bigg)\, d\Delta + \sum\limits_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(\operatorname{H_{0}} + \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)\bigg)\, d\Delta + \\ + \sum\limits_{l=1}^{M} \int\limits_{\Delta} \dfrac{g \bigg(\sqrt{\operatorname{a_{k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2} + \operatorname{a_{m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\bigg) \operatorname{W_{l}} \operatorname{a_{m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}}{c^{2} \rho \operatorname{H_{0}}^{2} + 2 c^{2} \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} + c^{2} \rho \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\, d\Delta = 0
+\end{multline*}
+
+Разрешим его относительно $\dfrac{da_{m+k}}{dt}$:
+
+\begin{multline*}
+\dfrac{da_{m+k}}{dt}=\dfrac{1}{\sum\limits_{l=1}^{M} \int\limits_{\Delta} \operatorname{W_{l}} \dfrac{\partial}{\partial t}\cdot \\ \cdot\bigg( \sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)\, d\Delta}\bigg(- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(- Pa \operatorname{H_{0}} - Pa \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} -\\- \dfrac{g \rho}{2} \operatorname{H_{0}}^{2} - g \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{a_{2m+k}}^{2} \bigg(\sum_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}\bigg)\bigg)\, d\Delta -\\- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(\operatorname{H_{0}} + \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\bigg)\, d\Delta -\\ - \sum_{l=1}^{M} \int\limits_{\Delta} \dfrac{g \bigg(\sqrt{\operatorname{a_{k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2} + \operatorname{a_{m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\bigg) \operatorname{W_{l}} \operatorname{a_{m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}}{c^{2} \rho \operatorname{H_{0}}^{2} + 2 c^{2} \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} + c^{2} \rho \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\, d\Delta\bigg)
+\end{multline*}
 
 \end{document}
