@@ -16,7 +16,9 @@ def draw_psi_2d(path, title, functions, times):
     os.makedirs(path + '/' + title, exist_ok=True)
 
     x_max = find.maximum(functions, 'x')
+    x_min = find.minimum(functions, 'x')
     y_max = find.maximum(functions, 'y')
+    y_min = find.minimum(functions, 'y')
 
     for func, time in zip(functions, times):
         fig = plt.figure()
@@ -25,8 +27,8 @@ def draw_psi_2d(path, title, functions, times):
         y = func[:, 1]
         z = func[:, 2]
 
-        xi = np.linspace(0., x_max, 10)
-        yi = np.linspace(0., y_max, 10)
+        xi = np.linspace(x_min, x_max, 10)
+        yi = np.linspace(y_min, y_max, 10)
 
         X, Y = np.meshgrid(xi, yi)
         Z = griddata((x, y), z, (X, Y), method='cubic')
@@ -34,9 +36,10 @@ def draw_psi_2d(path, title, functions, times):
         CS = plt.contour(X, Y, Z, colors='black')
 
         plt.clabel(CS, fontsize='small', inline=10)
-        plt.imshow(Z, extent=[0., x_max, 0, y_max],
+        plt.imshow(Z, extent=[x_min, x_max, y_min, y_max],
                    origin='lower', cmap='coolwarm',
-                   interpolation='gaussian', alpha=0.5)
+                   interpolation='kaiser', alpha=0.5,
+                   vmin=0, vmax=0.003)
 
         plt.colorbar()
         plt.grid()

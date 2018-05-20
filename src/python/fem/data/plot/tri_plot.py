@@ -23,8 +23,6 @@ def draw_3d_frame(path, title, functions, times):
     z_max = find.maximum(functions, 'z')
 
     for func, time in zip(functions, times):
-        date = datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
-
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
         ax.set_xlabel('X')
@@ -49,7 +47,7 @@ def draw_3d_frame(path, title, functions, times):
 
         buf.seek(0)
         im = Image.open(buf)
-        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f"), "PNG")
+        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
         buf.close()
 
 
@@ -73,12 +71,12 @@ def draw_3d_surf(path, title, functions, times, view='surface'):
         ax.set_ylim3d(np.min(Y), np.max(Y))
         ax.set_zlim3d(0, z_max)
 
-        plotx, ploty, = np.meshgrid(np.linspace(np.min(X), np.max(X), 10), \
+        plotx, ploty = np.meshgrid(np.linspace(np.min(X), np.max(X), 10), \
                                     np.linspace(np.min(Y), np.max(Y), 10))
         plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
         # Explanation: TODO
-        plotz[plotz < 0] = 0
+        plotz[plotz < 0] = 0.0
 
         if view == 'surface':
             ax.plot_surface(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')
@@ -94,5 +92,5 @@ def draw_3d_surf(path, title, functions, times, view='surface'):
 
         buf.seek(0)
         im = Image.open(buf)
-        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f"), "PNG")
+        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
         buf.close()
