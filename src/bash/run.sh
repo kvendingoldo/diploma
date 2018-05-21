@@ -1,20 +1,25 @@
 #!/bin/bash
 
 CONTAINER_NAME='kvendingoldo-diploma'
-CONTAINER_POSTFIX='fem'
-
-IMAGE_TAG='fem'
-IMAGE_NAME='kvendingoldo/diploma'
+IMAGE='kvendingoldo/diploma:fem'
+DATA_DIR='/home/asharov/data'
+CPUS='6.000'
 
 function parse_args() {
   local OPTIND
-  while getopts 'I:C:' opt; do
+  while getopts 'I:N:C:D:' opt; do
     case "${opt}" in
       I)
-        IMAGE_TAG="${OPTARG}"
+        IMAGE="${OPTARG}"
+        ;;
+      N)
+        CONTAINER_NAME="${OPTARG}"
         ;;
       C)
-        CONTAINER_POSTFIX="${OPTARG}"
+        CPUS="${OPTARG}"
+        ;;
+      D)
+        DATA_DIR="${OPTARG}"
         ;;
       \?)
         echo "[ERROR]: Invalid option: -${opt}"
@@ -31,11 +36,11 @@ function main() {
   echo "[INFO] Start time: $(date +%F-%H%M)"
   docker rm -f ${CONTAINER_NAME}
   docker run -d \
-  	--cpus=6.000 \
+  	--cpus=${CPUS} \
   	--log-driver json-file \
-  	--name="${CONTAINER_NAME}-${CONTAINER_POSTFIX}" \
-  	-v /home/asharov/data:/data \
-  	"${IMAGE_NAME}:${IMAGE_TAG}" \
+  	--name="${CONTAINER_NAME}" \
+  	-v ${DATA_DIR}:/data \
+  	"${IMAGE}" \
   	python3 -u main.py
 
   echo "[INFO] End time: $(date +%F-%H%M)"
