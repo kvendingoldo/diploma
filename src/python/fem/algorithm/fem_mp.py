@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author: Alexander Sharov
 
+import os
 import time
+import logging
 
 from sympy import *
 from numpy import abs
@@ -33,7 +35,7 @@ H0 = 0.01
 
 
 class Solver(object):
-    def __init__(self, max_tasks, mesh, t_span, t_eval):
+    def __init__(self, max_tasks, log_dir, mesh, t_span, t_eval):
         self.mesh = mesh
         self.M = mesh.quantity
         self.elements = mesh.splitting
@@ -59,7 +61,6 @@ class Solver(object):
         return False
 
     def calculate_element(self, element, variables):
-        print('I am alive')
 
         x1, x2 = symbols('x_1 x_2')
         f_eq1 = 0
@@ -70,7 +71,12 @@ class Solver(object):
             if not self.on_boundary(element, k):
                 n_k = element.get_basic_function_by_number(k)
                 weight_functions = 0
-                print('I am still alive. [element=%s, k=%d]' % (str(element), k))
+
+                if k == 0:
+                    logging.debug('[Process: %s] I am alive' % os.getpid())
+                elif k % 50 == 0:
+                    logging.debug('[Process: %s] I am still alive. [element=%s, k=%d]' % (os.getpid(), str(element), k))
+
                 for l in range(0, self.M):
                     w_l = element.get_basic_function_by_number(l)
                     weight_functions += w_l
@@ -115,10 +121,10 @@ class Solver(object):
                 self.sys_fun[k + self.M] = 0
                 self.sys_fun[k + 2 * self.M] = 0
 
-        print('I am dead')
+        logging.debug('[Process: %s] I am dead' % os.getpid())
 
     def system(self, time, variables):
-        print('time = %s' % time)
+        logging.info('time = %s' % time)
 
         elements_copy = self.elements.copy()
 
@@ -146,13 +152,13 @@ class Solver(object):
                 else:
                     break
 
-        print('system of functions = %s\n' % self.sys_fun)
+        logging.info('system of functions = %s\n' % self.sys_fun)
 
         return self.sys_fun
 
     def solve(self):
         start_time = time.time()
-        print('Number of elements = %d' % self.M)
+        logging.info('Number of elements = %d' % self.M)
         y0 = [0] * (3 * self.M)
         solution = solve_ivp(self.system,
                              y0=y0,
@@ -163,8 +169,8 @@ class Solver(object):
                              atol=1e-3)
 
         # it needs only for debug
-        print(solution.y)
-        print(solution.t)
+        logging.info(solution.y)
+        logging.info(solution.t)
 
         execution_time = (time.time() - start_time) / 60
 

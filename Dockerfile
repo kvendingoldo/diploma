@@ -6,5 +6,5 @@ ENV DISPLAY=:0.0 \
 RUN mkdir -p /opt/diploma
 WORKDIR /opt/diploma/fem
 
-COPY ./python/requirements.txt /opt/diploma
-COPY ./python/fem /opt/diploma
+COPY ./src/python/fem /opt/diploma
+COPY ./resources /opt/diploma/resources
