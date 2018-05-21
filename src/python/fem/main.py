@@ -4,7 +4,6 @@
 import datetime
 import logging
 import os
-import numpy as np
 
 from data import mesh as m
 from algorithm import fem_mp as fem
@@ -14,7 +13,7 @@ from utils import gif
 from data.save import np_array
 from data.plot import contour_lines as cs
 
-DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
+DATA_DIR = '/Users/ashraov/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M")
 #DATA_DIR = '/data/%s' % datetime.datetime.now().strftime("%d_%m_%Y_%H_%M_%S_%f")
 
 RESOURCES_DIR = '/Users/ashraov/projects/study/diploma/resources'
@@ -27,14 +26,15 @@ JSON_DIR = '%s/json' % DATA_DIR
 LOG_DIR = '%s/log' % DATA_DIR
 
 # NOTE:
-# Good mesh: pqIaD
-# Worse mesh: pq10IaDX
+# * good mesh: pqIaD
+# * worse mesh: pq10IaDX
 MESH_TYPE = 'pq5IaDX'
 MESH_FILENAME = 'lake_superior.poly'
 MAX_PROCESSES = 2
 
 os.makedirs(LOG_DIR, exist_ok=True)
-logging.basicConfig(filename=LOG_DIR + '/fem.log', level=logging.DEBUG)
+log_name = '%s/%s.log' % (LOG_DIR, datetime.datetime.now().strftime("%d_%m_%Y_%H_%M"))
+logging.basicConfig(filename=log_name, level=logging.DEBUG)
 
 def main():
     mesh = m.Mesh(RESOURCES_DIR + '/poly/%s' % MESH_FILENAME)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME='kvendingoldo-diploma'
+CONTAINER_NAME='kvendingoldo-diploma-application'
 IMAGE='kvendingoldo/diploma:fem'
 DATA_DIR='/home/asharov/data'
 CPUS='6.000'

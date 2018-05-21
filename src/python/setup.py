@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='fem',
-      version='1.0',
+      version='1.1',
       description='Finite elements method for shallow water equations',
       url='https://github.com/kvendingoldo/diploma',
       author='Alexander Sharov',

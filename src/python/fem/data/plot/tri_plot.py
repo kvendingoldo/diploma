@@ -17,8 +17,8 @@ from utils import find
 plt.rcParams.update({'figure.max_open_warning': 0})
 
 
-def draw_3d_frame(path, title, functions, times):
-    os.makedirs(path + '/' + title, exist_ok=True)
+def draw_3d_frame(directory, title, functions, times):
+    os.makedirs(directory + '/' + title, exist_ok=True)
 
     z_max = find.maximum(functions, 'z')
 
@@ -47,12 +47,12 @@ def draw_3d_frame(path, title, functions, times):
 
         buf.seek(0)
         im = Image.open(buf)
-        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
+        im.save(directory + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
         buf.close()
 
 
-def draw_3d_surf(path, title, functions, times, view='surface'):
-    os.makedirs(path + '/' + title, exist_ok=True)
+def draw_3d_surf(directory, title, functions, times, view='surface'):
+    os.makedirs(directory + '/' + title, exist_ok=True)
 
     z_max = find.maximum(functions, 'z')
 
@@ -92,5 +92,5 @@ def draw_3d_surf(path, title, functions, times, view='surface'):
 
         buf.seek(0)
         im = Image.open(buf)
-        im.save(path + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
+        im.save(directory + '/' + title + '/%s.png' % datetime.datetime.now().strftime('%d_%m_%Y_%H_%M_%S_%f'), 'PNG')
         buf.close()
