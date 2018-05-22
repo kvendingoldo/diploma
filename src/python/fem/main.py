@@ -4,6 +4,7 @@
 import datetime
 import logging
 import os
+import numpy as np
 
 from data import mesh as m
 from algorithm import fem_mp as fem
@@ -29,7 +30,7 @@ LOG_DIR = '%s/log' % DATA_DIR
 # * good mesh: pqIaD
 # * worse mesh: pq10IaDX
 MESH_TYPE = 'pq5IaDX'
-MESH_FILENAME = 'lake_superior.poly'
+MESH_FILENAME = 'lake_superior.poly' # pond_without_islands_4e
 MAX_PROCESSES = 2
 
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -44,6 +45,7 @@ def main():
     #mesh.show()
     #mesh.draw_contour()
     logging.info(mesh.quantity)
+    print(mesh.quantity)
 
     # interval of integration (t0, tf)
     t_span = [1.90, 1.91]
