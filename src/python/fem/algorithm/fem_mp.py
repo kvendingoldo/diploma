@@ -35,7 +35,7 @@ H0 = 0.01
 
 
 class Solver(object):
-    def __init__(self, max_tasks, log_dir, mesh, t_span, t_eval):
+    def __init__(self, max_tasks, mesh, t_span, t_eval):
         self.mesh = mesh
         self.M = mesh.quantity
         self.elements = mesh.splitting

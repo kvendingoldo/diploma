@@ -10,9 +10,10 @@ import datetime
 from PIL import Image
 from scipy.interpolate import griddata
 from utils import find
+from data.plot.poly_contour import plot as dplot
 
 
-def draw_psi_2d(path, title, functions, times):
+def draw_psi_2d(path, title, functions, times, mesh):
     os.makedirs(path + '/' + title, exist_ok=True)
 
     x_max = find.maximum(functions, 'x')
@@ -21,14 +22,17 @@ def draw_psi_2d(path, title, functions, times):
     y_min = find.minimum(functions, 'y')
 
     for func, time in zip(functions, times):
-        fig = plt.figure()
+        plt.figure()
+
+        ax = plt.subplot(111, aspect='equal')
+        dplot(ax, **mesh.raw_splitting)
 
         x = func[:, 0]
         y = func[:, 1]
         z = func[:, 2]
 
-        xi = np.linspace(x_min, x_max, 10)
-        yi = np.linspace(y_min, y_max, 10)
+        xi = np.linspace(x_min, x_max, 500)
+        yi = np.linspace(y_min, y_max, 500)
 
         X, Y = np.meshgrid(xi, yi)
         Z = griddata((x, y), z, (X, Y), method='cubic')
@@ -39,7 +43,7 @@ def draw_psi_2d(path, title, functions, times):
         plt.imshow(Z, extent=[x_min, x_max, y_min, y_max],
                    origin='lower', cmap='coolwarm',
                    interpolation='kaiser', alpha=0.5,
-                   vmin=0, vmax=0.003)
+                   vmin=0, vmax=12)
 
         plt.colorbar()
         plt.grid()

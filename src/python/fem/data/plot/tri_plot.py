@@ -71,8 +71,8 @@ def draw_3d_surf(directory, title, functions, times, view='surface'):
         ax.set_ylim3d(np.min(Y), np.max(Y))
         ax.set_zlim3d(0, z_max)
 
-        plotx, ploty = np.meshgrid(np.linspace(np.min(X), np.max(X), 10), \
-                                    np.linspace(np.min(Y), np.max(Y), 10))
+        plotx, ploty = np.meshgrid(np.linspace(np.min(X), np.max(X), 500), \
+                                    np.linspace(np.min(Y), np.max(Y), 500))
         plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
         # Explanation: TODO
