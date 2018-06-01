@@ -1067,7 +1067,7 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 
 \chapter{Исходный код реализации}
 
-Для того, чтобы код можно было легко поддерживать и переиспользовать было произведено разбиение на пакеты в соответсвии с рисунком \ref{img:code:struct}.
+Для того, чтобы код можно было легко поддерживать и переиспользовать было произведено разбиение на пакеты и модули в соответсвии с рисунком \ref{img:code:struct}.
 
 \begin{figure}[H]
 \centerline{
@@ -1076,7 +1076,35 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 \label{img:code:struct}
 \end{figure}
 
-TODO: сам код будет добавлен в самом конце, после того, как я перестану вносить в него изменения
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль fem\_mp.py]{../python/fem/algorithm/fem_mp.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль functions\_builder.py]{../python/fem/algorithm/functions_builder.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly\_contour.py]{../python/fem/data/plot/poly_contour.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль contour\_lines.py]{../python/fem/data/plot/contour_lines.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль tri\_plot.py]{../python/fem/data/plot/tri_plot.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль np\_array.py]{../python/fem/data/save/np_array.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль mesh.py]{../python/fem/data/mesh.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly.py]{../python/fem/data/poly.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль mongo.py]{../python/fem/db/mongo.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль triangle.py]{../python/fem/fe/triangle.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль point.py]{../python/fem/geometry/point.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль find.py]{../python/fem/utils/find.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль gif.py]{../python/fem/utils/gif.py}
+
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль json2poly.py]{../python/fem/utils/json2poly.py}
+
+TODO: main.py будет ПОТОМ
 
 \chapter{Исходный код Docker контейнера}
 

@@ -127,6 +127,7 @@ class Triangle(object):
 
     def integrate_by_jac(self, func):
         """Deprecated method for integrate over triangle"""
+
         def d_j(x1, x2):
             """Jacobian scaling factor"""
             u, v = symbols('u v')

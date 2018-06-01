@@ -5,10 +5,10 @@ import os
 import time
 import logging
 
-from sympy import *
 from numpy import abs
 from scipy.integrate import solve_ivp
 from multiprocessing import Process, Manager
+from sympy import *
 
 # from threading import Thread
 
@@ -83,7 +83,7 @@ class Solver(object):
                     f_eq1 += \
                         + element.integrate(w_l * diff(
                             -P_a * H0 - P_a * variables[2 * self.M + k] * n_k - (
-                                        (g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                                    (g * rho / 2) * H0 ** 2) - g * rho * H0 *
                             variables[2 * self.M + k] * n_k - g * rho / 2 * variables[2 * self.M + k] ** 2 * n_k ** 2,
                             x1)) \
                         + element.integrate(P_a * w_l * diff(H0 + variables[2 * self.M + k] * n_k, x1)) \
@@ -95,7 +95,7 @@ class Solver(object):
                     f_eq2 += \
                         + element.integrate(w_l * diff(
                             -P_a * H0 - P_a * variables[2 * self.M + k] * n_k - (
-                                        (g * rho / 2) * H0 ** 2) - g * rho * H0 *
+                                    (g * rho / 2) * H0 ** 2) - g * rho * H0 *
                             variables[2 * self.M + k] * n_k - g * rho / 2 * variables[2 * self.M + k] ** 2 * n_k ** 2,
                             x2)) \
                         + element.integrate(P_a * w_l * diff(H0 + variables[2 * self.M + k] * n_k, x2)) \

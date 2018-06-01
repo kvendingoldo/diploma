@@ -12,6 +12,8 @@ from scipy.interpolate import griddata
 from utils import find
 from data.plot.poly_contour import plot as dplot
 
+INTERPOLATION_NODES = 500
+
 
 def draw_psi_2d(path, title, functions, times, mesh):
     os.makedirs(path + '/' + title, exist_ok=True)
@@ -31,8 +33,8 @@ def draw_psi_2d(path, title, functions, times, mesh):
         y = func[:, 1]
         z = func[:, 2]
 
-        xi = np.linspace(x_min, x_max, 500)
-        yi = np.linspace(y_min, y_max, 500)
+        xi = np.linspace(x_min, x_max, INTERPOLATION_NODES)
+        yi = np.linspace(y_min, y_max, INTERPOLATION_NODES)
 
         X, Y = np.meshgrid(xi, yi)
         Z = griddata((x, y), z, (X, Y), method='cubic')

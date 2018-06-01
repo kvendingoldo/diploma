@@ -13,6 +13,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from utils import find
 
+INTERPOLATION_NODES = 500
+
 # This option needs for escaping 'RuntimeWarning: More than 20 figures have been opened'
 plt.rcParams.update({'figure.max_open_warning': 0})
 
@@ -71,8 +73,8 @@ def draw_3d_surf(directory, title, functions, times, view='surface'):
         ax.set_ylim3d(np.min(Y), np.max(Y))
         ax.set_zlim3d(0, z_max)
 
-        plotx, ploty = np.meshgrid(np.linspace(np.min(X), np.max(X), 500), \
-                                    np.linspace(np.min(Y), np.max(Y), 500))
+        plotx, ploty = np.meshgrid(np.linspace(np.min(X), np.max(X), INTERPOLATION_NODES), \
+                                   np.linspace(np.min(Y), np.max(Y), INTERPOLATION_NODES))
         plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
         # Explanation: TODO
