@@ -43,9 +43,8 @@ def draw_psi_2d(path, title, functions, times, mesh):
 
         plt.clabel(CS, fontsize='small', inline=10)
         plt.imshow(Z, extent=[x_min, x_max, y_min, y_max],
-                   origin='lower', cmap='coolwarm',
-                   interpolation='kaiser', alpha=0.5,
-                   vmin=0, vmax=12)
+                   origin='lower', cmap='RdBu',
+                   interpolation='kaiser', alpha=0.5)
 
         plt.colorbar()
         plt.grid()

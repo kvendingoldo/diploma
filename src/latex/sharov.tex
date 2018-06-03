@@ -915,7 +915,15 @@ out skel qt;
 \label{img:ex4:mesh}
 \end{figure}
 
-TODO: ГРАФИКИ БУДУТ ДОБАВЛЕНЫ ПОСЛЕ ТОГО, КАК ОЗЕРО ДОСЧИТАЕТСЯ
+Для озера Верхнее были произведены расчеты аналогичные расчетам для пруда и построен график функции тока для качественной оценки движения волн, который изображен на рисунке \ref{img:ex4:psi}.
+
+\begin{figure}[H]
+\centerline{
+\includegraphics[width=0.8\linewidth]{images/ex4/psi/1}}
+\caption{График функции тока.}
+\label{img:ex4:psi}
+\end{figure}
+
 
 \section{Программная реализация}
 
@@ -1060,14 +1068,14 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 
 В качестве примера были произведены расчеты на различных сетках, в том числе и на реальных озерах(Эльтон и Верхнее). Для данных расчетов были построены графики на которых изображены изменения потока жидкости и высоты волны, кроме того была сконстурированна функция тока для которой тоже были построены соотвествующие графики. Благодаря данным результатам удалось качественно оценить полученные результаты проведенных экспериментов.
 
-\bibliographystyle{ugost2008}
-\bibliography{biblio}
+\bibliographystyle{biblio/tst}
+\bibliography{biblio/biblio}
 
 \Appendix
 
 \chapter{Исходный код реализации}
 
-Для того, чтобы код можно было легко поддерживать и переиспользовать было произведено разбиение на пакеты и модули в соответсвии с рисунком \ref{img:code:struct}.
+Для того, чтобы код можно было легко поддерживать и переиспользовать было произведено разбиение на пакеты и модули в соответсвии с рисунком \ref{img:code:struct}. Основные константы и пути были вынесены в модуль main.py, что позволило очень быстро изменять взодные данные для различных экспериментов.
 
 \begin{figure}[H]
 \centerline{
@@ -1104,7 +1112,7 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 
 \lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль json2poly.py]{../python/fem/utils/json2poly.py}
 
-TODO: main.py будет ПОТОМ
+\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль main.py]{../python/fem/main.py}
 
 \chapter{Исходный код Docker контейнера}
 
