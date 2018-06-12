@@ -19,6 +19,11 @@
 \RequirePackage{fancyvrb}
 \RequirePackage{xtab}
 
+\RequirePackage[tableposition=top]{caption}
+\DeclareCaptionLabelFormat{gostfigure}{Рисунок #2}
+%\DeclareCaptionLabelSeparator{gost}{~---~}
+\captionsetup[figure]{labelformat=gostfigure, labelsep=gost}
+
 % Включаем Times New Roman
 %\renewcommand{\rmdefault}{ftm}
 % Включаем Arial
@@ -31,44 +36,44 @@
 \setbeamertemplate{itemize items}[circle]   % Style of bullet points
 %\setbeamertemplate{theorems}[numbered]     % Number objects such as theorems and definitions
 
-\definecolor{HSEblue}{cmyk}{1,0.66,0,0.02}        % Pantone 286
-\definecolor{HSEgreen}{cmyk}{0.69,0,1,0}          % Pantone 361
-\definecolor{HSEred}{cmyk}{0,0.95,1,0.29}         % Pantone 484
-\definecolor{HSEorange}{cmyk}{0,0.42,0.77,0}      % Pantone 131
-\setbeamercolor{WhiteOnBlue}{bg=HSEblue,fg=white} % White on Pantone 286
-\setbeamercolor{BlueOnWhite}{fg=HSEblue,bg=white} % Pantone 286 on White
+\definecolor{TMPLblue}{cmyk}{1,0.66,0,0.02}        % Pantone 286
+\definecolor{TMPLgreen}{cmyk}{0.69,0,1,0}          % Pantone 361
+\definecolor{TMPLred}{cmyk}{0,0.95,1,0.29}         % Pantone 484
+\definecolor{TMPLorange}{cmyk}{0,0.42,0.77,0}      % Pantone 131
+\setbeamercolor{WhiteOnBlue}{bg=TMPLblue,fg=white} % White on Pantone 286
+\setbeamercolor{BlueOnWhite}{fg=TMPLblue,bg=white} % Pantone 286 on White
 
 \usepackage{hyperref}
 \hypersetup{
     unicode=true,          % non-Latin characters in Acrobat’s bookmarks
     colorlinks=true,       % false: boxed links; true: colored links
     linkcolor=white,       % color of internal links (change box color with linkbordercolor)
-    citecolor=HSEblue,     % color of links to bibliography
-    filecolor=HSEblue,     % color of file links
-    urlcolor=HSEblue       % color of external links
+    citecolor=TMPLblue,     % color of links to bibliography
+    filecolor=TMPLblue,     % color of file links
+    urlcolor=TMPLblue       % color of external links
 }
 
 %%% Set color of different objects (see Beamer User Guide for more info)
-\usecolortheme[named=HSEblue]{structure}
+\usecolortheme[named=TMPLblue]{structure}
 \setbeamercolor{background canvas}{bg=white}
-\setbeamercolor{frametitle}{bg=HSEblue}
+\setbeamercolor{frametitle}{bg=TMPLblue}
 \setbeamercolor{frametitle}{fg=white}
-\setbeamercolor{headline}{bg=HSEblue}
-\setbeamercolor{alerted text}{fg=HSEred}
-\setbeamercolor{itemize item}{fg=HSEblue}
-\setbeamercolor{itemize subitem}{fg=HSEblue}
-\setbeamercolor{itemize subsubitem}{fg=HSEblue}
-\setbeamercolor{block title example}{fg=HSEgreen}
+\setbeamercolor{headline}{bg=TMPLblue}
+\setbeamercolor{alerted text}{fg=TMPLred}
+\setbeamercolor{itemize item}{fg=TMPLblue}
+\setbeamercolor{itemize subitem}{fg=TMPLblue}
+\setbeamercolor{itemize subsubitem}{fg=TMPLblue}
+\setbeamercolor{block title example}{fg=TMPLgreen}
 \AtBeginEnvironment{exampleblock}{
-    \setbeamercolor{itemize item}{fg=HSEgreen}
-    \setbeamercolor{itemize subitem}{fg=HSEgreen}
-    \setbeamercolor{itemize subsubitem}{fg=HSEgreen}
+    \setbeamercolor{itemize item}{fg=TMPLgreen}
+    \setbeamercolor{itemize subitem}{fg=TMPLgreen}
+    \setbeamercolor{itemize subsubitem}{fg=TMPLgreen}
                                  }
-\setbeamercolor{palette primary}{bg=HSEblue}
+\setbeamercolor{palette primary}{bg=TMPLblue}
 \setbeamercolor{palette primary}{fg=white}
-\setbeamercolor{palette secondary}{bg=HSEblue}
+\setbeamercolor{palette secondary}{bg=TMPLblue}
 \setbeamercolor{palette secondary}{fg=white}
-\setbeamercolor{palette tertiary}{bg=HSEblue}
+\setbeamercolor{palette tertiary}{bg=TMPLblue}
 \setbeamercolor{palette tertiary}{fg=white}
 
 %%% Layout issues
