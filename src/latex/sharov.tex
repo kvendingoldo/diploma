@@ -1,6 +1,6 @@
 \documentclass[14pt]{extreport}
 
-\usepackage{gost}
+\usepackage{sty/gost}
 \usepackage{listings}
 \usepackage{longtable,rotating}
 \usepackage{threeparttable}
@@ -514,7 +514,7 @@ B_2=-fq_1+\gamma^2\rho_aW^2\sin(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho
 Рассмотрим дифференциальное уравнение вида
 
 \begin{equation}\label{eq:fem:1}
- \mathcal A= \mathcal L\phi + p=0
+ \mathcal A = \mathcal L\phi + p = 0
 \end{equation}
 
 \noindentв некоторой области $\Omega$.
@@ -858,40 +858,40 @@ out skel qt;
 \label{img:ex3:mesh}
 \end{figure}
 
-Данный пример рассматривался на двух моментах времени: $1.91$с и $1.99$с. Для этих моментов времени были получены графики в соответсвии с рисунками \ref{img:ex1:q1:all}-\ref{img:ex3:psi:all}.
+Данный пример рассматривался на двух моментах времени: $1.91$с и $1.99$с. Для этих моментов времени были получены графики в соответсвии с рисунками \ref{img:ex3:q1:all}-\ref{img:ex3:psi:all}.
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/0}\label{img:ex3:q1:91}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/q_1/91}\label{img:ex3:q1:91}}
   \hfill
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/1}\label{img:ex3:q1:99}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/q_1/99}\label{img:ex3:q1:99}}
   \caption{Изменение проекции потока жидкости на ось $x_1$ в различные промежутки времени.}
   \label{img:ex3:q1:all}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/0}\label{img:ex3:q2:91}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/q_2/91}\label{img:ex3:q2:91}}
   \hfill
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/1}\label{img:ex3:q2:99}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/q_2/99}\label{img:ex3:q2:99}}
   \caption{Изменение проекции потока жидкости на ось $x_2$ в различные промежутки времени.}
   \label{img:ex3:q2:all}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/0}\label{img:ex3:H:91}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/H/91}\label{img:ex3:H:91}}
   \hfill
-  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/1}\label{img:ex3:H:99}}
+  \subfloat{\includegraphics[width=0.39\textwidth]{images/ex3/H/99}\label{img:ex3:H:99}}
   \caption{Изменение высоты в различные промежутки времени.}
   \label{img:ex3:H:all}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includegraphics[width=0.425\textwidth]{images/ex1/psi/1}\label{img:ex3:psi:91}}
+  \subfloat{\includegraphics[width=0.425\textwidth]{images/ex3/psi/91}\label{img:ex3:psi:91}}
     \hfill
-  \subfloat{\includegraphics[width=0.425\textwidth]{images/ex1/psi/2}\label{img:ex3:psi:99}}
+  \subfloat{\includegraphics[width=0.425\textwidth]{images/ex3/psi/99}\label{img:ex3:psi:99}}
   \caption{Изменение функции тока в различные промежутки времени.}
   \label{img:ex3:psi:all}
 \end{figure}
@@ -1084,35 +1084,41 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 \label{img:code:struct}
 \end{figure}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль fem\_mp.py]{../python/fem/algorithm/fem_mp.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль fem\_mp.py]{../python/fem/algorithm/fem_mp.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль functions\_builder.py]{../python/fem/algorithm/functions_builder.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль functions\_builder.py]{../python/fem/algorithm/functions_builder.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly\_contour.py]{../python/fem/data/plot/poly_contour.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly\_contour.py]{../python/fem/data/plot/poly_contour.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль contour\_lines.py]{../python/fem/data/plot/contour_lines.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль contour\_lines.py]{../python/fem/data/plot/contour_lines.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль tri\_plot.py]{../python/fem/data/plot/tri_plot.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль tri\_plot.py]{../python/fem/data/plot/tri_plot.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль np\_array.py]{../python/fem/data/save/np_array.py}
+\newpage
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль mesh.py]{../python/fem/data/mesh.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль np\_array.py]{../python/fem/data/save/np_array.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly.py]{../python/fem/data/poly.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль mesh.py]{../python/fem/data/mesh.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль mongo.py]{../python/fem/db/mongo.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль poly.py]{../python/fem/data/poly.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль triangle.py]{../python/fem/fe/triangle.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль mongo.py]{../python/fem/db/mongo.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль point.py]{../python/fem/geometry/point.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль triangle.py]{../python/fem/fe/triangle.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль find.py]{../python/fem/utils/find.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль point.py]{../python/fem/geometry/point.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль gif.py]{../python/fem/utils/gif.py}
+\newpage
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль json2poly.py]{../python/fem/utils/json2poly.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль find.py]{../python/fem/utils/find.py}
 
-\lstinputlisting[language=Python, numbers=left, breaklines=true, basicstyle=\scriptsize, caption=Модуль main.py]{../python/fem/main.py}
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль gif.py]{../python/fem/utils/gif.py}
+
+\newpage
+
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль json2poly.py]{../python/fem/utils/json2poly.py}
+
+\lstinputlisting[language=Python, numbers=left, showstringspaces=false, breaklines=true, basicstyle=\scriptsize, caption=Модуль main.py]{../python/fem/main.py}
 
 \chapter{Исходный код Docker контейнера}
 
@@ -1229,4 +1235,4 @@ save(db, read(db, 'data', '2018-04-24-20-07'), '/data')
 \dfrac{da_{m+k}}{dt}=\dfrac{1}{\sum\limits_{l=1}^{M} \int\limits_{\Delta} \operatorname{W_{l}} \dfrac{\partial}{\partial t}\bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)\, d\Delta}\cdot \\ \cdot \bigg(- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(- Pa \operatorname{H_{0}} - Pa \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} -\\- \dfrac{g \rho}{2} \operatorname{H_{0}}^{2} - g \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}} - \dfrac{g \rho}{2} \operatorname{a_{2m+k}}^{2} \bigg(\sum_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}\bigg)\bigg)\, d\Delta -\\- \sum_{l=1}^{M} \int\limits_{\Delta} \bigg(- Pa \operatorname{W_{l}} \dfrac{\partial}{\partial x_{2}}\bigg(\operatorname{H_{0}} + \operatorname{a_{2m+k}} \sum_{k=1}^{M} \operatorname{N_{k}}\bigg)\bigg)\, d\Delta -\\ - \sum_{l=1}^{M} \int\limits_{\Delta} \dfrac{g \bigg(\sqrt{\operatorname{a_{k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2} + \operatorname{a_{m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\bigg) \operatorname{W_{l}} \operatorname{a_{m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}}}{c^{2} \rho \operatorname{H_{0}}^{2} + 2 c^{2} \rho \operatorname{H_{0}} \operatorname{a_{2m+k}} \sum\limits_{k=1}^{M} \operatorname{N_{k}} + c^{2} \rho \operatorname{a_{2m+k}}^{2} \bigg(\sum\limits_{k=1}^{M} \operatorname{N_{k}}\bigg)^{2}}\, d\Delta\bigg)
 \end{multline*}
 
-\end{document}
+\end{document}в

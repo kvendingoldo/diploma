@@ -1,162 +1,326 @@
-\documentclass[10pt,utf8,presentation,notheorems,xcolor=dvipsnames,compress]{beamer}
+\documentclass[10pt,utf8,presentation,compress]{beamer}
+
+\usepackage{sty/beamer}
+\usepackage{float}
+\usepackage{listings}
+
+%%% Работа с русским языком и шрифтами
+
+%\usepackage{fontspec}
+%\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}
+%\setmainfont[Ligatures={TeX,Historic}]{Myriad Pro}
+%\setsansfont{Myriad Pro}  %  установите шрифты Myriad Pro или (при невозможности) замените здесь на другой шрифт, который есть в системе — например, Arial
+
+%\setmonofont{Courier New}
+\uselanguage{russian}
+\languagepath{russian}
 
 
+\usepackage{multicol} 		% Несколько колонок
+\graphicspath{{images/}}  	% Папка с картинками
 
-\usepackage{doclad}
-%dove
-
-\title[Мат. моделирование МВ с помощью МКЭ]{
-Математическое моделирование течений мелкой воды методом конечных элементов
-}
-
-\author[Шаров А.В.]{
-  Шаров Александр Вадимович
-}
-\institute[010302]{
-Прикладная математика и информатика»
-}
-
-\date{14 Июня 2018}
+% информация для титульника и для подписей слайдов
+\title[Мат. моделирование течений мелкой воды с помощью МКЭ]{Математическое моделирование течений мелкой воды методом конечных элементов} 
+\author[Шаров Александр Вадимович]{Шаров Александр Вадимович}
+\institute[НИУ СГУ имени Н.Г.Чернышевского]{Саратовский национальный исследовательский \\ государственный университет \\ им. Н.Г.Чернышевского}
+\date{14 июня 2018 г.}
 
 \begin{document}
 
+\frame[plain]{\titlepage}
+
 \begin{frame}
-\titlepage
+\frametitle{Уравнения мелкой воды}
+	\begin{eqnarray*}
+	\begin{cases}
+		\dfrac{ \partial q_i}{\partial x_i} + \dfrac{\partial(\rho H)}{\partial t} = 0 \\
+		\dfrac{\partial q_1}{\partial t} + \dfrac{\partial}{\partial x_1} \bigg(\dfrac{q_1^2}{H}\bigg)+\dfrac{\partial }{\partial x_2}\bigg(\dfrac{q_1 q_2}{H}\bigg) = \dfrac{\partial}{\partial x_1} (N_{11}-N_p) + \dfrac{\partial N_{12}}{\partial x_2} + B_1 \\
+		\dfrac{\partial q_2}{\partial t} + \dfrac{\partial}{\partial x_1} \bigg(\dfrac{q_1 q_2}{H}\bigg)+\dfrac{\partial }{\partial x_2}\bigg(\dfrac{q_2^2}{H}\bigg) = \dfrac{\partial}{\partial x_2} (N_{22}-N_p) + \dfrac{\partial N_{12}}{\partial x_2} + B_2,
+	\end{cases}
+	\end{eqnarray*}
+
+	\begin{eqnarray*}
+	\begin{aligned}
+		B_1=fq_2+\gamma^2\rho_aW^2\cos(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho}\dfrac{q_1\sqrt{(q_1^2+q_2^2)}}{H^2} + p_a \dfrac{\partial H}{\partial x_1} + \rho gH\dfrac{\partial h}{\partial x_1}; \\
+		B_2=-fq_1+\gamma^2\rho_aW^2\sin(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho}\dfrac{q_2\sqrt{(q_1^2+q_2^2)}}{H^2} + p_a \dfrac{\partial H}{\partial x_2} + \rho gH\dfrac{\partial h}{\partial x_2}.
+	\end{aligned}
+	\end{eqnarray*}
 \end{frame}
 
-\section<presentation>*{Содержание}
 
 \begin{frame}
-\frametitle{Содержание}
-\tableofcontents
+\frametitle{МКЭ}
+	\begin{equation}\label{eq:1}
+		\mathcal A = \mathcal L\phi + p = 0
+	\end{equation}
+
+	\begin{equation}\label{eq:2}
+		\mathcal B = \mathcal M \phi+r=0
+	\end{equation}
 \end{frame}
 
-\section{Введение}
 \begin{frame}
-\frametitle{Введение}
-\begin{block}{Планирование работы кафедры.}
-Максимальную трудоемкость с точки зрения планирования учебного процесса на кафедре представляет распределение
-учебной нагрузки текущего года
-\end{block}
-\begin{block}{БД «кафедральная нагрузка»}
-разработана сотрудниками кафедры. В качестве СУБД использовалась БД \emph{PostgreSQL}. 
-В качестве  интерфейса пользователя применялась \emph{Knoda}.
-\end{block}
-\begin{block}{Основная идея дипломной работы}
-Применить для разработки интерфейса пользователя 
-модуль \emph{PyQt4} языка \emph{Python} для построения
-интерфейса пользователя к БД «кафедральная нагрузка».
-\end{block}
+\frametitle{МКЭ}
+	\begin{equation}\label{eq:3}
+		\phi \approx \psi + \sum\limits_{m=1}^{M} a_mN_m
+	\end{equation}
 \end{frame}
 
-\section{Структура БД «кафедральная нагрузка»}
-
-\subsection{Описание СУБД PostgreSQL}
 \begin{frame}
-\frametitle{Описание СУБД PostgreSQL}
-
-\begin{block}{PostgreSQL}
-это объектно-реляционная база данных
-\end{block}
-
-\begin{block}{PostgreSQL}
-это программный продукт с открытым исходным кодом и свободной лицензией.
-\end{block}
+\frametitle{МКЭ}
+	\begin{eqnarray*}
+		q_1(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_m(t)N_m(x, y) \\
+		q_2(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{m+k}(t)N_m(x, y) \\
+		H(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{2\cdot m+k}(t)N_m(x, y)
+	\end{eqnarray*}
 \end{frame}
 
-\section{Структура БД «кафедральная нагрузка»}
 \begin{frame}
-\frametitle{Группы/подгруппы/потоки}
-Структура БД «кафедральная нагрузка» была разработана
-сотрудниками кафедры. Ниже представлена структура БД.
+\frametitle{МКЭ}
+	\begin{equation}
+		N_m = A_m * x_1 + B_m * x_2 + C_m
+	\end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{МКЭ}
+	\begin{equation}
+		A \cdot \frac{da}{dt} + B \cdot a + \cdots = f
+	\end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{Программная реализация}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.5\textwidth]{images/slides/logo/docker}}
+		\hfill
+		\subfloat{\includegraphics[width=0.4\textwidth]{images/slides/logo/python}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд без островов}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.45\textwidth]{images/ex1/contour}}
+		\hfill
+		\subfloat{\includegraphics[width=0.45\textwidth]{images/ex1/mesh}}
+		\caption{Контур и триангуляция квадратного пруда.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд без островов}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/0}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/1}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_1/2}}
+		\caption{Изменение проекции потока жидкости на ось $x_1$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд без островов}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_2/0}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_2/1}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/q_2/2}}
+		\caption{Изменение проекции потока жидкости на ось $x_2$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд без островов}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/H/0}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/H/1}}
+		\hfill
+		\subfloat{\includegraphics[width=0.39\textwidth]{images/ex1/H/2}}
+		\caption{Изменение высоты.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Функция тока}
+	\begin{equation}
+		\Psi = \int q_1(x_1, x_2) dx_2 = - \int q_2(x_1, x_2) dx_1
+	\end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд без островов}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex1/psi/1}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex1/psi/2}}
+		\caption{Изменение функции тока.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Эльтон}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/slides/lake_elton}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/slides/lake_elton_mesh}}
+		\caption{Контур и триангуляция озера Эльтон.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Эльтон}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/q_1/902}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/q_1/905}}
+		\caption{Изменение проекции потока жидкости на ось $x_1$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Эльтон}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/q_2/902}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/q_2/905}}
+		\caption{Изменение проекции потока жидкости на ось $x_2$.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Эльтон}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/H/902}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/H/905}}
+		\caption{Изменение высоты в различные промежутки времени.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Эльтон}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/psi/902}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex2/psi/905}}
+		\caption{Изменение функции тока в различные промежутки времени.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд с островами}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.45\textwidth]{images/ex3/contour}}
+		\hfill
+		\subfloat{\includegraphics[width=0.45\textwidth]{images/ex3/mesh}}
+		\caption{Контур и триангуляция квадратного пруда с островами.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд с островами}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/q_1/91}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/q_1/99}}
+		\caption{Изменение проекции потока жидкости на ось $x_1$.}
+		\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд с островами}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/H/91}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/H/99}}
+		\caption{Изменение высоты в различные промежутки времени.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Квадратный пруд с островами}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/psi/91}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex3/psi/99}}
+		\caption{Изменение функции тока.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Верхнее}
+	\begin{figure}[H]
+		\centering
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex4/lake_superior}}
+		\hfill
+		\subfloat{\includegraphics[width=0.49\textwidth]{images/ex4/mesh}}
+		\caption{Контур и триангуляция озера Верхее.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Озеро Верхнее}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\linewidth]{images/ex4/psi/1}
+		\caption{График функции тока.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{БД для хранения результатов эксперимента}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\linewidth]{images/slides/logo/mongo}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{БД для хранения результатов эксперимента}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\linewidth]{images/database}
+		\caption{Структура БД.}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[c]
 \begin{center}
-\includegraphics[scale=0.35]{db1}%
+\frametitle{\LARGE Спасибо за внимание!}
+
+{\LARGE \inserttitle}
+
+\bigskip
+
+{\insertauthor} 
+
+\bigskip\bigskip
+
+{\insertinstitute}
+
+\bigskip\bigskip
+
+{\large \insertdate}
 \end{center}
 \end{frame}
 
-\begin{frame}
-\frametitle{Преподаватели/заявки}
-\begin{center}
-\includegraphics[scale=0.4]{db2}\\
-\includegraphics[scale=0.4]{db3}\\
-\includegraphics[scale=0.4]{db4}%
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Нагрузка}
-\begin{center}
-\vskip -1cm
-\includegraphics[scale=0.25]{db5}%
-\end{center}
-\end{frame}
-
-\section{Библиотека PyQt4}
-\begin{frame}
-\begin{block}{Библиотека Qt4}
-Qt4 -- популярная кроссплатформенная библиотека C++ для разработки GUI-приложений. Поддерживаемые операционные системы: Windows, Mac OS X, GNU/Linux и иные Unix-подобные системы. Особенности:
-\begin{itemize}
- \item Виджеты, менеджеры размещений, стили
- \item Стандартные (и не очень) GUI-компоненты приложения
- \item Лёгкая коммуникация между компонентами (сигналы и слоты)
- \item Независимая система отображения (прозрачность, сглаживание, поддержка SVG)
- \item Поддержка баз данных и XML в русле идеологии MVC (модель-представление)
- \item Поддержка сетевых протоколов, многопоточности и др.
-\end{itemize}
-\end{block}
-\begin{block}{PyQt}
-PyQt4 -- привязка библиотеки Qt к языку Python, сочетающая в себе положительные стороны Qt и расширяющая её возможности высокоуровневыми особенностями Python.
-\end{block}
-\end{frame}
-
-\section{Создания интрефейса пользователя к БД «кафедральная нагрузка»}
-
-\begin{frame}
-\frametitle{Редактирование tblСпециальности}
-\begin{center}
-\includegraphics[width=1.0\textwidth]{tbl1}%
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Редактирование tblПодгруппы}
-\begin{center}
-\includegraphics[width=1.0\textwidth]{tbl2}%
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Редактирование tblЗаявки}
-\begin{center}
-\includegraphics[width=1.0\textwidth]{tbl3}%
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Редактирование tblЗаявки}
-\begin{center}
-\includegraphics[scale=0.5]{tbl4}%
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Редактирование tblНагрузки}
-\begin{center}
-\includegraphics[width=0.9\textwidth]{tbl5}%
-\end{center}
-\end{frame}
-
-\section{Заключение}
-\begin{frame}
-\frametitle{Заключение}
-\begin{block}{В дипломной работе}
-\begin{itemize}
- \item Рассмотрена работа библиотеки графического интерфейса пользователя \emph{PyQt4}.
- \item С ее помощью для БД «кафедральная нагрузка» сделан графический интерфейс пользователя.
- \item В настоящие время он успешно применяется на кафедре
-``математического и компьютерного моделирования'' при составлении
-кафедральной нагрузки. 
-\end{itemize}
-\end{block}
-\end{frame}
 \end{document}

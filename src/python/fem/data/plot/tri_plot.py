@@ -41,7 +41,7 @@ def draw_3d_frame(directory, title, functions, times):
 
         ax.plot(X, Y, Z)
 
-        plt.title('график функции %s' % title + '\n' + 'time = %s' % time)
+        plt.title('plot of %s' % title + '\n' + 'time = %s' % time)
         buf = io.BytesIO()
 
         plt.savefig(buf, format='png')
@@ -77,7 +77,7 @@ def draw_3d_surf(directory, title, functions, times, view='surface'):
                                    np.linspace(np.min(Y), np.max(Y), INTERPOLATION_NODES))
         plotz = interp.griddata((X, Y), Z, (plotx, ploty), method='cubic')
 
-        # Explanation: TODO
+        # Explanation: by physical definition
         plotz[plotz < 0] = 0.0
 
         if view == 'surface':
@@ -85,7 +85,7 @@ def draw_3d_surf(directory, title, functions, times, view='surface'):
         elif view == 'wireframe':
             ax.plot_wireframe(plotx, ploty, plotz, cstride=1, rstride=1, cmap='viridis')
 
-        plt.title('график функции $%s$' % title + '\n' + 'time = %s' % time)
+        plt.title('plot of $%s$' % title + '\n' + 'time = %s' % time)
 
         buf = io.BytesIO()
 

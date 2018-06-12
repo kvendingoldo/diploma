@@ -24,11 +24,10 @@ def get_functions(mesh, solution, times):
         q2_at_time = []
         H_at_time = []
 
-        # q1 = dψ/dx2
+        # q1 = d(psi)/dx2
         psi1_at_time = []
 
-        # TODO: probably we don't need psi_2 function
-        # q2 = - dψ/dx1
+        # q2 = - d(psi)/dx1
         psi2_at_time = []
 
         for point in points:
@@ -59,8 +58,8 @@ def get_functions(mesh, solution, times):
             q2_at_time.append([x1, x2, q2])
             H_at_time.append([x1, x2, H])
 
-            psi1_at_time.append([x1, x2, integrate(q1, Symbol('x_2')).subs(Symbol('x_2'), x2)])
-            psi2_at_time.append([x1, x2, -integrate(q1, Symbol('x_1')).subs(Symbol('x_1'), x1)])
+            psi1_at_time.append([x1,x2,integrate(q1, Symbol('x_2')).subs(Symbol('x_2'),x2)])
+            psi2_at_time.append([x1,x2,-integrate(q1, Symbol('x_1')).subs(Symbol('x_1'),x1)])
 
         q1_data.append(array(q1_at_time))
         q2_data.append(array(q2_at_time))

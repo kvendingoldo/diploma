@@ -48,7 +48,7 @@ def draw_psi_2d(path, title, functions, times, mesh):
 
         plt.colorbar()
         plt.grid()
-        plt.title('график функции $\%s$' % title + '\n' + 'time = %s' % time)
+        plt.title('plot of $\%s$' % title + '\n' + 'time = %s' % time)
 
         buf = io.BytesIO()
 

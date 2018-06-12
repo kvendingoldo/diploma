@@ -10,27 +10,25 @@ from scipy.integrate import solve_ivp
 from multiprocessing import Process, Manager
 from sympy import *
 
-# from threading import Thread
-
 # CONSTANTS
 ###############################################
-# плотность воды [кг / м^3]
+# density of water [kg/m^3]
 rho = 1000
-# плотность воздуха [кг / м^3]
+# density of air [kg/m^3]
 rho_a = 1.2754
-# давление на поверхности воды [Па]
+# water pressure [Pa]
 P_a = 10 ** 5
-# скорость ветра [м / c]
+# wind speed [m/s]
 W = 1
 # gamma ^ 2
 gamma = 0.002
-# ускорение свободного падения [м * c^2]
+# acceleration of gravity [m*s^2]
 g = 9.832
-# g / c^2
+# g/c^2
 gc2 = 0.002
-# коэффициент трения Шэззи [м^{1/2} * c^{-1}]
+# coefficient of friction Chezy [m^{1/2}*s^{-1}]
 C = 40
-# начальное возвышение
+# initial elevation
 H0 = 0.01
 
 
@@ -139,7 +137,6 @@ class Solver(object):
 
                 for ind in range(0, self.max_tasks):
                     if ind < cur_len:
-                        # thread = Thread(target=self.calculate_element, args=(elements_copy[ind], variables))
                         process = Process(target=self.calculate_element, args=(elements_copy[ind], variables))
                     else:
                         continue
@@ -172,7 +169,6 @@ class Solver(object):
                              rtol=1e-3,
                              atol=1e-3)
 
-        # it needs only for debug
         logging.info(solution.y)
         logging.info(solution.t)
 
