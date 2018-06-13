@@ -20,10 +20,14 @@
 \usepackage{multicol} 		% Несколько колонок
 \graphicspath{{images/}}  	% Папка с картинками
 
+\setbeamerfont{author}{size=\fontsize{11pt}{12pt}}
+\setbeamerfont{institute}{size=\fontsize{10pt}{11pt}}
+
+
 % информация для титульника и для подписей слайдов
 \title[Мат. моделирование течений мелкой воды с помощью МКЭ]{Математическое моделирование течений мелкой воды методом конечных элементов} 
 \author[Шаров Александр Вадимович]{Шаров Александр Вадимович}
-\institute[НИУ СГУ имени Н.Г.Чернышевского]{Саратовский национальный исследовательский \\ государственный университет \\ им. Н.Г.Чернышевского}
+\institute[<<Прикладная математика и информатика>>]{<<Прикладная математика и информатика>>}
 \date{14 июня 2018 г.}
 
 \begin{document}
@@ -42,52 +46,52 @@
 
 	\begin{eqnarray*}
 	\begin{aligned}
-		B_1=fq_2+\gamma^2\rho_aW^2\cos(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho}\dfrac{q_1\sqrt{(q_1^2+q_2^2)}}{H^2} + p_a \dfrac{\partial H}{\partial x_1} + \rho gH\dfrac{\partial h}{\partial x_1}; \\
+		B_1=fq_2+\gamma^2\rho_aW^2\cos(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho}\dfrac{q_1\sqrt{(q_1^2+q_2^2)}}{H^2} + p_a \dfrac{\partial H}{\partial x_1} + \rho gH\dfrac{\partial h}{\partial x_1}, \\
 		B_2=-fq_1+\gamma^2\rho_aW^2\sin(\theta)-\bigg(\dfrac{g}{c^2}\bigg)\dfrac{1}{\rho}\dfrac{q_2\sqrt{(q_1^2+q_2^2)}}{H^2} + p_a \dfrac{\partial H}{\partial x_2} + \rho gH\dfrac{\partial h}{\partial x_2}.
 	\end{aligned}
 	\end{eqnarray*}
 \end{frame}
 
-
 \begin{frame}
 \frametitle{МКЭ}
-	\begin{equation}\label{eq:1}
-		\Large\mathcal A = \mathcal L\phi + p = 0
-	\end{equation}
-
-	\begin{equation}\label{eq:2}
-		\Large\mathcal B = \mathcal M \phi+r=0
-	\end{equation}
+	\begingroup
+	\huge
+		\begin{equation*}
+			\phi \approx \psi + \sum\limits_{m=1}^{M} a_mN_m
+		\end{equation*}
+	\endgroup
 \end{frame}
 
 \begin{frame}
 \frametitle{МКЭ}
-	\begin{equation}\label{eq:3}
-		\Large\phi \approx \psi + \sum\limits_{m=1}^{M} a_mN_m
-	\end{equation}
+	\begingroup
+	\Large
+		\begin{eqnarray*}
+			q_1(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_m(t)N_m(x_1, x_2) \\
+			q_2(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{m+k}(t)N_m(x_1, x_2) \\
+			H(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{2\cdot m+k}(t)N_m(x, y)
+		\end{eqnarray*}
+	\endgroup
 \end{frame}
 
 \begin{frame}
 \frametitle{МКЭ}
-	\begin{eqnarray*}
-		q_1(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_m(t)N_m(x_1, x_2) \\
-		q_2(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{m+k}(t)N_m(x_1, x_2) \\
-		H(x_1, x_2, t) = \sum\limits_{m=1}^{M} a_{2\cdot m+k}(t)N_m(x, y)
-	\end{eqnarray*}
+	\begingroup
+	\Large
+		\begin{equation*}
+			N_m(x_1, x_2) = A_m \cdot x_1 + B_m \cdot x_2 + C_m
+		\end{equation*}
+	\endgroup
 \end{frame}
 
 \begin{frame}
 \frametitle{МКЭ}
-	\begin{equation}
-		\Large N_m(x_1, x_2) = A_m * x_1 + B_m * x_2 + C_m
-	\end{equation}
-\end{frame}
-
-\begin{frame}
-\frametitle{МКЭ}
-	\begin{equation}
-		\Large A \cdot \frac{da}{dt} + B \cdot a + \cdots = f
-	\end{equation}
+	\begingroup
+	\huge
+		\begin{equation*}
+			A \cdot \frac{da}{dt} + B \cdot a + \cdots = f
+		\end{equation*}
+	\endgroup
 \end{frame}
 
 \begin{frame}
@@ -152,9 +156,12 @@
 
 \begin{frame}
 \frametitle{Функция тока}
-	\begin{equation}
-		\Large\Psi = \int q_1(x_1, x_2) dx_2 = - \int q_2(x_1, x_2) dx_1
-	\end{equation}
+	\begingroup
+	\LARGE
+		\begin{equation*}
+			\Psi = \int q_1(x_1, x_2) dx_2 = - \int q_2(x_1, x_2) dx_1
+		\end{equation*}
+	\endgroup
 \end{frame}
 
 \begin{frame}
@@ -282,7 +289,7 @@
 \frametitle{Озеро Верхнее}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.9\linewidth]{images/ex4/psi/1}
+		\includegraphics[width=0.8\linewidth]{images/ex4/psi/1}
 		\caption{График функции тока.}
 	\end{figure}
 \end{frame}
@@ -304,15 +311,26 @@
 	\end{figure}
 \end{frame}
 
+\begin{frame}
+\frametitle{Заключение}
+	\begin{block}{\LARGE В данной работе}
+		\begin{itemize}
+			\item<1-> \large Получены уравнения мелкой воды
+			\item<2-> \large Написана многопоточная программная реализация МКЭ
+			\item<3-> \large Реализована возможность переносимости разработанного алгоритма за счет контейнеризации
+		\end{itemize}
+	\end{block}
+\end{frame}
+
 \begin{frame}[c]
 \begin{center}
 \frametitle{\LARGE Спасибо за внимание!}
 
 {\LARGE \inserttitle}
 
-\bigskip
+\bigskip\bigskip
 
-{\insertauthor} 
+{\large \insertauthor} 
 
 \bigskip\bigskip
 
